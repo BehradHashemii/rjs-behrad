@@ -8,9 +8,10 @@ import Footer from "./layout/Footer";
 import "./App.css";
 
 function App() {
+  const loggedUser = false;
   return (
     <>
-      <Header />
+      <Header loggedUser={loggedUser}/>
       <Router />
       <Footer />
     </>

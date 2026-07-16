@@ -10,34 +10,34 @@ import { IoPersonOutline } from "react-icons/io5";
 import { Badge } from "@mui/material";
 import { FaTimes } from "react-icons/fa";
 
-function Header() {
+function Header({ loggedUser }) {
   const [open, setOpen] = useState(false);
-  const user = true;
+
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header}`}>
       <div className={`${styles.topHeader} glassBG`}>
         <Link to="/">
           <div className={styles.title}>
-            <img src="/logo.png" alt="varia-pet-logo" />
-            <h1>واریا پت</h1>
+            <img src="/logo2.png" alt="Behrad-logo" />
+            <h1>بهـــــراد</h1>
           </div>
         </Link>
         <div className={styles.searchBox}>
           <CiSearch fontSize="1.3rem" className={styles.searchIcon} />
-          <input type="text" placeholder="محصول مورد نظر رو جستجو کنید ..." />
+          <input type="text" placeholder="هرچیزی فکر میکنی رو سرچ کن ..." />
         </div>
         <div className={styles.information}>
           <div className={styles.access}>
             <img src="/TickSquare.png" alt="tick-access" />
             <div>
-              <p>ضمانت اصالت کالا</p>
+              <p>ضمانت اصالت</p>
               <span>٪۱۰۰ تضمین اصالت</span>
             </div>
           </div>
           <div className={styles.carry}>
             <img src="/iconamoon_delivery-free-thin.png" alt="delivery" />
             <div>
-              <p>ارسال رایگان</p>
+              <p>خدمات رایگان</p>
               <span>تمامی خرید ها</span>
             </div>
           </div>
@@ -53,7 +53,7 @@ function Header() {
               <IoIosHeartEmpty fontSize="2rem" fontWeight="bold" />
             </a>
           </Badge>
-          {user === null ? (
+          {!loggedUser ? (
             <Link to="/login">
               <IoPersonOutline fontSize="2rem" fontWeight="bold" />
             </Link>

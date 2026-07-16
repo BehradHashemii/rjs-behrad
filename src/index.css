@@ -16,13 +16,37 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0 auto;
+  
   background:
     radial-gradient(
-      circle at top right,
-      rgba(247, 118, 61, 0.12),
-      transparent 35%
+      circle at 10% 20%,
+      rgba(247, 118, 61, 0.35) 0px,
+      rgba(247, 118, 61, 0.18) 35px,
+      transparent 100px
     ),
-    #f7f8fa;
+
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(255, 180, 120, 0.3) 0px,
+      rgba(255, 180, 120, 0.15) 40px,
+      transparent 110px
+    ),
+
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(247, 118, 61, 0.25) 0px,
+      rgba(247, 118, 61, 0.12) 40px,
+      transparent 120px
+    ),
+
+    radial-gradient(
+      circle at 15% 85%,
+      rgba(255, 200, 160, 0.35) 0px,
+      rgba(255, 200, 160, 0.15) 40px,
+      transparent 120px
+    ),
+
+    #fffaf7;
 }
 
 a {

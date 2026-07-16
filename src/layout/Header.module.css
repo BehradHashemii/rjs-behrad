@@ -5,7 +5,6 @@
 }
 
 .topHeader {
-  width: min(1400px, 94%);
   min-height: 90px;
   margin: 20px auto 0;
   display: flex;
@@ -135,7 +134,6 @@
 }
 
 .navbar {
-  width: min(1400px, 94%);
   min-height: 58px;
   margin: 14px auto 0;
   padding: 10px 24px;
