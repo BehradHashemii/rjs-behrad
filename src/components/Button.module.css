@@ -1,0 +1,35 @@
+.Button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 18px;
+  color: white;
+  background: linear-gradient(135deg, #f7763d, #ff9a6c);
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(247, 118, 61, 0.3);
+  transition: all 0.3s ease;
+}
+
+.Button:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 0 15px 30px rgba(247, 118, 61, 0.4);
+}
+
+.Button span:first-child {
+  font-size: 14px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: #f7763d;
+  background: white;
+  border-radius: 50%;
+  font-size: 20px;
+}
