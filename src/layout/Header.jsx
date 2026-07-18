@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
+
 import styles from "./Header.module.css";
 import e2p from "../utils/persianNumber";
 
@@ -12,7 +13,7 @@ import { FaTimes } from "react-icons/fa";
 
 function Header({ loggedUser }) {
   const [open, setOpen] = useState(false);
-
+  // const { favorites } = useFavorites();
   return (
     <header className={`${styles.header}`}>
       <div className={`${styles.topHeader} glassBG`}>
