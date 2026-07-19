@@ -1,7 +1,7 @@
 .footer {
   position: relative;
   padding: 18px 24px;
-  margin: 100px auto 10px;
+  margin: 0 auto 30px;
   @media (max-width: 768px) {
     width: 92%;
     padding: 20px;
