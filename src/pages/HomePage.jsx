@@ -9,8 +9,8 @@ function HomePage() {
     <div>
       <Banner></Banner>
       <Carts />
-      <Articles />
       <Portfolios />
+      <Articles />
     </div>
   );
 }
