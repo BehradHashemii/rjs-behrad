@@ -48,7 +48,6 @@ function Articles() {
     <div className={styles.container}>
       <div className={styles.link}>
         <h2>
-          {/* <ImBlog /> */}
           <Link to="/articles?sort=desc">
             <RiFilePaper2Line style={{ marginLeft: "5px" }} /> آخرین مقالات
           </Link>
