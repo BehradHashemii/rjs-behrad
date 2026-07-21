@@ -14,33 +14,16 @@ import "swiper/css/navigation";
 import articlesData from "../data/mockData.json";
 import { ImBlog } from "react-icons/im";
 import { RiFilePaper2Line } from "react-icons/ri";
+import ArticleCard from "../components/ArticleCard";
 
 function Articles() {
   const articles = articlesData.articles.slice(-5).reverse();
 
   const articleSlides = articles.map((article) => (
-    <SwiperSlide key={article.id}>
-      <Link to={`/articles/${article.slug}`}>
-        <div className={`${styles.card}`}>
-          <div className={styles.info}>
-            <p>
-              <IoPersonSharp color="#f7763d" />
-              {article.author}
-            </p>
-            <p>
-              <FaCalendarAlt color="#f7763d" />
-              {formatPersianDate(article.createdAt || article.date)}
-            </p>
-          </div>
-          <p className={styles.title}>{article.title}</p>
-          <p
-            className={styles.desc}
-            dangerouslySetInnerHTML={{
-              __html: article.description?.slice(0, 100) + "...",
-            }}
-          ></p>
-        </div>
-      </Link>
+    <SwiperSlide key={article.id} className={styles.card}>
+      {/* <Link to={`/articles/${article.slug}`}> */}
+        <ArticleCard article={article} />
+      {/* </Link> */}
     </SwiperSlide>
   ));
 

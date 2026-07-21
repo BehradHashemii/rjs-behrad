@@ -1,3 +1,22 @@
+:root {
+  --primary-color: #f7763d;
+  --primary-light: #ff9a6c;
+  --primary-dark: #e9652e;
+
+  --primary-soft: rgba(247, 118, 61, 0.1);
+  --primary-medium: rgba(247, 118, 61, 0.25);
+  --primary-border: rgba(247, 118, 61, 0.4);
+  --primary-shadow: rgba(247, 118, 61, 0.2);
+
+  --text-primary: #222;
+  --text-secondary: #666;
+  --text-muted: #777;
+
+  --white-glass: rgba(255, 255, 255, 0.48);
+  --white-glass-light: rgba(255, 255, 255, 0.25);
+  --white-border: rgba(255, 255, 255, 0.65);
+}
+
 @font-face {
   src: url("./assets/fonts/YekanBakh-Regular/YekanBakh-Regular.ttf");
   font-family: "YekanBakh Regular";
@@ -31,21 +50,32 @@ a {
   text-decoration: none;
 }
 
-.active {
-  color: #f7763d !important;
+.center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
 
-  @media (width <= 650px) {
-    color: #000 !important;
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
   }
 }
 
 .glassBG {
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 24px;
   box-shadow:
     0 8px 32px rgba(31, 38, 135, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
 }
+
+.active {
+  background: rgba(247, 118, 61, 0.11);
+  color: #f7763d !important;
+}
+

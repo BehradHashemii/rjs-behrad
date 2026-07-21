@@ -1,7 +1,19 @@
-import React from "react";
+import styles from "./Loading.module.css";
 
 function Loading() {
-  return <div>Loading ...</div>;
+  return (
+    <div className={styles.loadingContainer}>
+      <div className={styles.bubbles}>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <p>در حال بارگذاری...</p>
+    </div>
+  );
 }
 
 export default Loading;

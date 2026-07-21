@@ -1,18 +1,22 @@
-import React from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import HomePage from "../pages/HomePage";
-import Header from "../layout/Header";
-import Portfolios from "../layout/Portfolios";
-import PortfoliosPage from "../pages/PortfoliosPage";
+import Loading from "../components/Loading";
+const HomePage = lazy(() => import("../pages/HomePage"));
+const Portfolios = lazy(() => import("../layout/Portfolios"));
+const PortfoliosPage = lazy(() => import("../pages/PortfoliosPage"));
+const ArticlesPage = lazy(() => import("../pages/ArticlesPage"));
+const ArticleDetailsPage = lazy(() => import("../pages/ArticleDetailsPage"));
 
 function Router() {
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <Routes>
         <Route element={<HomePage />} path="/" />
         <Route element={<PortfoliosPage />} path="/portfolios" />
+        <Route element={<ArticlesPage />} path="/articles" />
+        <Route path="/articles/:slug" element={<ArticleDetailsPage />} />
       </Routes>
-    </>
+    </Suspense>
   );
 }
 

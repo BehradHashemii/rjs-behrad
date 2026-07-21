@@ -23,8 +23,12 @@
   width: 70px;
   height: 70px;
   margin-bottom: 20px;
+  border: 1px solid rgba(247, 118, 61, 0.5);
+  background: #f7763dd9;
   color: white;
-  background: #f7763d;
+  box-shadow:
+    0 8px 20px rgba(247, 118, 61, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
   border-radius: 20px;
   font-size: 30px;
 }

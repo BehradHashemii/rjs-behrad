@@ -3,13 +3,14 @@
   align-items: center;
   gap: 12px;
   padding: 8px 8px 8px 18px;
-  color: white;
-  background: linear-gradient(135deg, #f7763d, #ff9a6c);
-  border: none;
   border-radius: 15px;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(247, 118, 61, 0.3);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(247, 118, 61, 0.5);
+  background: rgba(247, 118, 61, 0.85);
+  color: white;
+  box-shadow:
+    0 8px 20px rgba(247, 118, 61, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .Button:hover {

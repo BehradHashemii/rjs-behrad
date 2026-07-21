@@ -1,13 +1,25 @@
-.header {
-  width: 100%;
+/* .header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
   padding-top: 10px;
   padding-bottom: 14px;
 }
 
+
+.topHeader,
+.navbar {
+  width: min(100% - 32px, 840px);
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(40px);
+  box-shadow: 0 6px 36px rgba(175, 185, 255, 0.6);
+}
+
 .topHeader {
+   isolation: isolate;
   width: 100%;
   min-height: 90px;
   margin: 0 auto;
@@ -38,50 +50,7 @@
   font-weight: 800;
 }
 
-.searchBox {
-  flex: 1;
-  max-width: 460px;
-  height: 48px;
 
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 0 16px;
-
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 16px;
-
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.45),
-    0 4px 15px rgba(0, 0, 0, 0.04);
-
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  transition: 0.3s ease;
-}
-
-.searchIcon {
-  color: #f7763d;
-  flex-shrink: 0;
-}
-
-.searchBox input {
-  width: 100%;
-  border: none;
-  outline: none;
-  background: transparent;
-
-  color: #333;
-  font-family: inherit;
-  font-size: 0.9rem;
-}
-
-.searchBox input::placeholder {
-  color: #777;
-}
 
 .information {
   display: flex;
@@ -107,15 +76,15 @@
 .access p,
 .carry p {
   margin: 0 0 3px;
+  color: #333;
   font-size: 0.8rem;
   font-weight: 700;
-  color: #333;
 }
 
 .access span,
 .carry span {
-  font-size: 0.7rem;
   color: #777;
+  font-size: 0.7rem;
 }
 
 .links {
@@ -125,16 +94,27 @@
 }
 
 .links a {
-  width: 44px;
-  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333;
-  background: rgba(255, 255, 255, 0.25);
+  width: 44px;
+  height: 44px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 14px;
+  background: rgba(255, 255, 255, 0.25);
+  color: #333;
   transition: all 0.3s ease;
+}
+
+.links a:hover {
+  color: #f7763d;
+  background: rgba(247, 118, 61, 0.1);
+  transform: translateY(-2px);
+}
+
+.links svg {
+  width: 2rem;
+  height: 2rem;
 }
 
 .navbar {
@@ -150,7 +130,6 @@
   display: flex;
   align-items: center;
   gap: 35px;
-
   margin: 0;
   padding: 0;
   list-style: none;
@@ -168,17 +147,13 @@
 
 .navbar li a::after {
   content: "";
-
   position: absolute;
   right: 0;
   bottom: -8px;
-
   width: 0;
   height: 2px;
-
   background: #f7763d;
   border-radius: 10px;
-
   transition: width 0.3s ease;
 }
 
@@ -199,8 +174,8 @@
 }
 
 .navbar > div span {
-  font-weight: 700;
   color: #333;
+  font-weight: 700;
 }
 
 .navbar > div a {
@@ -229,8 +204,8 @@
   .topHeader {
     width: 92%;
     min-height: 70px;
-    padding: 12px 16px;
     margin-top: 12px;
+    padding: 12px 16px;
     border-radius: 18px;
   }
 
@@ -257,7 +232,8 @@
   }
 
   .links svg {
-    font-size: 1.5rem !important;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .topHeader > .menuToggle {
@@ -266,13 +242,14 @@
 
   .navbar {
     position: absolute;
-    top: 82px;
+    top: calc(100% - 2px);
     right: 4%;
     width: 92%;
     display: none;
     flex-direction: column;
     align-items: stretch;
     gap: 24px;
+    margin: 0;
     padding: 24px;
   }
 
@@ -299,14 +276,298 @@
   }
 
   .navbar > div {
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
     padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
 }
 
 @media (min-width: 769px) {
   .navbar > .menuToggle {
     display: none;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  padding: 10px 0 14px;
+}
+
+.topHeader,
+.navbar {
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(40px);
+  box-shadow: 0 6px 36px rgba(175, 185, 255, 0.6);
+}
+
+.topHeader {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 999px;
+  transition: box-shadow 0.3s ease;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.title img {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0;
+  object-fit: contain;
+  padding: 8px;
+  border-radius: 50%;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.title h1 {
+  display: none;
+}
+
+.searchBox {
+  flex: 1;
+  max-width: 460px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  background: transparent;
+  border: 1px solid #f7763d73;
+  border-radius: 16px;
+  box-shadow:
+    inset 0 1px 1px #ffffff73,
+    0 4px 15px #f7763d0a;
+  backdrop-filter: blur(12px);
+  transition: 0.3s ease;
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  color: #f7763d;
+}
+
+.searchBox input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #333;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.searchBox input::placeholder {
+  color: #777;
+}
+
+.information {
+  display: none;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  flex-shrink: 0;
+}
+
+.links a {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f7763d, #ff9a66);
+  color: white;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.links a:hover {
+  filter: brightness(1.1);
+}
+
+.links a:active {
+  transform: scale(0.95);
+}
+
+.navbar {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding: 10px 8px;
+  border-radius: 999px;
+}
+
+.navbar ul {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1;
+}
+
+.navbar li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-radius: 1000px;
+  color: #333;
+  font-weight: bold;
+  white-space: nowrap;
+  font-size: 1.1rem;
+  text-decoration: none;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.navbar > div p {
+  margin: 0;
+  color: #555;
+}
+
+.navbar > div span {
+  font-weight: 700;
+  color: #333;
+}
+
+.navbar > div a {
+  color: #f7763d;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.menuToggle {
+  display: none;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f7763d, #ff9a66);
+  color: white;
+  cursor: pointer;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.menuToggle:hover {
+  filter: brightness(1.1);
+}
+
+.menuToggle:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 900px) {
+  .topHeader {
+    min-height: 58px;
+  }
+
+  .title img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .links a {
+    width: 42px;
+    height: 42px;
+  }
+
+  .navbar > .menuToggle {
+    display: none;
+  }
+}
+
+@media (max-width: 899px) {
+  .topHeader {
+    width: calc(100% - 32px);
+  }
+
+  .searchBox {
+    display: none;
+  }
+
+  .navbar {
+    position: absolute;
+    top: 70px;
+    right: 16px;
+    width: calc(100% - 32px);
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .navbar.open {
+    display: flex;
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  .navbar > .menuToggle {
+    display: flex;
+    align-self: flex-start;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .navbar li a {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .navbar > div {
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .topHeader > .menuToggle {
+    display: flex;
   }
 }
 

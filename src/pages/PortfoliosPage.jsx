@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import portfoliosData from "../data/mockData.json";
 import Loading from "../components/Loading";
 
+import styles from "./PortfoliosPage.module.css";
+
 const ITEMS_PER_PAGE = 9;
 
 function PortfoliosPage() {
@@ -28,11 +30,13 @@ function PortfoliosPage() {
 
   const uniqueCategories = useMemo(() => {
     if (!Array.isArray(portfolios)) return [];
+
     return [...new Set(portfolios.map((item) => item.category))];
   }, [portfolios]);
 
   const updateParams = (key, value) => {
     const newParams = new URLSearchParams(searchParams);
+
     if (value && value !== "all") {
       newParams.set(key, value);
     } else {
@@ -64,6 +68,7 @@ function PortfoliosPage() {
     filtered.sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
+
       return sortBy === "desc" ? dateB - dateA : dateA - dateB;
     });
 
@@ -71,6 +76,7 @@ function PortfoliosPage() {
   }, [portfolios, searchQuery, tag, sortBy]);
 
   const totalPages = Math.ceil(processedData.length / ITEMS_PER_PAGE);
+
   const paginatedData = processedData.slice(
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE,
@@ -81,17 +87,16 @@ function PortfoliosPage() {
   }
 
   return (
-    <div className="portfolios-container">
-      <div
-        className="filters-section"
-        style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}
-      >
-        <input
-          type="text"
-          placeholder="جستجو در توضیحات و عنوان..."
-          value={searchQuery}
-          onChange={(e) => updateParams("search", e.target.value)}
-        />
+    <main className={styles.container}>
+      <section className={styles.filtersSection}>
+        <div className={styles.searchWrapper}>
+          <input
+            type="text"
+            placeholder="جستجو در عنوان و توضیحات..."
+            value={searchQuery}
+            onChange={(e) => updateParams("search", e.target.value)}
+          />
+        </div>
 
         <select
           value={sortBy}
@@ -106,129 +111,98 @@ function PortfoliosPage() {
           onChange={(e) => updateParams("tag", e.target.value)}
         >
           <option value="all">همه دسته‌بندی‌ها</option>
-          {uniqueCategories.map((cat, index) => (
-            <option key={index} value={cat}>
+
+          {uniqueCategories.map((cat) => (
+            <option key={cat} value={cat}>
               {cat}
             </option>
           ))}
         </select>
-      </div>
-      <div
-        className="portfolios-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-          gap: "1.5rem",
-        }}
-      >
+      </section>
+      <section className={styles.portfoliosGrid}>
         {paginatedData.length > 0 ? (
           paginatedData.map((item) => (
-            <div
+            <article
               key={item.id}
-              className="glassBG"
-              style={{
-                // border: "1px solid #ddd",
-                padding: "1rem",
-                marginBottom: "20px",
-                // borderRadius: "8px",
-              }}
+              className={`${styles.portfolioCard} glassBG`}
             >
               {item.image && (
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  style={{
-                    width: "100%",
-                    height: "200px",
-                    objectFit: "cover",
-                    borderRadius: "4px",
-                  }}
-                />
+                <div className={styles.imageWrapper}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className={styles.portfolioImage}
+                  />
+                </div>
               )}
 
-              <div style={{ marginTop: "1rem" }}>
-                <span
-                  style={{
-                    fontSize: "0.8rem",
-                    background: "#eee",
-                    padding: "0.2rem 0.5rem",
-                    borderRadius: "4px",
-                  }}
-                >
-                  {item.category}
-                </span>
-                <h3 style={{ margin: "0.5rem 0" }}>{item.title}</h3>
-                <p style={{ fontSize: "0.9rem", color: "#555" }}>
-                  {item.description}
-                </p>
+              <div className={styles.cardContent}>
+                <span className={styles.category}>{item.category}</span>
 
-                {/* رندر تکنولوژی‌ها */}
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "0.5rem",
-                    flexWrap: "wrap",
-                    marginTop: "1rem",
-                  }}
-                >
-                  {item.technologies?.map((tech, i) => (
-                    <span
-                      key={i}
-                      style={{
-                        fontSize: "0.75rem",
-                        border: "1px solid #ccc",
-                        padding: "0.2rem 0.4rem",
-                        borderRadius: "4px",
-                      }}
-                    >
+                <h3 className={styles.title}>{item.title}</h3>
+
+                <p className={styles.description}>{item.description}</p>
+
+                {/* Technologies */}
+                <div className={styles.technologies}>
+                  {item.technologies?.map((tech, index) => (
+                    <span key={index} className={styles.tech}>
                       {tech}
                     </span>
                   ))}
                 </div>
 
-                <div
-                  style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}
-                >
+                {/* Links */}
+                <div className={styles.links}>
                   {item.liveUrl && (
-                    <a href={item.liveUrl} target="_blank" rel="noreferrer">
+                    <a
+                      href={item.liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.liveLink}
+                    >
                       مشاهده آنلاین
                     </a>
                   )}
+
                   {item.githubUrl && (
-                    <a href={item.githubUrl} target="_blank" rel="noreferrer">
+                    <a
+                      href={item.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.githubLink}
+                    >
                       سورس کد
                     </a>
                   )}
                 </div>
               </div>
-            </div>
+            </article>
           ))
         ) : (
-          <p>پروژه‌ای با این مشخصات یافت نشد.</p>
+          <div className={`${styles.emptyState} glassBG`}>
+            <p>پروژه‌ای با این مشخصات یافت نشد.</p>
+          </div>
         )}
-      </div>
+      </section>
 
-      {/* دکمه‌های صفحه‌بندی */}
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div
-          className="pagination"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "1rem",
-            marginTop: "2rem",
-          }}
-        >
+        <div className={styles.pagination}>
           <button
+            className={styles.paginationButton}
             disabled={page === 1}
             onClick={() => updateParams("page", (page - 1).toString())}
           >
             قبلی
           </button>
-          <span>
+
+          <span className={styles.pageInfo}>
             صفحه {page} از {totalPages}
           </span>
+
           <button
+            className={styles.paginationButton}
             disabled={page === totalPages}
             onClick={() => updateParams("page", (page + 1).toString())}
           >
@@ -236,7 +210,7 @@ function PortfoliosPage() {
           </button>
         </div>
       )}
-    </div>
+    </main>
   );
 }
 

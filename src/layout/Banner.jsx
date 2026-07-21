@@ -8,10 +8,8 @@ import sassIcon from "../assets/images/sass.svg";
 import Button from "../components/Button";
 
 function Banner() {
-  
-
   return (
-    <section className={`${styles.banner} glassBG`}>
+    <section className={`${styles.banner}`}>
       <main className={`${styles.main}`}>
         <div className={styles.badge}>
           <div className={styles.dot}></div>
@@ -26,7 +24,8 @@ function Banner() {
         </h1>
 
         <p>
-          طراحی و توسعه وبسایت های نسل جدید با قدرتمندترین ابزار های فرانت‌اند؛خلق پلتفرم های مقیاس پذیر،پرسرعت و متناسب با نیاز های آینده
+          طراحی و توسعه وبسایت های نسل جدید با قدرتمندترین ابزار های
+          فرانت‌اند؛خلق پلتفرم های مقیاس پذیر،پرسرعت و متناسب با نیاز های آینده
         </p>
 
         <Button

@@ -15,7 +15,7 @@ function Header({ loggedUser }) {
   const [open, setOpen] = useState(false);
   // const { favorites } = useFavorites();
   return (
-    <header className={`${styles.header}`}>
+    <header className={styles.header}>
       <div className={`${styles.topHeader} glassBG`}>
         <Link to="/">
           <div className={styles.title}>
@@ -23,75 +23,53 @@ function Header({ loggedUser }) {
             <h1>بهـــــراد</h1>
           </div>
         </Link>
+
         <div className={styles.searchBox}>
           <CiSearch fontSize="1.3rem" className={styles.searchIcon} />
           <input type="text" placeholder="هرچیزی فکر میکنی رو سرچ کن ..." />
         </div>
-        <div className={styles.information}>
-          <div className={styles.access}>
-            <img src="/TickSquare.png" alt="tick-access" />
-            <div>
-              <p>ضمانت اصالت</p>
-              <span>٪۱۰۰ تضمین اصالت</span>
-            </div>
-          </div>
-          <div className={styles.carry}>
-            <img src="/iconamoon_delivery-free-thin.png" alt="delivery" />
-            <div>
-              <p>خدمات رایگان</p>
-              <span>تمامی خرید ها</span>
-            </div>
-          </div>
-        </div>
+
         <div className={styles.links}>
           <Badge badgeContent={e2p(0)} color="warning">
-            <a href="/cart">
-              <CiShoppingCart fontSize="2rem" fontWeight="bold" />
-            </a>
+            <Link to="/cart">
+              <CiShoppingCart color="#fff"style={{ fontSize: "1.5rem" }} />
+            </Link>
           </Badge>
+
           <Badge badgeContent={e2p(0)} color="warning">
-            <a href="/favorites">
-              <IoIosHeartEmpty fontSize="2rem" fontWeight="bold" />
-            </a>
+            <Link to="/favorites">
+              <IoIosHeartEmpty color="#fff"style={{ fontSize: "1.5rem" }} />
+            </Link>
           </Badge>
-          {!loggedUser ? (
-            <Link to="/login">
-              <IoPersonOutline fontSize="2rem" fontWeight="bold" />
-            </Link>
-          ) : (
-            <Link to="/dashboard">
-              <IoPersonOutline fontSize="2rem" fontWeight="bold" />
-            </Link>
-          )}
+
+          <Link to={loggedUser ? "/dashboard" : "/login"}>
+            <IoPersonOutline color="#fff"style={{ fontSize: "1.5rem" }} />
+          </Link>
         </div>
+
         {!open ? (
           <TiThMenu
-            color="#f7763d"
-            onClick={() => {
-              setOpen(!open);
-            }}
+            color="#fff"
+            onClick={() => setOpen(true)}
             className={styles.menuToggle}
           />
         ) : (
           <FaTimes
-            color="#f7763d"
-            onClick={() => {
-              setOpen(!open);
-            }}
+            color="#fff"
+            onClick={() => setOpen(false)}
             className={styles.menuToggle}
           />
         )}
       </div>
+
       <nav className={`${styles.navbar} glassBG ${open ? styles.open : ""}`}>
-        {!open ? (
+        {!open && (
           <TiThMenu
-            color="#f7763d"
-            onClick={() => {
-              setOpen(!open);
-            }}
+            color="#fff"
+            onClick={() => setOpen(true)}
             className={styles.menuToggle}
           />
-        ) : null}
+        )}
 
         <ul>
           <li>
@@ -110,9 +88,11 @@ function Header({ loggedUser }) {
             <NavLink to="/about-us">درباره ما</NavLink>
           </li>
         </ul>
+
         <div>
           <p>
-            <span>شماره تماس:</span> <a href="tel:09336699610">۰۹۳۳۶۶۹۹۶۱۰</a>
+            <span>شماره تماس:</span>
+            <a href="tel:09336699610">۰۹۳۳۶۶۹۹۶۱۰</a>
           </p>
         </div>
       </nav>

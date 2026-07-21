@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Routes } from "react-router-dom";
 
-import Router from "./routes/Router";
 import Header from "./layout/Header";
+import Router from "./routes/Router";
 import Footer from "./layout/Footer";
 
-import "./App.css";
+import ScrollToTop from "./components/ScrollToTop";
 import BackgroundDots from "./components/BackgroundDots";
+
+import "./App.css";
 
 function App() {
   const loggedUser = false;
   return (
     <>
+      <ScrollToTop />
       <BackgroundDots />
       <Header loggedUser={loggedUser} />
       <Router />
