@@ -132,7 +132,7 @@
 
 @media (max-width: 900px) {
   .banner {
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 35px;
   }
 

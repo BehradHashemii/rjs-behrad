@@ -15,6 +15,8 @@ import articlesData from "../data/mockData.json";
 import { ImBlog } from "react-icons/im";
 import { RiFilePaper2Line } from "react-icons/ri";
 import ArticleCard from "../components/ArticleCard";
+import { FiArrowUpLeft } from "react-icons/fi";
+import { VscGithubProject } from "react-icons/vsc";
 
 function Articles() {
   const articles = articlesData.articles.slice(-5).reverse();
@@ -22,20 +24,27 @@ function Articles() {
   const articleSlides = articles.map((article) => (
     <SwiperSlide key={article.id} className={styles.card}>
       {/* <Link to={`/articles/${article.slug}`}> */}
-        <ArticleCard article={article} />
+      <ArticleCard article={article} />
       {/* </Link> */}
     </SwiperSlide>
   ));
 
   return (
     <div className={styles.container}>
-      <div className={styles.link}>
-        <h2>
-          <Link to="/articles?sort=desc">
-            <RiFilePaper2Line style={{ marginLeft: "5px" }} /> آخرین مقالات
-          </Link>
-        </h2>
-        <Link to="/articles">مشاهده همه</Link>
+      <div className={styles.header}>
+        <div>
+          <span className={styles.eyebrow}>MY ARTICLE</span>
+
+          <h2>
+            <RiFilePaper2Line />
+            آخرین مقالات
+          </h2>
+        </div>
+
+        <Link to="/articles?sortBy=desc&page=1" className={styles.seeAll}>
+          مشاهده همه
+          <FiArrowUpLeft />
+        </Link>
       </div>
 
       <Swiper
