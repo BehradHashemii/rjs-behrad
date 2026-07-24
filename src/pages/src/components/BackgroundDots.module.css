@@ -1,0 +1,42 @@
+.backgroundDots {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.45;
+  animation: float 12s ease-in-out infinite;
+}
+
+.dot1 {
+  top: -100px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  background: rgba(247, 118, 61, 0.25);
+}
+
+.dot2 {
+  bottom: 15%;
+  right: -120px;
+  width: 260px;
+  height: 260px;
+  background: rgba(255, 154, 108, 0.35);
+  animation-delay: 2s;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(25px, -20px);
+  }
+}

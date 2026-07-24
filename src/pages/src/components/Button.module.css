@@ -1,0 +1,36 @@
+.Button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 18px;
+  border-radius: 15px;
+  cursor: pointer;
+  border: 1px solid rgba(247, 118, 61, 0.5);
+  background: rgba(247, 118, 61, 0.85);
+  color: white;
+  box-shadow:
+    0 8px 20px rgba(247, 118, 61, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.Button:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 0 15px 30px rgba(247, 118, 61, 0.4);
+}
+
+.Button span:first-child {
+  font-size: 14px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: #f7763d;
+  background: white;
+  border-radius: 50%;
+  font-size: 20px;
+}

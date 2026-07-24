@@ -1,0 +1,86 @@
+.headerBox {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 500px;
+}
+
+.tabsRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white-glass-light);
+  border: 1px solid var(--glass-border);
+  padding: 6px;
+  border-radius: 16px;
+  margin-top: 8px;
+}
+
+.tabBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.tabBtn:hover {
+  color: var(--primary-color);
+}
+
+.activeTab {
+  background: var(--primary-color);
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px var(--primary-shadow);
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  color: var(--primary-color);
+  opacity: 0.5;
+  margin-bottom: 12px;
+}
+
+.browseBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.browseBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--primary-shadow);
+}
