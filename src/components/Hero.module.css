@@ -1,13 +1,7 @@
 .heroContainer {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: right;
+  margin: 0 auto 32px;
+  padding: 36px 32px;
   width: 100%;
-  margin: 20px auto;
-  @media (max-width: 768px) {
-    width: 92%;
-  }
 }
 
 .heroContent {

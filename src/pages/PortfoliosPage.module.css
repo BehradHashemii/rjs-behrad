@@ -1,6 +1,6 @@
 .container {
-  margin: 0 auto 20px;
-  padding: 18px 24px;
+  margin: 0 auto 24px;
+  padding: 20px 24px;
   width: 100%;
 }
 
@@ -16,42 +16,34 @@
   width: 100%;
   height: 52px;
   padding: 0 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  border-radius: 18px;
+  border: 1px solid var(--white-border);
+  border-radius: var(--radius-md);
   outline: none;
-  color: #333;
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.28);
-  backdrop-filter: blur(20px) saturate(180%);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.15),
-    0 8px 25px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  background: var(--white-glass-light);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
 }
 
 .filtersSection option {
   padding: 12px;
-  background: #fff;
-  color: #333;
+  background: var(--bg-surface);
+  color: var(--text-primary);
   font-family: inherit;
 }
 
 .filtersSection input::placeholder {
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--text-muted);
 }
 
 .filtersSection input:focus,
 .filtersSection select:focus {
-  border-color: rgba(247, 118, 61, 0.6);
-
-  background: rgba(255, 255, 255, 0.42);
-
-  box-shadow:
-    0 0 0 4px rgba(247, 118, 61, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.9),
-    0 10px 30px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 4px var(--primary-soft);
 }
 
 .portfoliosGrid {
@@ -64,22 +56,12 @@
   position: relative;
   overflow: hidden;
   padding: 0 !important;
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  border-radius: 28px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.48),
-    rgba(255, 255, 255, 0.16)
-  );
-  backdrop-filter: blur(25px) saturate(180%);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.9),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.15),
-    0 20px 45px rgba(0, 0, 0, 0.08);
-
-  transition:
-    transform 0.4s ease,
-    box-shadow 0.4s ease;
+  border: 1px solid var(--white-border);
+  border-radius: var(--radius-xl);
+  background: var(--glass-bg-card);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .portfolioCard::before {
@@ -89,7 +71,7 @@
   left: -80px;
   width: 180px;
   height: 180px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.35);
   filter: blur(30px);
   pointer-events: none;
@@ -102,25 +84,26 @@
   bottom: -100px;
   width: 220px;
   height: 220px;
-  border-radius: 50%;
-  background: rgba(247, 118, 61, 0.12);
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
   filter: blur(45px);
   pointer-events: none;
 }
 
 .portfolioCard:hover {
+  transform: translateY(-6px);
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.95),
-    0 30px 60px rgba(0, 0, 0, 0.12),
-    0 0 35px rgba(247, 118, 61, 0.12);
+    0 24px 48px rgba(0, 0, 0, 0.1),
+    0 0 30px var(--primary-shadow);
 }
 
 .imageWrapper {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 220px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  height: 210px;
+  border-bottom: 1px solid var(--glass-border-subtle);
 }
 
 .imageWrapper::after {
@@ -134,7 +117,7 @@
 .portfolioImage {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 0.6s ease;
 }
 
@@ -145,35 +128,38 @@
 .cardContent {
   position: relative;
   z-index: 1;
-  padding: 1.4rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .category {
   display: inline-block;
-  padding: 0.4rem 0.85rem;
-  border: 1px solid rgba(247, 118, 61, 0.25);
-  border-radius: 999px;
-  background: rgba(247, 118, 61, 0.12);
-  color: #e9652e;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
+  color: var(--primary-color);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   backdrop-filter: blur(10px);
 }
 
 .title {
-  margin: 1rem 0 0.6rem;
-  color: #222;
-  font-size: 1.25rem;
-  line-height: 1.6;
+  margin: 0.8rem 0 0.5rem;
+  color: var(--text-primary);
+  font-size: 1.18rem;
+  font-weight: 800;
+  line-height: 1.5;
 }
 
 .description {
   display: -webkit-box;
   overflow: hidden;
   margin: 0;
-  color: #666;
-  font-size: 0.9rem;
-  line-height: 1.9;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.8;
   text-align: right;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -182,106 +168,80 @@
 .technologies {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.45rem;
   margin-top: 1.25rem;
 }
 
 .tech {
-  padding: 0.35rem 0.65rem;
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.25);
-  color: #555;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--white-border);
+  border-radius: var(--radius-xs);
+  background: var(--white-glass-light);
+  color: var(--text-secondary);
   font-size: 0.72rem;
+  font-weight: 600;
   backdrop-filter: blur(10px);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.8),
-    0 3px 8px rgba(0, 0, 0, 0.03);
 }
 
 .links {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 
 .links a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  min-height: 40px;
-
-  padding: 0.45rem 0.9rem;
-
-  border-radius: 12px;
-
-  font-size: 0.8rem;
+  min-height: 42px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 700;
   text-decoration: none;
-
-  transition: all 0.3s ease;
+  transition: all var(--transition-fast);
 }
 
 .liveLink {
-  border: 1px solid rgba(247, 118, 61, 0.5);
-
-  background: rgba(247, 118, 61, 0.85);
-
-  color: white;
-
-  box-shadow:
-    0 8px 20px rgba(247, 118, 61, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--primary-border);
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  box-shadow: 0 6px 18px var(--primary-shadow);
 }
 
 .liveLink:hover {
-  background: #f7763d;
-
-  transform: translateY(-3px);
-
-  box-shadow:
-    0 12px 25px rgba(247, 118, 61, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px var(--primary-shadow);
 }
 
 .githubLink {
-  border: 1px solid rgba(255, 255, 255, 0.7);
-
-  background: rgba(255, 255, 255, 0.25);
-
-  color: #555;
-
+  border: 1px solid var(--white-border);
+  background: var(--white-glass-light);
+  color: var(--text-secondary);
   backdrop-filter: blur(12px);
 }
 
 .githubLink:hover {
-  border-color: rgba(247, 118, 61, 0.4);
-
-  background: rgba(247, 118, 61, 0.1);
-
-  color: #f7763d;
-
-  transform: translateY(-3px);
+  border-color: var(--primary-border);
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  transform: translateY(-2px);
 }
 
 .emptyState {
   grid-column: 1 / -1;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  min-height: 250px;
-
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 24px;
-
-  background: rgba(255, 255, 255, 0.25);
-
-  color: #777;
-
-  backdrop-filter: blur(20px);
+  min-height: 240px;
+  border: 1px solid var(--white-border);
+  border-radius: var(--radius-xl);
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  font-weight: 600;
+  backdrop-filter: var(--glass-blur);
 }
 
 .pagination {
@@ -289,55 +249,42 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
-
   margin-top: 3rem;
 }
 
 .paginationButton {
   min-width: 90px;
-
-  padding: 0.65rem 1rem;
-
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  border-radius: 12px;
-
-  background: rgba(255, 255, 255, 0.3);
-
-  color: #f7763d;
-
+  padding: 0.65rem 1.2rem;
+  border: 1px solid var(--white-border);
+  border-radius: var(--radius-sm);
+  background: var(--white-glass-light);
+  color: var(--primary-color);
+  font-weight: 700;
   cursor: pointer;
-
   font-family: inherit;
-
   backdrop-filter: blur(15px);
-
-  transition: all 0.3s ease;
+  transition: all var(--transition-fast);
 }
 
 .paginationButton:hover:not(:disabled) {
-  background: rgba(247, 118, 61, 0.85);
-
-  color: white;
-
-  transform: translateY(-3px);
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--primary-shadow);
 }
 
 .paginationButton:disabled {
   cursor: not-allowed;
-
   opacity: 0.4;
 }
 
 .pageInfo {
-  color: #666;
-
+  color: var(--text-secondary);
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
-/* =========================
-   Responsive
-========================= */
-
+/* Responsive */
 @media (max-width: 900px) {
   .filtersSection {
     grid-template-columns: 1fr 1fr;
@@ -349,8 +296,8 @@
 }
 
 @media (max-width: 600px) {
-  .portfoliosContainer {
-    padding: 1.5rem 1rem 3rem;
+  .container {
+    padding: 12px 16px 24px;
   }
 
   .filtersSection {
@@ -358,20 +305,16 @@
     gap: 0.75rem;
   }
 
-  .searchWrapper {
-    grid-column: 1 / -1;
-  }
-
   .portfoliosGrid {
     grid-template-columns: 1fr;
   }
 
   .imageWrapper {
-    height: 200px;
+    height: 180px;
   }
 
   .portfolioCard {
-    border-radius: 22px;
+    border-radius: var(--radius-lg);
   }
 
   .pagination {
