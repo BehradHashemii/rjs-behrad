@@ -5,6 +5,7 @@ import Footer from "./layout/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import FloatingScrollToTop from "./components/FloatingScrollToTop";
+import BackgroundDots from "./components/BackgroundDots";
 
 import "./App.css";
 
@@ -13,7 +14,7 @@ function App() {
     <>
       <ScrollProgressBar />
       <ScrollToTop />
-      {/* <BackgroundDots /> */}
+      <BackgroundDots />
       <Header />
       <Router />
       <Footer />

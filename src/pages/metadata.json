@@ -1,6 +1,0 @@
-{
-  "name": "rjs-behrad",
-  "description": "Portfolio and articles showcase platform built with React and Material UI",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
