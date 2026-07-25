@@ -38,7 +38,7 @@ function NotFoundPage() {
             <span>مشاهده نمونه‌کارها</span>
           </Link>
 
-          <Link to="/contact-us" className={styles.outlineBtn}>
+          <Link to="/contact" className={styles.outlineBtn}>
             <FaEnvelope />
             <span>ارتباط و تماس</span>
           </Link>

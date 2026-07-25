@@ -168,7 +168,7 @@ function Header() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/contact-us" onClick={() => setOpen(false)}>
+            <NavLink to="/contact" onClick={() => setOpen(false)}>
               تماس با ما
             </NavLink>
           </li>

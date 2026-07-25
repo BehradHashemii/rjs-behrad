@@ -16,7 +16,7 @@ function CTASection() {
         </p>
 
         <div className={styles.buttons}>
-          <Link to="/contact-us" className={styles.primaryBtn}>
+          <Link to="/contact" className={styles.primaryBtn}>
             <FaPaperPlane />
             <span>شروع گفتگو و تماس</span>
           </Link>

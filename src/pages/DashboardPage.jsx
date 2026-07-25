@@ -139,7 +139,7 @@ export default function DashboardPage() {
       phone: "09123456789",
       email: "behrad@behradhashemii.ir",
       avatar: AVATAR_PRESETS[0],
-      joinedDate: "۱۴۰۴/۰۵/۰۱",
+      joinedDate: new Date().toLocaleDateString("fa-IR"),
       bio: "توسعه‌دهنده فرانت‌اند و طراح سیستم‌های تحت وب",
       location: "تهران، ایران",
     };

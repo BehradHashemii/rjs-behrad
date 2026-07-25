@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-import { FaTimes, FaFolderOpen, FaNewspaper, FaLink, FaArrowLeft, FaFire } from "react-icons/fa";
+import {
+  FaTimes,
+  FaFolderOpen,
+  FaNewspaper,
+  FaLink,
+  FaArrowLeft,
+  FaFire,
+} from "react-icons/fa";
 import styles from "./SearchModal.module.css";
 import mockData from "../data/mockData.json";
 import e2p from "../utils/persianNumber";
@@ -11,7 +18,14 @@ function stripHtml(html) {
   return html.replace(/<[^>]*>?/gm, "").trim();
 }
 
-const POPULAR_SEARCHES = ["React", "پت شاپ", "داشبورد", "طراحی وب", "احراز هویت", "مقالات"];
+const POPULAR_SEARCHES = [
+  "React",
+  "پت شاپ",
+  "داشبورد",
+  "طراحی وب",
+  "احراز هویت",
+  "مقالات",
+];
 
 function SearchModal({ isOpen, onClose, initialQuery = "" }) {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
@@ -72,7 +86,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
         const descMatch = item.description?.toLowerCase().includes(query);
         const catMatch = item.category?.toLowerCase().includes(query);
         const techMatch = item.technologies?.some((t) =>
-          t.toLowerCase().includes(query)
+          t.toLowerCase().includes(query),
         );
         return titleMatch || descMatch || catMatch || techMatch;
       })
@@ -90,10 +104,18 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
 
   const sitePages = [
     { title: "صفحه اصلی", path: "/", icon: <FaLink /> },
-    { title: "نمونه‌کارها و پروژه‌ها", path: "/portfolios", icon: <FaFolderOpen /> },
+    {
+      title: "نمونه‌کارها و پروژه‌ها",
+      path: "/portfolios",
+      icon: <FaFolderOpen />,
+    },
     { title: "مقالات و یادداشت‌ها", path: "/articles", icon: <FaNewspaper /> },
-    { title: "تماس و ارتباط با بهراد", path: "/contact-us", icon: <FaLink /> },
-    { title: "ذخیره‌شده‌ها و علاقه‌مندی‌ها", path: "/saved", icon: <FaFolderOpen /> },
+    { title: "تماس و ارتباط با بهراد", path: "/contact", icon: <FaLink /> },
+    {
+      title: "ذخیره‌شده‌ها و علاقه‌مندی‌ها",
+      path: "/saved",
+      icon: <FaFolderOpen />,
+    },
   ];
 
   const matchedPages = query
@@ -125,7 +147,12 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true">
+    <div
+      className={styles.overlay}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
       <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
         {/* Header Search Input */}
         <form className={styles.searchForm} onSubmit={handleSearchSubmit}>
@@ -186,8 +213,13 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
           ) : totalResultsCount === 0 ? (
             /* No Results Message */
             <div className={styles.noResults}>
-              <p>هیچ نتیجه‌ای برای «<strong>{searchQuery}</strong>» یافت نشد.</p>
-              <span>پیشنهاد: واژگان کلیدی دیگری مانند «React» یا «پت شاپ» را امتحان کنید.</span>
+              <p>
+                هیچ نتیجه‌ای برای «<strong>{searchQuery}</strong>» یافت نشد.
+              </p>
+              <span>
+                پیشنهاد: واژگان کلیدی دیگری مانند «React» یا «پت شاپ» را امتحان
+                کنید.
+              </span>
             </div>
           ) : (
             /* Search Results Lists */
@@ -205,7 +237,9 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                         key={item.id}
                         className={styles.resultItem}
                         onClick={() =>
-                          handleItemClick(`/portfolios?search=${encodeURIComponent(item.title)}`)
+                          handleItemClick(
+                            `/portfolios?search=${encodeURIComponent(item.title)}`,
+                          )
                         }
                       >
                         <img
@@ -218,7 +252,9 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                         />
                         <div className={styles.resultInfo}>
                           <div className={styles.resultTitle}>{item.title}</div>
-                          <div className={styles.resultMeta}>{item.category}</div>
+                          <div className={styles.resultMeta}>
+                            {item.category}
+                          </div>
                         </div>
                         <FaArrowLeft className={styles.resultArrow} />
                       </div>
@@ -239,7 +275,9 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                       <div
                         key={article.id}
                         className={styles.resultItem}
-                        onClick={() => handleItemClick(`/articles/${article.slug}`)}
+                        onClick={() =>
+                          handleItemClick(`/articles/${article.slug}`)
+                        }
                       >
                         <img
                           src={article.image}
@@ -250,7 +288,9 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                           loading="lazy"
                         />
                         <div className={styles.resultInfo}>
-                          <div className={styles.resultTitle}>{article.title}</div>
+                          <div className={styles.resultTitle}>
+                            {article.title}
+                          </div>
                           <div className={styles.resultMeta}>
                             {stripHtml(article.description).substring(0, 55)}...
                           </div>

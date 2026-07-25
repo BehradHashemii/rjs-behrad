@@ -13,9 +13,11 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <Header />
-      <Router />
-      <Footer />
+      <div style={{ padding: "12px 14px" }}>
+        <Header />
+        <Router />
+        <Footer />
+      </div>
     </>
   );
 }

@@ -203,7 +203,7 @@ function LoginModal({ isOpen, onClose }) {
         email: `user_${formattedPhone}@behradhashemii.ir`,
         avatar:
           "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-        joinedDate: new Date().getDate(),
+        joinedDate: new Date().toLocaleDateString("fa-IR"),
       };
 
       // Save user to Auth Context and Storage
@@ -339,7 +339,7 @@ function LoginModal({ isOpen, onClose }) {
                 </div>
                 <div className={styles.metaRow}>
                   <span>تاریخ عضویت:</span>
-                  <span>{user.joinedDate || "۱۴۰۴/۰۵/۰۱"}</span>
+                  <span>{user.joinedDate || ""}</span>
                 </div>
               </div>
 
