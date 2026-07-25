@@ -1,0 +1,6 @@
+{
+  "name": "بهراد - وب‌سایت شخصی و پورتفولیو توسعه‌دهنده وب",
+  "description": "پلتفرم پورتفولیو، وبلاگ، سیستم احراز هویت پیامکی OTP و داشبورد کاربری بهراد",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

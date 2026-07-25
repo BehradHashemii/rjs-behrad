@@ -8,6 +8,7 @@ import ArticleDetailsPage from "../pages/ArticleDetailsPage";
 import SavedPage from "../pages/SavedPage";
 import ContactPage from "../pages/ContactPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import DashboardPage from "../pages/DashboardPage";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route element={<ArticleDetailsPage />} path="/articles/:slug" />
       <Route element={<ContactPage />} path="/contact" />
       <Route element={<SavedPage />} path="/saved" />
+      <Route element={<DashboardPage />} path="/dashboard" />
       <Route element={<NotFoundPage />} path="*" />
     </Routes>
   );
