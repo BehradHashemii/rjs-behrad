@@ -9,23 +9,16 @@
 
 .footerContainer {
   display: grid;
-
-  grid-template-columns:
-    1.5fr
-    1fr
-    1fr
-    1.5fr;
-
+  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
   gap: 60px;
-
   max-width: 1400px;
-
   margin: 0 auto;
+
   @media (max-width: 900px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
-  };
-  
+  }
+
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
     gap: 35px;
@@ -36,30 +29,24 @@
 
 .brand h2 {
   margin: 0 0 15px;
-
-  color: #3a2117;
-
+  color: var(--text-primary);
   font-size: 32px;
   font-weight: 900;
 }
 
 .brand h2 span {
-  color: #f7763d;
+  color: var(--primary-color);
 }
 
 .brand p {
-  color: #76584b;
-
+  color: var(--text-secondary);
   font-size: 14px;
-
   line-height: 2;
 }
 
 .socials {
   display: flex;
-
   gap: 12px;
-
   margin-top: 25px;
 }
 
@@ -67,64 +54,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 40px;
   height: 40px;
-
-  color: #f7763d;
-
-  background: rgba(247, 118, 61, 0.08);
-
-  border: 1px solid rgba(247, 118, 61, 0.15);
-
-  border-radius: 12px;
-
-  transition: all 0.3s ease;
+  color: var(--primary-color);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
 }
 
 .socials a:hover {
-  color: white;
-
-  background: #f7763d;
-
+  color: var(--text-inverse);
+  background: var(--primary-color);
   transform: translateY(-4px);
-
-  box-shadow: 0 8px 20px rgba(247, 118, 61, 0.25);
+  box-shadow: 0 8px 20px var(--primary-shadow);
 }
 
 .column,
 .contact {
   display: flex;
-
   flex-direction: column;
-
   gap: 14px;
 }
 
 .column h3,
 .contact h3 {
   margin: 0 0 12px;
-
-  color: #3a2117;
-
+  color: var(--text-primary);
   font-size: 17px;
 }
 
 .column a {
   width: fit-content;
-
-  color: #76584b;
-
+  color: var(--text-secondary);
   font-size: 14px;
-
   text-decoration: none;
-
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
 }
 
+/* حرکت به سمت چپ در زمان هاور هماهنگ با جهت خواندن فارسی (RTL) */
 .column a:hover {
-  color: #f7763d;
-
+  color: var(--primary-color);
   transform: translateX(-5px);
 }
 
@@ -132,21 +102,15 @@
 
 .contact p {
   margin: 0;
-
-  color: #76584b;
-
+  color: var(--text-secondary);
   font-size: 14px;
-
   line-height: 2;
 }
 
 .email {
   width: fit-content;
-
-  color: #f7763d;
-
+  color: var(--primary-color);
   font-weight: 600;
-
   text-decoration: none;
 }
 
@@ -156,29 +120,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   max-width: 1400px;
-
   margin: 60px auto 0;
   padding-top: 20px;
-
-  border-top: 1px solid rgba(118, 88, 75, 0.12);
+  border-top: 1px solid var(--glass-border);
 }
 
 .bottom p {
   margin: 0;
-
-  color: #987b6e;
-
+  color: var(--text-muted);
   font-size: 13px;
 }
 
 @media (max-width: 600px) {
   .bottom {
     flex-direction: column;
-
     gap: 10px;
-
     text-align: center;
   }
 }

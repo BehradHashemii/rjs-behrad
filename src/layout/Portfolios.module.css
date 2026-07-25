@@ -17,20 +17,28 @@
   max-width: 500px;
   min-height: 260px;
   margin: 20px auto;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-md);
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    background 0.35s ease;
+    transform var(--transition-normal),
+    box-shadow var(--transition-normal),
+    background var(--transition-normal);
   position: relative;
   overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
 }
 
 .eyebrow {
   display: block;
   margin-bottom: 8px;
-  color: #f7763d;
+  color: var(--primary-color);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 3px;
@@ -41,13 +49,13 @@
   align-items: center;
   gap: 9px;
   margin: 0;
-  color: #344456;
+  color: var(--text-primary);
   font-size: 25px;
   font-weight: 800;
 }
 
 .header h2 svg {
-  color: #f7763d;
+  color: var(--primary-color);
   font-size: 25px;
 }
 
@@ -56,26 +64,27 @@
   align-items: center;
   gap: 7px;
   padding: 9px 14px;
-  color: #667085;
+  color: var(--text-secondary);
   font-size: 13px;
   font-weight: 700;
-  border: 1px solid rgba(247, 118, 61, 0.2);
-  border-radius: 12px;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
   transition:
-    color 0.25s ease,
-    background 0.25s ease,
-    border-color 0.25s ease;
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .seeAll svg {
-  color: #f7763d;
+  color: var(--primary-color);
   font-size: 18px;
 }
 
 .seeAll:hover {
-  color: #f7763d;
-  background: rgba(247, 118, 61, 0.06);
-  border-color: rgba(247, 118, 61, 0.4);
+  color: var(--primary-color);
+  background: var(--primary-soft);
+  border-color: var(--primary-color);
 }
 
 .swiperButtons {
@@ -97,6 +106,7 @@
   pointer-events: none;
 }
 
+/* دکمه‌های کنترل اسلایدر پورتفولیو (قبلی / بعدی) */
 :global(.scroll-portfolio-button-prev),
 :global(.scroll-portfolio-button-next) {
   width: 48px;
@@ -104,44 +114,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-full);
+  background: var(--white-glass);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(247, 118, 61, 0.25);
+  border: 1px solid var(--primary-border);
   box-shadow:
-    0 8px 20px rgba(31, 38, 135, 0.1),
+    var(--shadow-sm),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
-
   cursor: pointer;
-
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
 }
 
 :global(.scroll-portfolio-button-prev svg),
 :global(.scroll-portfolio-button-next svg) {
-  color: #f7763d !important;
-  transition: transform 0.3s ease;
+  color: var(--primary-color) !important;
+  transition: transform var(--transition-fast);
 }
 
 :global(.scroll-portfolio-button-prev:hover),
 :global(.scroll-portfolio-button-next:hover) {
-  background: rgba(247, 118, 61, 0.12);
-
-  border-color: rgba(247, 118, 61, 0.5);
-
-  box-shadow: 0 8px 25px rgba(247, 118, 61, 0.2);
-
+  background: var(--primary-soft);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 25px var(--primary-shadow);
   transform: translateY(-3px);
 }
 
-:global(.scroll-swiper-button-disabled) {
+/* پشتیبانی هم‌زمان از سلکتور دکمه غیرفعال اسلایدر */
+:global(.scroll-swiper-button-disabled),
+:global(.scroll-portfolio-button-disabled) {
   opacity: 0.25 !important;
   pointer-events: none;
   transform: scale(0.9);
 }
 
+/* نشانگرهای صفحه‌بندی (Bullets) */
 :global(.swiper-pagination-bullet) {
-  background: #a9a9a9;
+  background: var(--text-muted);
   opacity: 0.5;
   width: 10px;
   height: 10px;
@@ -150,12 +158,16 @@
 }
 
 :global(.swiper-pagination-bullet-active) {
-  background: #f7763d !important;
+  background: var(--primary-color) !important;
   width: 26px;
-  border-radius: 10px;
+  border-radius: var(--radius-full);
   opacity: 1;
-  box-shadow: 0 0 10px rgba(247, 118, 61, 0.4);
+  box-shadow: 0 0 12px var(--primary-shadow);
 }
+
+/* =========================
+   Responsive
+========================= */
 
 @media (max-width: 1024px) {
   .container {

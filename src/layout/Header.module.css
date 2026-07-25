@@ -1,19 +1,18 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 9999;
+  z-index: 1000;
   width: 100%;
   padding: 10px 0 14px;
 }
 
 .topHeader,
 .navbar {
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(18px)  saturate(180%);
-  box-shadow:
-    0 8px 32px rgba(31, 38, 135, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  margin: 0 auto;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter:var(--glass-blur);
+  box-shadow: var(--glass-shadow);
 }
 
 .topHeader {
@@ -114,122 +113,35 @@
   color: var(--primary-color);
 }
 
-.searchModalOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-
-  padding: 10vh 20px;
-
-  background: rgba(15, 23, 42, 0.35);
-  backdrop-filter: blur(12px);
-
-  animation: searchOverlayIn 0.2s ease;
-}
-
-.searchModal {
-  width: min(760px, 100%);
-  max-height: 80vh;
-
+/* Search Dropdown Results */
+.searchResultsDropdown {
+  position: absolute;
+  top: 54px;
+  right: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--white-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: var(--glass-blur);
+  z-index: 1005 !important;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-
-  overflow: hidden;
-
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 24px;
-
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
-
-  animation: searchModalIn 0.25s ease;
-}
-
-.searchModalHeader {
-  display: flex;
-  align-items: center;
   gap: 12px;
-
-  padding: 18px 22px;
-
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.searchModalHeader input {
-  flex: 1;
-
-  border: none;
-  outline: none;
-  background: transparent;
-
-  font-family: inherit;
-  font-size: 1.1rem;
-  color: var(--text-primary);
-}
-
-.searchModalHeader button {
-  width: 36px;
-  height: 36px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: none;
-  border-radius: 50%;
-
-  background: var(--primary-soft);
-  color: var(--text-secondary);
-
-  cursor: pointer;
-}
-
-.searchModalResults {
-  padding: 20px;
+  max-height: 460px;
   overflow-y: auto;
+  animation: fadeInDropdown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.searchEmpty {
-  min-height: 260px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-  color: var(--text-secondary);
-}
-
-.searchEmpty svg {
-  font-size: 3rem;
-  color: var(--primary-color);
-  margin-bottom: 12px;
-}
-
-@keyframes searchOverlayIn {
+@keyframes fadeInDropdown {
   from {
     opacity: 0;
+    transform: translateY(-8px);
   }
-
   to {
     opacity: 1;
-  }
-}
-
-@keyframes searchModalIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
@@ -354,11 +266,7 @@
   padding: 8px;
   border-radius: var(--radius-sm);
   border: none;
-  background: linear-gradient(
-    90deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
   color: var(--text-inverse);
   font-weight: 700;
   font-size: 0.85rem;
@@ -378,11 +286,7 @@
   justify-content: center;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(
-    90deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
   color: var(--text-inverse);
   cursor: pointer;
   flex-shrink: 0;
@@ -407,7 +311,7 @@
   position: absolute;
   top: -4px;
   right: -4px;
-  background: var(--accent-color, #ed6c02);
+  background: var(--primary-color, #2563eb);
   color: #ffffff;
   font-size: 0.68rem;
   font-weight: 700;
@@ -420,7 +324,7 @@
   justify-content: center;
   line-height: 1;
   pointer-events: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
 .links a {
@@ -432,15 +336,9 @@
   flex-shrink: 0;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(
-    90deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
   color: var(--text-inverse);
-  transition:
-    filter var(--transition-fast),
-    transform var(--transition-fast);
+  transition: filter var(--transition-fast), transform var(--transition-fast);
 }
 
 .links a:hover {
@@ -460,18 +358,12 @@
   flex-shrink: 0;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(
-    90deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
   color: var(--text-inverse);
   cursor: pointer;
   padding: 0;
   overflow: hidden;
-  transition:
-    filter var(--transition-fast),
-    transform var(--transition-fast);
+  transition: filter var(--transition-fast), transform var(--transition-fast);
 }
 
 .userTriggerBtn:hover {
@@ -518,9 +410,7 @@
   font-size: 1rem;
   text-decoration: none;
   line-height: 1;
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .navbar li a:hover {
@@ -536,16 +426,10 @@
   padding: 8px;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(
-    90deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
   color: var(--text-inverse);
   cursor: pointer;
-  transition:
-    filter var(--transition-fast),
-    transform var(--transition-fast);
+  transition: filter var(--transition-fast), transform var(--transition-fast);
 }
 
 .menuToggle:hover {
@@ -587,7 +471,7 @@
     width: calc(100% - 24px);
     background: rgba(255, 255, 255, 0.96);
     border: 1px solid var(--white-border);
-    backdrop-filter: blue(18px);
+    backdrop-filter: var(--glass-blur);
     border-radius: var(--radius-lg);
     padding: 14px;
     box-shadow: var(--shadow-xl);

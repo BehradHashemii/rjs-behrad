@@ -6,6 +6,8 @@ import PortfoliosPage from "../pages/PortfoliosPage";
 import ArticlesPage from "../pages/ArticlesPage";
 import ArticleDetailsPage from "../pages/ArticleDetailsPage";
 import SavedPage from "../pages/SavedPage";
+import ContactPage from "../pages/ContactPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 function Router() {
   return (
@@ -13,8 +15,10 @@ function Router() {
       <Route element={<HomePage />} path="/" />
       <Route element={<PortfoliosPage />} path="/portfolios" />
       <Route element={<ArticlesPage />} path="/articles" />
-      <Route path="/articles/:slug" element={<ArticleDetailsPage />} />
-      <Route path="/saved" element={<SavedPage />} />
+      <Route element={<ArticleDetailsPage />} path="/articles/:slug" />
+      <Route element={<ContactPage />} path="/contact" />
+      <Route element={<SavedPage />} path="/saved" />
+      <Route element={<NotFoundPage />} path="*" />
     </Routes>
   );
 }

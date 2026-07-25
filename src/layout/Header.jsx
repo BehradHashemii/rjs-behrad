@@ -151,7 +151,6 @@ function Header() {
             className={styles.menuToggle}
           />
         )}
-
         <ul>
           <li>
             <NavLink to="/" onClick={() => setOpen(false)}>
@@ -174,11 +173,12 @@ function Header() {
             </NavLink>
           </li>
         </ul>
-
         <div>
           <p>
             <span>شماره تماس:</span>{" "}
-            <a href="tel:09336699610">{e2p("09336699610")}</a>
+            <a href="tel:09336699610" style={{ color: "var(--primary-color)" }}>
+              {e2p("09336699610")}
+            </a>
           </p>
         </div>
       </nav>

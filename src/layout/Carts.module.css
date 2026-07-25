@@ -24,7 +24,7 @@
 
   margin-bottom: 15px;
 
-  color: #f7763d;
+  color: var(--primary-color);
 
   font-size: 11px;
   font-weight: 900;
@@ -35,7 +35,7 @@
 .header h1 {
   margin: 0;
 
-  color: #3a2117;
+  color: var(--text-primary);
 
   font-size: clamp(30px, 5vw, 48px);
 
@@ -45,13 +45,13 @@
 }
 
 .header h1 strong {
-  color: #f7763d;
+  color: var(--primary-color);
 }
 
 .header p {
   margin: 18px auto 0;
 
-  color: rgba(58, 33, 23, 0.6);
+  color: var(--text-secondary);
 
   font-size: 15px;
 }

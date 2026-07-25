@@ -12,7 +12,7 @@ const cards = [
     title: "مقالات",
     description: "مطالب، آموزش‌ها و تجربیات من در دنیای تکنولوژی",
     icon: <ImBlog />,
-    color: "#F7763D",
+    color: "var(--primary-color)", // جایگزین #F7763D (#2563eb)
     className: "orange",
   },
   {
@@ -20,7 +20,7 @@ const cards = [
     title: "نمونه کار",
     description: "پروژه‌ها و تجربه‌هایی که در مسیر برنامه‌نویسی ساخته‌ام",
     icon: <FaBriefcase />,
-    color: "#FF9A6C",
+    color: "var(--primary-light)", // جایگزین #FF9A6C (#3b82f6)
     className: "peach",
   },
   {
@@ -28,7 +28,7 @@ const cards = [
     title: "ارتباط با من",
     description: "اگر ایده‌ای داری یا می‌خواهی با من در ارتباط باشی",
     icon: <FaPhoneAlt />,
-    color: "#D95724",
+    color: "var(--primary-dark)", // جایگزین #D95724 (#1d4ed8)
     className: "darkOrange",
   },
 ];

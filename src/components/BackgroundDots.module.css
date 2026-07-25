@@ -8,7 +8,7 @@
 
 .dot {
   position: absolute;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   filter: blur(70px);
   opacity: 0.45;
   animation: float 12s ease-in-out infinite;
@@ -19,7 +19,7 @@
   left: -80px;
   width: 300px;
   height: 300px;
-  background: rgba(247, 118, 61, 0.25);
+  background: var(--primary-shadow);
 }
 
 .dot2 {
@@ -27,7 +27,7 @@
   right: -120px;
   width: 260px;
   height: 260px;
-  background: rgba(255, 154, 108, 0.35);
+  background: var(--primary-soft);
   animation-delay: 2s;
 }
 

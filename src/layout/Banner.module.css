@@ -27,12 +27,12 @@
   text-align: center;
   padding: 3px 14px;
   margin-bottom: 20px;
-  color: #f7763d;
+  color: var(--primary-color);
   font-size: 13px;
   font-weight: 600;
-  background: rgba(247, 118, 61, 0.1);
-  border: 1px solid rgba(247, 118, 61, 0.2);
-  border-radius: 30px;
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-full);
 }
 
 .badge:nth-child(2) {
@@ -42,7 +42,7 @@
 
 .main h1 {
   margin: 0 0 20px;
-  color: #3a2117;
+  color: var(--primary-dark);
   font-size: clamp(2rem, 4vw, 3.5rem);
   line-height: 1.5;
 }
@@ -54,14 +54,14 @@
 
 .main h1 strong {
   display: block;
-  color: #f7763d;
+  color: var(--primary-color);
   font-weight: 900;
 }
 
 .main p {
   max-width: 480px;
   margin-bottom: 25px;
-  color: #76584b;
+  color: var(--text-secondary);
   font-size: 15px;
   line-height: 2;
 }
@@ -75,9 +75,9 @@
   width: 65px;
   height: 65px;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 20px;
+  background: var(--white-glass-light);
+  border: 1px solid var(--white-border);
+  border-radius: var(--radius-lg);
   backdrop-filter: blur(15px);
   animation: floatingLogo 4s ease-in-out infinite;
 }
@@ -169,7 +169,7 @@
     width: 45px;
     height: 45px;
     padding: 8px;
-    border-radius: 14px;
+    border-radius: var(--radius-md);
   }
 
   .html {
@@ -180,8 +180,8 @@
 .dot {
   width: 12px;
   height: 12px;
-  background: #f7763d;
-  border-radius: 50%;
+  background: var(--primary-color);
+  border-radius: var(--radius-full);
   margin-left: 20px;
   position: relative;
 }
@@ -192,7 +192,7 @@
   position: absolute;
   inset: -8px;
   border: 1px solid currentColor;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   animation: pulse 2s infinite;
 }
 

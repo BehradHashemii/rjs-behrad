@@ -61,33 +61,33 @@ function Banner() {
         >
           <defs>
             <linearGradient id="pTop" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#FFD1BD" />
-              <stop offset="1" stopColor="#F7763D" />
+              <stop offset="0" stopColor="#93C5FD" />
+              <stop offset="1" stopColor="#2563EB" />
             </linearGradient>
             <linearGradient id="pRight" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#F7763D" />
-              <stop offset="1" stopColor="#D95724" />
+              <stop offset="0" stopColor="#2563EB" />
+              <stop offset="1" stopColor="#1D4ED8" />
             </linearGradient>
             <linearGradient id="pLeft" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#D95724" />
-              <stop offset="1" stopColor="#B94318" />
+              <stop offset="0" stopColor="#1D4ED8" />
+              <stop offset="1" stopColor="#1E40AF" />
             </linearGradient>
             <linearGradient id="aTop" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#FFE0D2" />
-              <stop offset="1" stopColor="#FF9A6C" />
+              <stop offset="0" stopColor="#BFDBFE" />
+              <stop offset="1" stopColor="#60A5FA" />
             </linearGradient>
             <linearGradient id="aRight" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#F7763D" />
-              <stop offset="1" stopColor="#D95724" />
+              <stop offset="0" stopColor="#2563EB" />
+              <stop offset="1" stopColor="#1D4ED8" />
             </linearGradient>
             <linearGradient id="aLeft" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#D95724" />
-              <stop offset="1" stopColor="#B94318" />
+              <stop offset="0" stopColor="#1D4ED8" />
+              <stop offset="1" stopColor="#1E40AF" />
             </linearGradient>
             <radialGradient id="core" cx="0.5" cy="0.5" r="0.5">
               <stop offset="0" stopColor="#FFFFFF" />
-              <stop offset="0.55" stopColor="#FFF1E9" />
-              <stop offset="1" stopColor="#FFB08A" />
+              <stop offset="0.55" stopColor="#EFF6FF" />
+              <stop offset="1" stopColor="#60A5FA" />
             </radialGradient>
 
             <filter
@@ -98,13 +98,10 @@ function Banner() {
               height="160%"
             >
               <feGaussianBlur in="SourceAlpha" stdDeviation="8" />
-
               <feOffset dy="6" />
-
               <feComponentTransfer>
                 <feFuncA type="linear" slope="0.25" />
               </feComponentTransfer>
-
               <feMerge>
                 <feMergeNode />
                 <feMergeNode in="SourceGraphic" />
@@ -113,24 +110,25 @@ function Banner() {
 
             <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
               <feGaussianBlur stdDeviation="4" result="b" />
-
               <feMerge>
                 <feMergeNode in="b" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
           </defs>
+
           <ellipse
             cx="232"
             cy="442"
             rx="150"
             ry="22"
-            fill="#D95724"
+            fill="#1E40AF"
             opacity="0.16"
             filter="url(#softShadow)"
           />
+
           <g
-            stroke="#F7763D"
+            stroke="#2563EB"
             strokeWidth="2.4"
             strokeDasharray="1 9"
             strokeLinecap="round"
@@ -140,45 +138,36 @@ function Banner() {
             <line x1="238" y1="226" x2="320" y2="250" />
           </g>
 
-          {/* Bottom Left Cube */}
           <g filter="url(#softShadow)">
             <polygon
               points="216,333 150,366 150,420 216,387"
               fill="url(#pRight)"
             />
-
             <polygon
               points="84,333 150,366 150,420 84,387"
               fill="url(#pLeft)"
             />
-
             <polygon
               points="150,300 216,333 150,366 84,333"
               fill="url(#pTop)"
             />
           </g>
 
-          {/* Small Color Dots */}
           <g transform="matrix(66 33 -66 33 150 300)">
-            <circle cx="0.26" cy="0.24" r="0.035" fill="#FF7A59" />
-
-            <circle cx="0.37" cy="0.24" r="0.035" fill="#FFB347" />
-
-            <circle cx="0.48" cy="0.24" r="0.035" fill="#65C18C" />
+            <circle cx="0.26" cy="0.24" r="0.035" fill="#3B82F6" />
+            <circle cx="0.37" cy="0.24" r="0.035" fill="#06B6D4" />
+            <circle cx="0.48" cy="0.24" r="0.035" fill="#10B981" />
           </g>
 
-          {/* Right Cube */}
           <g filter="url(#softShadow)">
             <polygon
               points="380,280 320,310 320,396 380,366"
               fill="url(#pRight)"
             />
-
             <polygon
               points="260,280 320,310 320,396 260,366"
               fill="url(#pLeft)"
             />
-
             <polygon
               points="320,250 380,280 320,310 260,280"
               fill="url(#pTop)"
@@ -187,7 +176,7 @@ function Banner() {
 
           <g
             transform="matrix(60 30 0 86 260 280)"
-            stroke="#FFD1BD"
+            stroke="#93C5FD"
             strokeWidth="0.012"
             opacity="0.9"
           >
@@ -195,40 +184,37 @@ function Banner() {
             <line x1="0.12" y1="0.55" x2="0.88" y2="0.55" />
             <line x1="0.12" y1="0.8" x2="0.88" y2="0.8" />
           </g>
+
           <g transform="matrix(60 30 0 86 260 280)">
-            <circle cx="0.2" cy="0.18" r="0.03" fill="#65C18C" />
-
-            <circle cx="0.2" cy="0.43" r="0.03" fill="#FFB347" />
-
-            <circle cx="0.2" cy="0.68" r="0.03" fill="#65C18C" />
+            <circle cx="0.2" cy="0.18" r="0.03" fill="#10B981" />
+            <circle cx="0.2" cy="0.43" r="0.03" fill="#06B6D4" />
+            <circle cx="0.2" cy="0.68" r="0.03" fill="#10B981" />
           </g>
+
           <g filter="url(#softShadow)">
             <polygon
               points="296,149 238,178 238,226 296,197"
               fill="url(#aRight)"
             />
-
             <polygon
               points="180,149 238,178 238,226 180,197"
               fill="url(#aLeft)"
             />
-
             <polygon
               points="238,120 296,149 238,178 180,149"
               fill="url(#aTop)"
             />
           </g>
 
-          {/* Center Decoration */}
           <g transform="matrix(58 29 -58 29 238 120)">
-            <g stroke="#D95724" strokeWidth="0.018" opacity="0.85">
+            <g stroke="#1D4ED8" strokeWidth="0.018" opacity="0.85">
               <line x1="0.5" y1="0.5" x2="0.5" y2="0.16" />
               <line x1="0.5" y1="0.5" x2="0.84" y2="0.5" />
               <line x1="0.5" y1="0.5" x2="0.5" y2="0.84" />
               <line x1="0.5" y1="0.5" x2="0.16" y2="0.5" />
             </g>
 
-            <g fill="#D95724">
+            <g fill="#1D4ED8">
               <circle cx="0.5" cy="0.16" r="0.045" />
               <circle cx="0.84" cy="0.5" r="0.045" />
               <circle cx="0.5" cy="0.84" r="0.045" />

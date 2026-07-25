@@ -30,8 +30,7 @@ function Cart({ id, title, description, icon, color, className, index }) {
       </div>
 
       <div className={styles.bottom}>
-        <span className={styles.explore}>EXPLORE</span>
-
+        <span className={styles.explore}></span>
         <button className={styles.arrow}>
           <FiArrowUpLeft />
         </button>

@@ -5,18 +5,17 @@
   padding: 8px 8px 8px 18px;
   border-radius: 15px;
   cursor: pointer;
-  border: 1px solid rgba(247, 118, 61, 0.5);
-  background: rgba(247, 118, 61, 0.85);
+  border: 1px solid var(--primary-border);
+  background: var(--bg-primary);
   color: white;
   box-shadow:
-    0 8px 20px rgba(247, 118, 61, 0.2),
+    0 8px 20px var(--primary-medium),
     inset 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .Button:hover {
   transform: translateY(-4px);
-
-  box-shadow: 0 15px 30px rgba(247, 118, 61, 0.4);
+  box-shadow: 0 15px 30px var(--primary-border);
 }
 
 .Button span:first-child {
@@ -29,7 +28,7 @@
   justify-content: center;
   width: 34px;
   height: 34px;
-  color: #f7763d;
+  color: var(--primary-color);
   background: white;
   border-radius: 50%;
   font-size: 20px;

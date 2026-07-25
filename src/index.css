@@ -1,14 +1,14 @@
 :root {
-  /* Brand Primary Palette */
-  --primary-color: #f7763d;
-  --primary-light: #ff9a6c;
-  --primary-dark: #e9652e;
-
+  /* Brand Primary Palette - Tech Blue */
+  --primary-color: #2563eb;
+  --primary-light: #3b82f6;
+  --primary-dark: #1d4ed8;
+  --bg-primary: rgba(37, 99, 235, 0.85);
   /* Primary Alpha Variants */
-  --primary-soft: rgba(247, 118, 61, 0.08);
-  --primary-medium: rgba(247, 118, 61, 0.22);
-  --primary-border: rgba(247, 118, 61, 0.38);
-  --primary-shadow: rgba(247, 118, 61, 0.22);
+  --primary-soft: rgba(37, 99, 235, 0.078);
+  --primary-medium: rgba(37, 99, 235, 0.22);
+  --primary-border: rgba(37, 99, 235, 0.4);
+  --primary-shadow: rgba(37, 99, 235, 0.22);
 
   /* Functional Status Colors */
   --danger-color: #ef4444;
@@ -31,7 +31,20 @@
   /* Canvas & Backgrounds */
   --bg-color: #f8fafc;
   --bg-surface: #ffffff;
-  --bg-radial: rgba(247, 118, 61, 0.08);
+  --bg-radial: rgba(37, 99, 235, 0.08);
+
+  /* Glassmorphism System */
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-bg-card: #ffffff;
+  --glass-border: rgba(226, 232, 240, 0.8);
+  --glass-border-subtle: rgba(226, 232, 240, 0.5);
+  --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --glass-blur: blur(18px) saturate(180%);
+
+  /* White Glass Scale */
+  --white-glass: rgba(255, 255, 255, 0.72);
+  --white-glass-light: rgba(255, 255, 255, 0.42);
+  --white-border: rgba(255, 255, 255, 0.85);
 
   /* Border Radius Token Scale */
   --radius-xs: 6px;
@@ -96,6 +109,7 @@
     system-ui,
     -apple-system,
     sans-serif !important;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -107,13 +121,16 @@ html {
 
 body {
   width: 100%;
-  max-width: 1400px;
+  max-width: var(--container-max-width);
   min-width: 320px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 0 5px;
   position: relative;
   overflow-x: hidden;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 10% 20%, var(--bg-radial), transparent 35%),
+    var(--bg-color);
 }
 
 a {
@@ -127,6 +144,7 @@ button {
   touch-action: manipulation;
 }
 
+/* Common Layout Utilities */
 .center {
   display: flex;
   flex-direction: column;
@@ -142,13 +160,11 @@ button {
 }
 
 .glassBG {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(18px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow:
-    0 8px 32px rgba(31, 38, 135, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  border-radius: 24px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
 }
 
 .active {
