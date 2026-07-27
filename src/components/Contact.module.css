@@ -49,10 +49,6 @@
     box-shadow 0.3s ease;
 }
 
-.infoCard:hover {
-  transform: translateY(-3px);
-}
-
 .iconBox {
   width: 48px;
   height: 48px;
@@ -180,12 +176,6 @@
   margin-top: 8px;
 }
 
-.submitBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px var(--primary-shadow);
-  filter: brightness(1.05);
-}
-
 .submitBtn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
@@ -234,10 +224,6 @@
   transition: all 0.2s ease;
 }
 
-.resetBtn:hover {
-  background: var(--primary-color);
-  color: white;
-}
 
 @media (max-width: 899px) {
   .contactGrid {

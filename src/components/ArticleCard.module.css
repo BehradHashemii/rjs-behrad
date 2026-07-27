@@ -44,14 +44,6 @@
   pointer-events: none;
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.95),
-    var(--shadow-xl),
-    0 0 35px var(--primary-shadow);
-}
-
 .imageWrapper {
   position: relative;
   overflow: hidden;

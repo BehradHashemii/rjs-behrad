@@ -1,7 +1,7 @@
 .ctaContainer {
   text-align: center;
   position: relative;
-  overflow: hidden; 
+  overflow: hidden;
   margin: 20px auto;
   padding: 36px 32px;
   width: 100%;
@@ -55,16 +55,16 @@
 .primaryBtn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 28px;
-  border-radius: 14px;
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
-  color: #ffffff !important;
-  font-size: 0.98rem;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 6px 20px var(--primary-shadow);
-  transition: all 0.25s ease;
+  gap: 12px;
+  padding: 12px 24px;
+  border-radius: 15px;
+  cursor: pointer;
+  border: 1px solid var(--primary-border);
+  background: var(--bg-primary);
+  color: white;
+  box-shadow:
+    0 8px 20px var(--primary-medium),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .primaryBtn:hover {
@@ -74,18 +74,18 @@
 }
 
 .secondaryBtn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 28px;
-  border-radius: 14px;
+  gap: 12px;
+  padding: 12px 24px;
+  border-radius: 15px;
+  cursor: pointer;
   background: var(--white-glass-light);
   border: 1px solid var(--glass-border);
   color: var(--text-primary) !important;
-  font-size: 0.98rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.25s ease;
+  box-shadow:
+    0 8px 20px var(--primary-medium),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .secondaryBtn:hover {

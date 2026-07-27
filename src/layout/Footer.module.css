@@ -92,13 +92,10 @@
   transition: all var(--transition-normal);
 }
 
-/* حرکت به سمت چپ در زمان هاور هماهنگ با جهت خواندن فارسی (RTL) */
 .column a:hover {
   color: var(--primary-color);
   transform: translateX(-5px);
 }
-
-/* Contact */
 
 .contact p {
   margin: 0;

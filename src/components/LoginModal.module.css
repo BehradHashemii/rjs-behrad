@@ -68,12 +68,6 @@
   transition: all 0.2s ease;
 }
 
-.closeBtn:hover {
-  background: #ffffff;
-  color: var(--primary-color, #2563eb);
-  transform: rotate(90deg);
-}
-
 .headerInfo {
   text-align: center;
   margin-bottom: 22px;
@@ -184,11 +178,6 @@
   justify-content: center;
 }
 
-.submitBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px var(--primary-shadow, rgba(37, 99, 235, 0.35));
-}
-
 .submitBtn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
@@ -258,11 +247,6 @@
   font-family: inherit;
 }
 
-.editPhoneBtn:hover {
-  text-decoration: underline;
-  color: var(--primary-dark, #1d4ed8);
-}
-
 .timerText {
   font-size: 0.8rem;
   color: #64748b;
@@ -296,12 +280,6 @@
   gap: 6px;
   transition: all 0.15s ease;
   font-family: inherit;
-}
-
-.resendBtn:hover {
-  background: var(--primary-color, #2563eb);
-  color: #ffffff;
-  border-color: var(--primary-color, #2563eb);
 }
 
 /* Alerts */
@@ -438,11 +416,6 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-.dashboardBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
-}
-
 .logoutBtn {
   width: 100%;
   height: 44px;
@@ -459,11 +432,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
-}
-
-.logoutBtn:hover {
-  background: #fee2e2;
-  border-color: #fca5a5;
 }
 
 /* Floating SMS Toast Overlay */
@@ -561,11 +529,6 @@
   transition: all 0.15s ease;
 }
 
-.smsCloseBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
 .smsBody {
   background: rgba(255, 255, 255, 0.06);
   border-radius: 10px;
@@ -614,11 +577,6 @@
   font-family: inherit;
 }
 
-.autoFillBtn:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
-}
-
 .copyCodeBtn {
   height: 38px;
   padding: 0 14px;
@@ -635,10 +593,6 @@
   cursor: pointer;
   transition: all 0.18s ease;
   font-family: inherit;
-}
-
-.copyCodeBtn:hover {
-  background: rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 480px) {

@@ -16,35 +16,24 @@ import {
 import styles from "./LoginModal.module.css";
 import e2p, { p2e, isValidIranianMobile } from "../utils/persianNumber";
 import useAuth from "../hooks/useAuth";
-import useToast from "../hooks/useToast";
-
+import { toast, ToastContainer } from "react-toastify";
 function LoginModal({ isOpen, onClose }) {
   const { user, login, logout } = useAuth();
-  const { showToast } = useToast();
   const navigate = useNavigate();
 
-  // Step 1: Phone, Step 2: OTP
   const [step, setStep] = useState(1);
   const [phone, setPhone] = useState("");
   const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
   const [generatedOtp, setGeneratedOtp] = useState("");
-
-  // SMS notification bubble
-  const [smsBubble, setSmsBubble] = useState(null); // { visible: boolean, code: string }
+  const [smsBubble, setSmsBubble] = useState(null);
   const [copied, setCopied] = useState(false);
-
-  // 60-Second Countdown Timer for resend
   const [countdown, setCountdown] = useState(0);
-
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Refs for 4-digit input fields
   const digitRefs = useRef([]);
   const phoneInputRef = useRef(null);
-
-  // Countdown timer effect (60s)
   useEffect(() => {
     let timer;
     if (countdown > 0) {
@@ -55,7 +44,6 @@ function LoginModal({ isOpen, onClose }) {
     return () => clearInterval(timer);
   }, [countdown]);
 
-  // Focus management on open/step change
   useEffect(() => {
     if (isOpen) {
       if (step === 1) {
@@ -66,7 +54,6 @@ function LoginModal({ isOpen, onClose }) {
     }
   }, [isOpen, step]);
 
-  // Handle ESC key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && isOpen) {
@@ -78,22 +65,16 @@ function LoginModal({ isOpen, onClose }) {
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  // Format and clean phone number (Persian/Arabic to English digits)
   const cleanPhone = p2e(phone).replace(/[^\d]/g, "");
-
-  // Request OTP (Send SMS) with Iranian Phone Validation
   const handleRequestOtp = (e) => {
     if (e) e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
-
-    // Validate Iranian mobile format (Must start with 09 and be 11 digits)
     if (!isValidIranianMobile(phone)) {
       const msg =
         "شماره همراه معتبر نیست! شماره باید با ۰۹ شروع شده و ۱۱ رقم باشد (مثال: ۰۹۱۲۳۴۵۶۷۸۹).";
       setErrorMsg(msg);
-      showToast(msg, "error");
+      toast.info(msg, "error");
       return;
     }
 
@@ -101,20 +82,13 @@ function LoginModal({ isOpen, onClose }) {
 
     setTimeout(() => {
       setIsLoading(false);
-      // Generate random 4-digit OTP code
       const code = Math.floor(1000 + Math.random() * 9000).toString();
       setGeneratedOtp(code);
       setOtpDigits(["", "", "", ""]);
       setStep(2);
-      setCountdown(60); // 60 seconds timer
+      setCountdown(30);
+      toast.success(`کد تایید ۴ رقمی به شماره ${e2p(cleanPhone)} پیامک شد.`);
 
-      // Show Toast Notification
-      showToast(
-        `کد تایید ۴ رقمی به شماره ${e2p(cleanPhone)} پیامک شد.`,
-        "success",
-      );
-
-      // Trigger SMS Notification Bubble
       setSmsBubble({
         visible: true,
         code: code,
@@ -123,21 +97,18 @@ function LoginModal({ isOpen, onClose }) {
     }, 600);
   };
 
-  // Auto-fill code from SMS Bubble
   const handleAutoFillCode = () => {
     if (!generatedOtp) return;
     const digits = generatedOtp.split("");
     setOtpDigits(digits);
     setCopied(true);
-    showToast("کد ۴ رقمی پیامک به‌طور خودکار جایگذاری شد.", "info");
+    toast.info("کد ۴ رقمی پیامک به‌طور خودکار جایگذاری شد.");
     setTimeout(() => setCopied(false), 2000);
 
     if (digitRefs.current[3]) {
       digitRefs.current[3].focus();
     }
   };
-
-  // Handle OTP digit changes
   const handleDigitChange = (index, value) => {
     const cleanVal = p2e(value).replace(/[^\d]/g, "");
     if (cleanVal.length > 1) {
@@ -161,15 +132,12 @@ function LoginModal({ isOpen, onClose }) {
       digitRefs.current[index + 1]?.focus();
     }
   };
-
-  // Handle KeyDown on OTP digits (Backspace navigation)
   const handleDigitKeyDown = (index, e) => {
     if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
       digitRefs.current[index - 1]?.focus();
     }
   };
 
-  // Verify OTP Code
   const handleVerifyOtp = (e) => {
     if (e) e.preventDefault();
     setErrorMsg("");
@@ -180,14 +148,14 @@ function LoginModal({ isOpen, onClose }) {
     if (enteredCode.length < 4) {
       const msg = "لطفاً کد ۴ رقمی تایید را به طور کامل وارد کنید.";
       setErrorMsg(msg);
-      showToast(msg, "error");
+      toast.error(msg);
       return;
     }
 
     if (enteredCode !== generatedOtp) {
       const msg = "کد وارد شده نادرست است. لطفاً کد پیامک شده را بررسی کنید.";
       setErrorMsg(msg);
-      showToast(msg, "error");
+      toast.error(msg);
       return;
     }
 
@@ -205,13 +173,11 @@ function LoginModal({ isOpen, onClose }) {
           "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
         joinedDate: new Date().toLocaleDateString("fa-IR"),
       };
-
-      // Save user to Auth Context and Storage
       login(userData);
 
       const successText = "کد تایید پذیرفته شد! ورود موفقیت‌آمیز بود.";
       setSuccessMsg(successText);
-      showToast("خوش آمدید! ورود موفقیت‌آمیز بود.", "success");
+      toast.success("خوش آمدید! ورود موفقیت‌آمیز بود.");
       setSmsBubble(null);
 
       setTimeout(() => {
@@ -220,20 +186,17 @@ function LoginModal({ isOpen, onClose }) {
       }, 800);
     }, 600);
   };
-
-  // Logout handle
   const handleLogout = () => {
     logout();
     setPhone("");
     setOtpDigits(["", "", "", ""]);
     setStep(1);
     setSmsBubble(null);
-    showToast("با موفقیت از حساب کاربری خارج شدید.", "info");
+    toast.info("با موفقیت از حساب کاربری خارج شدید.");
   };
 
   return (
     <>
-      {/* Floating SMS Notification Bubble (Simulated Toast) */}
       {smsBubble && smsBubble.visible && (
         <div className={styles.smsToastOverlay}>
           <div className={styles.smsToastCard}>
@@ -261,7 +224,7 @@ function LoginModal({ isOpen, onClose }) {
 
             <div className={styles.smsBody}>
               <p className={styles.smsText}>
-                کد یک‌بار مصرف ورود شما به سایت بهراد:{" "}
+                کد یک‌بار مصرف ورود شما به سایت:{" "}
                 <strong className={styles.smsCodeHighlight}>
                   {e2p(smsBubble.code)}
                 </strong>
@@ -276,19 +239,6 @@ function LoginModal({ isOpen, onClose }) {
               >
                 {copied ? <FaCheckCircle /> : <FaPaste />}
                 <span>{copied ? "جایگذاری شد!" : "جایگذاری خودکار کد"}</span>
-              </button>
-              <button
-                type="button"
-                className={styles.copyCodeBtn}
-                onClick={() => {
-                  navigator.clipboard.writeText(smsBubble.code);
-                  setCopied(true);
-                  showToast("کد ۴ رقمی کپی شد.", "info");
-                  setTimeout(() => setCopied(false), 2000);
-                }}
-              >
-                <FaCopy />
-                <span>کپی</span>
               </button>
             </div>
           </div>
@@ -372,9 +322,7 @@ function LoginModal({ isOpen, onClose }) {
                 <div className={styles.shieldIconBadge}>
                   <FaShieldAlt />
                 </div>
-                <h2 className={styles.modalTitle}>
-                  ورود با رمز یک‌بار مصرف (OTP)
-                </h2>
+                <h2 className={styles.modalTitle}>ورود با رمز یک‌بار مصرف</h2>
                 <p className={styles.modalSub}>
                   {step === 1
                     ? "شماره موبایل خود را وارد کنید تا کد تایید ۴ رقمی پیامک شود."
@@ -486,6 +434,7 @@ function LoginModal({ isOpen, onClose }) {
           )}
         </div>
       </div>
+      <ToastContainer rtl position="bottom-center" />
     </>
   );
 }

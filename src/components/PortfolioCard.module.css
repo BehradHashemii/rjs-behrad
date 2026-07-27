@@ -48,14 +48,6 @@
   pointer-events: none;
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.95),
-    var(--shadow-xl),
-    0 0 35px var(--primary-shadow);
-}
-
 .imageWrapper {
   position: relative;
   height: 190px;
@@ -200,11 +192,6 @@
     background var(--transition-fast);
 }
 
-.links a:hover {
-  color: var(--primary-color);
-  background: var(--primary-medium);
-}
-
 .saveBtn {
   display: flex;
   align-items: center;
@@ -218,12 +205,6 @@
   box-shadow:
     0 8px 20px var(--primary-shadow),
     inset 0 1px 1px rgba(255, 255, 255, 0.5);
-}
-
-.saveBtn:hover {
-  background: var(--bg-surface);
-  color: var(--primary-color);
-  transform: scale(1.1);
 }
 
 .saveBtn.saved {

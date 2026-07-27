@@ -30,11 +30,6 @@
   overflow: hidden;
 }
 
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
-}
-
 .eyebrow {
   display: block;
   margin-bottom: 8px;

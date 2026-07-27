@@ -151,13 +151,6 @@
   font-family: inherit;
 }
 
-.popularTag:hover {
-  background: var(--primary-color, #f7763d);
-  color: #ffffff;
-  border-color: var(--primary-color, #f7763d);
-  transform: translateY(-1px);
-}
-
 /* No Results */
 .noResults {
   text-align: center;
@@ -218,13 +211,6 @@
   border: 1px solid transparent;
 }
 
-.resultItem:hover {
-  background: #ffffff;
-  border-color: rgba(247, 118, 61, 0.4);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateX(-3px);
-}
-
 .resultThumb {
   width: 48px;
   height: 48px;
@@ -279,12 +265,6 @@
   flex-shrink: 0;
 }
 
-.resultItem:hover .resultArrow {
-  color: var(--primary-color, #f7763d);
-  transform: translateX(-4px);
-}
-
-/* Modal Footer */
 .modalFooter {
   padding: 12px 20px;
   background: #f8fafc;
@@ -306,11 +286,6 @@
     background-color 0.15s ease,
     transform 0.15s ease;
   font-family: inherit;
-}
-
-.viewAllBtn:hover {
-  background: #e06128;
-  transform: translateY(-1px);
 }
 
 @media (max-width: 640px) {

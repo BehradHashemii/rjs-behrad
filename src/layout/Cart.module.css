@@ -54,14 +54,6 @@
   pointer-events: none;
 }
 
-.Cart:hover {
-  transform: translateY(-15px) scale(1.02);
-  border-color: var(--card-color);
-  box-shadow:
-    var(--shadow-xl),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-}
-
 .Cart:hover::before {
   transform: scale(1.4);
   opacity: 0.35;

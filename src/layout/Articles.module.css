@@ -14,18 +14,12 @@
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
   backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: var(--shadow-md);
   transition:
     transform var(--transition-normal),
     box-shadow var(--transition-normal),
     background var(--transition-normal);
   position: relative;
   overflow: hidden;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
 }
 
 .card img {

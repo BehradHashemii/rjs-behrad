@@ -11,7 +11,7 @@
   margin: 0 auto;
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
-  backdrop-filter:var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-shadow);
 }
 
@@ -266,7 +266,11 @@
   padding: 8px;
   border-radius: var(--radius-sm);
   border: none;
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--primary-light)
+  );
   color: var(--text-inverse);
   font-weight: 700;
   font-size: 0.85rem;
@@ -286,7 +290,11 @@
   justify-content: center;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--primary-light)
+  );
   color: var(--text-inverse);
   cursor: pointer;
   flex-shrink: 0;
@@ -324,7 +332,7 @@
   justify-content: center;
   line-height: 1;
   pointer-events: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .links a {
@@ -336,9 +344,15 @@
   flex-shrink: 0;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--primary-light)
+  );
   color: var(--text-inverse);
-  transition: filter var(--transition-fast), transform var(--transition-fast);
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .links a:hover {
@@ -358,12 +372,18 @@
   flex-shrink: 0;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--primary-light)
+  );
   color: var(--text-inverse);
   cursor: pointer;
   padding: 0;
   overflow: hidden;
-  transition: filter var(--transition-fast), transform var(--transition-fast);
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .userTriggerBtn:hover {
@@ -410,7 +430,9 @@
   font-size: 1rem;
   text-decoration: none;
   line-height: 1;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .navbar li a:hover {
@@ -426,10 +448,16 @@
   padding: 8px;
   border: 1px solid var(--white-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--primary-light)
+  );
   color: var(--text-inverse);
   cursor: pointer;
-  transition: filter var(--transition-fast), transform var(--transition-fast);
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .menuToggle:hover {

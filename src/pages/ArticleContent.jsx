@@ -4,6 +4,7 @@ import { FcDislike, FcLike } from "react-icons/fc";
 import { FaCopy, FaHeart, FaRegHeart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { isArticleLiked, toggleLikeArticle } from "../utils/storage";
+import { toast, ToastContainer } from "react-toastify";
 
 function ArticleContent({ article, styles, contentRef }) {
   const [isLiked, setIsLiked] = useState(() => isArticleLiked(article?.id));
@@ -24,9 +25,16 @@ function ArticleContent({ article, styles, contentRef }) {
     if (!article?.id) return;
     const updatedList = toggleLikeArticle(article.id);
     setIsLiked(updatedList.includes(article.id));
+    toast.info(
+      isLiked
+        ? "مقاله با موفقیت به علاقه‌مندی‌ها اضافه شد."
+        : "مقاله از علاقه‌مندی‌ها حذف شد.",
+      {},
+    );
   };
   const shortenLink = () => {
     navigator.clipboard.writeText(location.href);
+    toast.success("کپی شد!", {});
   };
   return (
     <article className={`${styles.articleContainer}`}>
@@ -110,6 +118,7 @@ function ArticleContent({ article, styles, contentRef }) {
           </div>
         </div>
       </div>
+      <ToastContainer rtl position="top-center" />
     </article>
   );
 }

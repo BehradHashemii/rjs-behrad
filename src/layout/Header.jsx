@@ -173,6 +173,7 @@ function Header() {
             </NavLink>
           </li>
         </ul>
+        <hr style={{ border: "1px solid var(--primary-color)" }} />
         <div>
           <p>
             <span>شماره تماس:</span>{" "}

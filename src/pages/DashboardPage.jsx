@@ -27,7 +27,6 @@ import { Helmet } from "react-helmet-async";
 import styles from "./DashboardPage.module.css";
 import e2p from "../utils/persianNumber";
 import useAuth from "../hooks/useAuth";
-import useToast from "../hooks/useToast";
 import LoginModal from "../components/LoginModal";
 
 import {
@@ -46,6 +45,7 @@ import {
 } from "../utils/storage";
 
 import mockData from "../data/mockData.json";
+import { toast } from "react-toastify";
 
 const AVATAR_PRESETS = [
   "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
@@ -56,7 +56,6 @@ const AVATAR_PRESETS = [
 
 export default function DashboardPage() {
   const { user, login, logout } = useAuth();
-  const { showToast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Active tab in dashboard: 'overview' | 'profile' | 'saved' | 'tickets' | 'orders'
@@ -145,17 +144,14 @@ export default function DashboardPage() {
     };
     login(demoUser);
     addActivity("ورود سریع به حساب کاربری مهمان (تست)", "security");
-    showToast(
-      "با موفقیت به عنوان کاربر آزمایشی وارد پنل کاربری شدید.",
-      "success",
-    );
+    toast.success("با موفقیت به عنوان کاربر آزمایشی وارد پنل کاربری شدید.");
   };
 
   // Profile Form Save
   const handleSaveProfile = (e) => {
     e.preventDefault();
     if (!profileForm.name.trim()) {
-      showToast("لطفاً نام و نام خانوادگی را وارد کنید.", "error");
+      toast.error("لطفاً نام و نام خانوادگی را وارد کنید.");
       return;
     }
     const updatedUser = {
@@ -164,27 +160,27 @@ export default function DashboardPage() {
     };
     saveLoggedUser(updatedUser);
     addActivity("ویرایش و به‌روزرسانی اطلاعات حساب کاربری", "info");
-    showToast("اطلاعات حساب کاربری با موفقیت ویرایش شد.", "success");
+    toast.success("اطلاعات حساب کاربری با موفقیت ویرایش شد.");
   };
 
   // Remove Saved Item
   const handleRemoveSavedPortfolio = (id) => {
     toggleSavePortfolio(id);
     setSavedPortfolios(getSavedPortfolios());
-    showToast("پروژه از لیست نشان‌شده‌ها حذف شد.", "info");
+    toast.info("پروژه از لیست نشان‌شده‌ها حذف شد.");
   };
 
   const handleRemoveLikedArticle = (id) => {
     toggleLikeArticle(id);
     setLikedArticles(getLikedArticles());
-    showToast("مقاله از لیست علاقمندی‌ها حذف شد.", "info");
+    toast.info("مقاله از لیست علاقمندی‌ها حذف شد.");
   };
 
   // Submit New Support Ticket
   const handleCreateTicket = (e) => {
     e.preventDefault();
     if (!newTicketData.title.trim() || !newTicketData.description.trim()) {
-      showToast("لطفاً عنوان و متن تیکت را وارد کنید.", "error");
+      toast.error("لطفاً عنوان و متن تیکت را وارد کنید.");
       return;
     }
 
@@ -198,10 +194,7 @@ export default function DashboardPage() {
       priority: "عادی",
       description: "",
     });
-    showToast(
-      "تیکت پشتیبانی شما با موفقیت ثبت شد و در حال بررسی است.",
-      "success",
-    );
+    toast.success("تیکت پشتیبانی شما با موفقیت ثبت شد و در حال بررسی است.");
   };
 
   // Reply to Ticket
@@ -215,14 +208,14 @@ export default function DashboardPage() {
     setSelectedTicket(updatedSel);
     setReplyMessageText("");
     addActivity(`ارسال پاسخ جدید در تیکت ${selectedTicket.id}`, "ticket");
-    showToast("پاسخ شما ارسال شد.", "success");
+    toast.success("پاسخ شما ارسال شد.");
   };
 
   // Submit New Project Order
   const handleCreateOrder = (e) => {
     e.preventDefault();
     if (!newOrderData.title.trim() || !newOrderData.description.trim()) {
-      showToast("لطفاً عنوان پروژه و شرح نیازمندی‌ها را وارد کنید.", "error");
+      toast.error("لطفاً عنوان پروژه و شرح نیازمندی‌ها را وارد کنید.");
       return;
     }
 
@@ -236,10 +229,7 @@ export default function DashboardPage() {
       budget: "۲۰ تا ۴۰ میلیون تومان",
       description: "",
     });
-    showToast(
-      "درخواست مشاوره پروژه ثبت شد. به زودی با شما تماس می‌گیریم.",
-      "success",
-    );
+    toast.success("درخواست مشاوره پروژه ثبت شد. به زودی با شما تماس می‌گیریم.");
   };
 
   // Filtered Portfolio & Article Objects
@@ -383,7 +373,7 @@ export default function DashboardPage() {
               className={styles.logoutBtn}
               onClick={() => {
                 logout();
-                showToast("از حساب کاربری خارج شدید.", "info");
+                toast("از حساب کاربری خارج شدید.", "info");
               }}
             >
               <FaSignOutAlt />

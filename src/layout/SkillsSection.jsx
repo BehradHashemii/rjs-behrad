@@ -77,7 +77,7 @@ function SkillsSection() {
       <div className={styles.techChips}>
         {extraChips.map((chip, idx) => (
           <span key={idx} className={styles.chip}>
-            ✨ {chip}
+            {chip}
           </span>
         ))}
       </div>
