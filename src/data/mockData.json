@@ -17,10 +17,10 @@
       "id": 1,
       "title": "فروشگاه اینترنتی پت شاپ",
       "category": "E-Commerce",
-      "image": "https://behradhashemii.ir/varia/images/shop-project.png",
+      "image": "https://noushinrostamifar.ir/varia/images/shop-project.png",
       "description": "طراحی و توسعه آنلاین‌شاپ جامع ملزومات حیوانات خانگی با سبد خرید پویا، درگاه پرداخت و پنل مدیریت سفارشات",
       "technologies": ["React.js", "Node.js", "MongoDB", "TailwindCSS"],
-      "liveUrl": "https://petshop.variateam.ir",
+      "liveUrl": "https://petshop.behradhashemii.ir",
       "githubUrl": "https://github.com/BehradHashemii/",
       "featured": true,
       "date": "2025-09-20T18:19:31Z",
@@ -61,7 +61,12 @@
       "category": "Productivity",
       "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=800&q=80",
       "description": "ابزار آنلاین مدیریت کارهای روزانه و پروژه‌های تیمی به سبک کانبان با قابلیت اولویت‌بندی و تقویم شمسی",
-      "technologies": ["React.js", "Context API", "CSS Modules", "LocalStorage"],
+      "technologies": [
+        "React.js",
+        "Context API",
+        "CSS Modules",
+        "LocalStorage"
+      ],
       "liveUrl": "https://behradhashemii.ir",
       "githubUrl": "https://github.com/BehradHashemii/",
       "featured": false,
@@ -71,31 +76,17 @@
     },
     {
       "id": 5,
-      "title": "وب‌سایت رزومه و پورتفولیو شخصی",
-      "category": "Web & UI",
-      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
-      "description": "طراحی وب‌سایت شخص با حالت گلس‌مورفیسم، تم تاریک/روشن هوشمند و انیمیشن‌های روان اسکرول",
-      "technologies": ["React.js", "Vite", "TailwindCSS", "Swiper"],
-      "liveUrl": "https://behradhashemii.ir",
-      "githubUrl": "https://github.com/BehradHashemii/",
-      "featured": true,
-      "date": "2025-12-10T11:45:00Z",
-      "author": "بهراد هاشمی",
-      "slug": "personal-portfolio"
-    },
-    {
-      "id": 6,
       "title": "مجله تخصصی وب و تکنولوژی",
       "category": "CMS",
-      "image": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80",
+      "image": "https://noushinrostamifar.ir/varia/images/tech-mag-banner.png",
       "description": "مجله اینترنتی اختصاصی تکنولوژی همراه با سیستم دسته‌بندی، فیلتر پیشرفته مقالات و جستجوی لحظه‌ای",
-      "technologies": ["React.js", "React Router", "REST API", "CSS3"],
-      "liveUrl": "https://behradhashemii.ir",
-      "githubUrl": "https://github.com/BehradHashemii/",
+      "technologies": ["React.js", "React Router", "REST API", "TailwindCSS"],
+      "liveUrl": "https://rjs-tech-magazine.behradhashemii.ir",
+      "githubUrl": "https://github.com/BehradHashemii/rjs-tech-magazine",
       "featured": false,
       "date": "2026-01-08T08:20:00Z",
       "author": "بهراد هاشمی",
-      "slug": "tech-news-blog"
+      "slug": "tech-magazine"
     }
   ],
   "articles": [
