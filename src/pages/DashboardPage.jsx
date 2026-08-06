@@ -248,33 +248,34 @@ export default function DashboardPage() {
   };
 
   const handleSendTicketReply = async (e) => {
-    e.preventDefault();
-    if (!replyMessageText.trim() || !selectedTicket) return;
+  e.preventDefault();
+  if (!selectedTicket || !selectedTicket.id) return;
 
-    try {
-      const newMessage = {
-        sender: "user",
-        text: replyMessageText,
-        time: new Date().toLocaleTimeString("fa-IR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
+  try {
+    let ticketRef;
 
-      await updateDoc(doc(db, "tickets", selectedTicket.id), {
-        messages: arrayUnion(newMessage),
-      });
-
-      setSelectedTicket((prev) => ({
-        ...prev,
-        messages: [...prev.messages, newMessage],
-      }));
-      setReplyMessageText("");
-      toast.success("پاسخ ارسال شد.");
-    } catch (error) {
-      toast.error("خطا در پاسخ‌دهی.");
+    // اگر تیکت در subcollection کاربر قرار دارد:
+    if (selectedTicket.userId) {
+      ticketRef = doc(db, "users", selectedTicket.userId, "tickets", selectedTicket.id);
+    } else {
+      // اگر تیکت در کلکسیون اصلی tickets قرار دارد:
+      ticketRef = doc(db, "tickets", selectedTicket.id);
     }
-  };
+
+    await updateDoc(ticketRef, {
+      adminReply: ticketReply.trim(),
+      status: "answered",
+      updatedAt: serverTimestamp(),
+    });
+
+    alert("پاسخ با موفقیت در مسیر درست ثبت شد.");
+    setSelectedTicket(null);
+    setTicketReply("");
+  } catch (err) {
+    console.error("خطای کامل ثبت:", err);
+    alert(`خطا: ${err.message}`);
+  }
+};
 
   const handleCreateOrder = async (e) => {
     e.preventDefault();
@@ -544,7 +545,7 @@ export default function DashboardPage() {
 
             {activeTab === "tickets" && (
               <TicketsTab
-                tickets={tickets}
+                tickets={tickets.reverse()}
                 selectedTicket={selectedTicket}
                 setSelectedTicket={setSelectedTicket}
                 user={user}
