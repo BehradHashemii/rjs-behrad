@@ -27,8 +27,8 @@ function ArticleContent({ article, styles, contentRef }) {
     setIsLiked(updatedList.includes(article.id));
     toast.info(
       isLiked
-        ? "مقاله با موفقیت به علاقه‌مندی‌ها اضافه شد."
-        : "مقاله از علاقه‌مندی‌ها حذف شد.",
+        ? "مقاله از علاقه‌مندی‌ها حذف شد."
+        : "مقاله با موفقیت به علاقه‌مندی‌ها اضافه شد.",
       {},
     );
   };
