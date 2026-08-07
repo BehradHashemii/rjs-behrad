@@ -219,26 +219,7 @@ export function addProjectOrder(newOrder) {
 }
 
 // User Activities
-const INITIAL_ACTIVITIES = [
-  {
-    id: 1,
-    title: "احراز هویت موفق با رمز یک‌بار مصرف (OTP)",
-    time: "۱۰ دقیقه پیش",
-    type: "security",
-  },
-  {
-    id: 2,
-    title: "ثبت تیکت مشاوره پروژه جدید در پنل کاربری",
-    time: "دیروز",
-    type: "ticket",
-  },
-  {
-    id: 3,
-    title: "نشان‌کردن پروژه نمونه‌کار آنلاین‌شاپ",
-    time: "۲ روز پیش",
-    type: "saved",
-  },
-];
+const INITIAL_ACTIVITIES = [];
 
 export function getUserActivities() {
   try {

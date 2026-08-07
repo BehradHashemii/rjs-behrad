@@ -1,29 +1,25 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
-  apiKey: "AIzaSyAHLhxi20Wnp7wRLgwp4hgxREKR1LPMqWc",
-  authDomain: "behrad-app.firebaseapp.com",
-  projectId: "behrad-app",
-  storageBucket: "behrad-app.firebasestorage.app",
-  messagingSenderId: "1091333443178",
-  appId: "1:1091333443178:web:151d35ab4f40983d864413",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAHLhxi20Wnp7wRLgwp4hgxREKR1LPMqWc",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "behrad-app.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "behrad-app",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "behrad-app.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "1091333443178",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:1091333443178:web:151d35ab4f40983d864413",
   measurementId: "G-HRK85RP64Y",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// ۲. ساخت نمونه Auth و خروجی گرفتن نام‌دار (Named Export)
+// Auth & Firestore Exports
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 
-// ۳. (اختیاری) خروجی پیش‌فرض
 export default app;
 
-auth.settings.appVerificationDisabledForTesting = false;
