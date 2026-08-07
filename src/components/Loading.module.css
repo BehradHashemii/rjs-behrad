@@ -18,9 +18,9 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--primary-color);
+  background: #f7763d;
   animation: bubble 1.2s infinite ease-in-out;
-  box-shadow: 0 0 15px var(--primary-border);
+  box-shadow: 0 0 15px rgba(247, 118, 61, 0.4);
 }
 
 .bubbles span:nth-child(1) {

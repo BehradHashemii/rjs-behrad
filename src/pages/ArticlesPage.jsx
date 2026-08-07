@@ -1,32 +1,36 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import articlesData from "../data/mockData.json";
 import Loading from "../components/Loading";
 
 import styles from "./PortfoliosPage.module.css";
 import ArticleCard from "../components/ArticleCard";
 import e2p from "../utils/persianNumber";
+import { getArticlesFromFirestore } from "../services/firestoreService";
 
 const ITEMS_PER_PAGE = 8;
 
 function ArticlesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [isLoading, setIsLoading] = useState(true);
   const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      setIsLoading(true);
+      const data = await getArticlesFromFirestore();
+      setArticles(data);
+      setIsLoading(false);
+    }
+    loadData();
+  }, []);
+
 
   const sortBy = searchParams.get("sortBy") || "desc";
   const tag = searchParams.get("tag") || "all";
   const page = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("search") || "";
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    setArticles(articlesData.articles || []);
-    setIsLoading(false);
-  }, []);
 
   const uniqueCategories = useMemo(() => {
     if (!Array.isArray(articles)) return [];

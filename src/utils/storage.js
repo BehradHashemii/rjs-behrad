@@ -76,7 +76,44 @@ export function removeLoggedUser() {
 }
 
 // Initial Mock Tickets
-const INITIAL_TICKETS = [];
+const INITIAL_TICKETS = [
+  {
+    id: "TCK-1082",
+    title: "مشاوره جهت طراحی فروشگاه اختصاصی آنلاین با ری‌اکت",
+    category: "مشاوره پروژه",
+    priority: "فوری",
+    status: "پاسخ داده شده",
+    date: "۱۴۰۴/۰۵/۰۲",
+    messages: [
+      {
+        sender: "user",
+        text: "سلام و احترام، بنده قصد طراحی یک آنلاین‌شاپ اختصاصی با امکانات فیلتر پیشرفته و اتصال به درگاه بانک دارم. تایم‌لاین پروژه چقدر خواهد بود؟",
+        time: "۱۰:۳۰ - ۱۴۰۴/۰۵/۰۲",
+      },
+      {
+        sender: "support",
+        name: "پشتیبانی بهراد",
+        text: "درود بر شما! بستگی به سناریوی دقیق دارد اما معمولاً پروژه‌های آنلاین‌شاپ اختصاصی بین ۳ الی ۵ هفته زمان می‌برند. می‌توانید جزئیات فنی بیشتر را ارسال فرمایید.",
+        time: "۱۱:۱۵ - ۱۴۰۴/۰۵/۰۲",
+      },
+    ],
+  },
+  {
+    id: "TCK-1045",
+    title: "استعلام هزینه و زمان تحویل پورتفولیو شرکتی",
+    category: "استعلام قیمت",
+    priority: "عادی",
+    status: "در حال بررسی",
+    date: "۱۴۰۴/۰۵/۰۳",
+    messages: [
+      {
+        sender: "user",
+        text: "سلام، درخواست استعلام قیمت برای وب‌سایت معرفی شرکت مهندسی همراه با رزومه‌ها و گالری پروژه‌ها داشتم.",
+        time: "۱۶:۲۰ - ۱۴۰۴/۰۵/۰۳",
+      },
+    ],
+  },
+];
 
 export function getUserTickets() {
   try {
@@ -140,6 +177,16 @@ export function addMessageToTicket(ticketId, messageText) {
 }
 
 const INITIAL_ORDERS = [
+  {
+    id: "PRJ-901",
+    title: "سفارش طراحی پلتفرم آموزش آنلاین و وبینار",
+    serviceType: "توسعه وب‌سایت فرانت‌اند و بک‌اند",
+    budget: "۴۰ تا ۶۰ میلیون تومان",
+    status: "تایید اولیه و صدور پیش‌فاکتور",
+    date: "۱۴۰۴/۰۴/۲۸",
+    description:
+      "نیاز به سیستم برگزاری دوره آنلاین، آزمون‌گیر و صدور گواهی‌نامه.",
+  },
 ];
 
 export function getUserOrders() {
@@ -172,7 +219,25 @@ export function addProjectOrder(newOrder) {
 }
 
 // User Activities
-const INITIAL_ACTIVITIES = [  
+const INITIAL_ACTIVITIES = [
+  {
+    id: 1,
+    title: "احراز هویت موفق با رمز یک‌بار مصرف (OTP)",
+    time: "۱۰ دقیقه پیش",
+    type: "security",
+  },
+  {
+    id: 2,
+    title: "ثبت تیکت مشاوره پروژه جدید در پنل کاربری",
+    time: "دیروز",
+    type: "ticket",
+  },
+  {
+    id: 3,
+    title: "نشان‌کردن پروژه نمونه‌کار آنلاین‌شاپ",
+    time: "۲ روز پیش",
+    type: "saved",
+  },
 ];
 
 export function getUserActivities() {

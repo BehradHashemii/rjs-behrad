@@ -1,33 +1,36 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
-import { IoPersonSharp } from "react-icons/io5";
-import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import styles from "./Articles.module.css";
-import formatPersianDate from "../utils/formatPersianDate";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import articlesData from "../data/mockData.json";
-import { ImBlog } from "react-icons/im";
 import { RiFilePaper2Line } from "react-icons/ri";
 import ArticleCard from "../components/ArticleCard";
 import { FiArrowUpLeft } from "react-icons/fi";
-import { VscGithubProject } from "react-icons/vsc";
+import { getArticlesFromFirestore } from "../services/firestoreService";
 
 function Articles() {
-  const articles = articlesData.articles.slice(-5).reverse();
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    async function loadArticles() {
+      const data = await getArticlesFromFirestore();
+      setArticles(data.slice(-5).reverse());
+    }
+    loadArticles();
+  }, []);
 
   const articleSlides = articles.map((article) => (
     <SwiperSlide key={article.id} className={styles.card}>
-      {/* <Link to={`/articles/${article.slug}`}> */}
       <ArticleCard article={article} />
-      {/* </Link> */}
     </SwiperSlide>
   ));
+
 
   return (
     <div className={styles.container}>

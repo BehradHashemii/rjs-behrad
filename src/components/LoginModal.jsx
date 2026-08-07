@@ -7,7 +7,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "../firebase/config"; // اطمینان حاصل کنید مسیر db درست است
+import { auth, db } from "../firebase";
 import useAuth from "../hooks/useAuth";
 
 import styles from "./LoginModal.module.css";
@@ -15,7 +15,6 @@ import styles from "./LoginModal.module.css";
 import {
   FaTimes,
   FaEnvelope,
-  FaLock,
   FaUser,
   FaShieldAlt,
   FaCheckCircle,

@@ -1,65 +1,59 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 
 import ArticleRelated from "./ArticleRelated";
 import ArticleContent from "./ArticleContent";
 import Loading from "../components/Loading";
 
-import articlesData from "../data/mockData.json";
+import { getArticlesFromFirestore } from "../services/firestoreService";
 
 import styles from "./ArticleDetailsPage.module.css";
 
 function ArticleDetailsPage() {
   const { slug } = useParams();
-
-  const [article, setArticle] = useState(null);
-  const [relatedArticles, setRelatedArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const contentRef = useRef(null);
 
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    setIsLoading(true);
-
-    const articles = articlesData.articles || [];
-
-    const foundArticle = articles.find((item) => item.slug === slug);
-
-    if (!foundArticle) {
-      setArticle(null);
-      setRelatedArticles([]);
+    async function loadData() {
+      setIsLoading(true);
+      const data = await getArticlesFromFirestore();
+      setArticles(data);
       setIsLoading(false);
-      return;
     }
-
-    const currentTags =
-      foundArticle.tags
-        ?.split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean) || [];
-
-    const related = articles
-      .filter((item) => {
-        if (item.id === foundArticle.id) return false;
-
-        const articleTags =
-          item.tags
-            ?.split(",")
-            .map((tag) => tag.trim())
-            .filter(Boolean) || [];
-
-        return articleTags.some((tag) => currentTags.includes(tag));
-      })
-      .slice(0, 4);
-
-    setArticle(foundArticle);
-    setRelatedArticles(related);
-    setIsLoading(false);
+    loadData();
   }, [slug]);
 
   if (isLoading) {
     return <Loading />;
   }
+
+  const article = articles.find((item) => item.slug === slug || String(item.id) === slug) || null;
+
+
+  const currentTags =
+    article?.tags
+      ?.split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean) || [];
+
+  const relatedArticles = article
+    ? articles
+        .filter((item) => {
+          if (item.id === article.id) return false;
+
+          const articleTags =
+            item.tags
+              ?.split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean) || [];
+
+          return articleTags.some((tag) => currentTags.includes(tag));
+        })
+        .slice(0, 4)
+    : [];
 
   if (!article) {
     return <p>مقاله مورد نظر پیدا نشد.</p>;

@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import styles from "./Contact.module.css";
 import e2p from "../utils/persianNumber";
+import { sendContactMessageToFirestore } from "../services/firestoreService";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -32,7 +33,8 @@ function Contact() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     if (!formData.name.trim()) {
@@ -52,12 +54,21 @@ function Contact() {
 
     setStatus({ submitting: true, submitted: false, error: "" });
 
-    // Simulate form submission delay
-    setTimeout(() => {
+    try {
+      await sendContactMessageToFirestore({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim() || "بدون موضوع",
+        message: formData.message.trim(),
+      });
       setStatus({ submitting: false, submitted: true, error: "" });
       setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 1200);
+    } catch (err) {
+      console.error("Firestore submit error:", err);
+      setStatus({ submitting: false, submitted: false, error: "خطا در ثبت پیام در دیتابیس فایربیس. لطفاً مجدداً تلاش کنید." });
+    }
   };
+
 
   return (
     <section className={styles.contactContainer}>

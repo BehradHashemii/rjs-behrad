@@ -1,12 +1,10 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
 import {
   FaArrowLeft,
   FaArrowRight,
-  FaExternalLinkAlt,
-  FaGithub,
 } from "react-icons/fa";
 import { VscGithubProject } from "react-icons/vsc";
 import { FiArrowUpLeft } from "react-icons/fi";
@@ -16,11 +14,20 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import portfoliosData from "../data/mockData.json";
 import PortfolioCard from "../components/PortfolioCard";
+import { getPortfoliosFromFirestore } from "../services/firestoreService";
 
 function Portfolios() {
-  const portfolios = portfoliosData.portfolios.slice(-5).reverse();
+  const [portfolios, setPortfolios] = useState([]);
+
+  useEffect(() => {
+    async function loadPortfolios() {
+      const data = await getPortfoliosFromFirestore();
+      setPortfolios(data.slice(-5).reverse());
+    }
+    loadPortfolios();
+  }, []);
+
   return (
     <section className={styles.container}>
       <div className={styles.header}>

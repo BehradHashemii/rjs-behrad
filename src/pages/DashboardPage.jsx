@@ -18,7 +18,7 @@ import e2p from "../utils/persianNumber";
 import useAuth from "../hooks/useAuth";
 
 // فایربیس
-import { db } from "../firebase/config";
+import { db } from "../firebase";
 import {
   doc,
   updateDoc,
@@ -98,28 +98,43 @@ export default function DashboardPage() {
     if (!user?.uid) return;
 
     // سند کاربر
-    const unsubUser = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setUserData(data);
-        setSavedPortfolios(data.savedPortfolios || []);
-        setLikedArticles(data.likedArticles || []);
+    const unsubUser = onSnapshot(
+      doc(db, "users", user.uid),
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setUserData(data);
+          setSavedPortfolios(data.savedPortfolios || []);
+          setLikedArticles(data.likedArticles || []);
 
-        setProfileForm({
-          name: data.name || user.displayName || "",
-          email: data.email || user.email || "",
-          bio: data.bio || "",
-          location: data.location || "",
-          avatar: data.avatar || user.photoURL || AVATAR_PRESETS[0],
-        });
+          setProfileForm({
+            name: data.name || user.displayName || "",
+            email: data.email || user.email || "",
+            bio: data.bio || "",
+            location: data.location || "",
+            avatar: data.avatar || user.photoURL || AVATAR_PRESETS[0],
+          });
+        }
+      },
+      (err) => {
+        console.warn("User snapshot listener warning:", err);
       }
-    });
+    );
 
     // تیکت‌ها
     const unsubTickets = onSnapshot(
       query(collection(db, "tickets"), where("userId", "==", user.uid)),
       (snapshot) => {
-        setTickets(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+        const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+        setTickets(list);
+        setSelectedTicket((prev) => {
+          if (!prev?.id) return null;
+          const updated = list.find((t) => t.id === prev.id);
+          return updated || prev;
+        });
+      },
+      (err) => {
+        console.warn("Tickets snapshot listener warning:", err);
       }
     );
 
@@ -128,6 +143,9 @@ export default function DashboardPage() {
       query(collection(db, "orders"), where("userId", "==", user.uid)),
       (snapshot) => {
         setOrders(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+      },
+      (err) => {
+        console.warn("Orders snapshot listener warning:", err);
       }
     );
 
@@ -138,6 +156,9 @@ export default function DashboardPage() {
         const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
         list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
         setActivities(list);
+      },
+      (err) => {
+        console.warn("Activities snapshot listener warning:", err);
       }
     );
 
@@ -181,7 +202,8 @@ export default function DashboardPage() {
       });
       await logActivity("ویرایش و به‌روزرسانی اطلاعات حساب کاربری", "info");
       toast.success("اطلاعات حساب کاربر به‌روز شد.");
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("خطا در ثبت اطلاعات.");
     }
   };
@@ -192,7 +214,8 @@ export default function DashboardPage() {
         savedPortfolios: arrayRemove(id),
       });
       toast.info("پروژه حذف شد.");
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("خطا در عملیات.");
     }
   };
@@ -203,7 +226,8 @@ export default function DashboardPage() {
         likedArticles: arrayRemove(id),
       });
       toast.info("مقاله حذف شد.");
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("خطا در عملیات.");
     }
   };
@@ -242,40 +266,38 @@ export default function DashboardPage() {
         description: "",
       });
       toast.success("تیکت با موفقیت ارسال شد.");
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("خطا در ارسال تیکت.");
     }
   };
 
   const handleSendTicketReply = async (e) => {
-  e.preventDefault();
-  if (!selectedTicket || !selectedTicket.id) return;
+    e.preventDefault();
+    if (!replyMessageText.trim() || !selectedTicket?.id) return;
 
-  try {
-    let ticketRef;
-
-    // اگر تیکت در subcollection کاربر قرار دارد:
-    if (selectedTicket.userId) {
-      ticketRef = doc(db, "users", selectedTicket.userId, "tickets", selectedTicket.id);
-    } else {
-      // اگر تیکت در کلکسیون اصلی tickets قرار دارد:
-      ticketRef = doc(db, "tickets", selectedTicket.id);
+    try {
+      const newMsg = {
+        sender: "user",
+        senderName: userData?.name || user?.displayName || user?.email || "کاربر",
+        text: replyMessageText.trim(),
+        time: `${new Date().toLocaleTimeString("fa-IR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })} - ${new Date().toLocaleDateString("fa-IR")}`,
+      };
+      await updateDoc(doc(db, "tickets", selectedTicket.id), {
+        messages: arrayUnion(newMsg),
+        status: "در حال بررسی",
+        updatedAt: serverTimestamp(),
+      });
+      setReplyMessageText("");
+      toast.success("پاسخ شما در گفتگوی تیکت ثبت شد.");
+    } catch (err) {
+      console.error("خطای ثبت پاسخ:", err);
+      toast.error("خطا در ارسال پاسخ تیکت.");
     }
-
-    await updateDoc(ticketRef, {
-      adminReply: ticketReply.trim(),
-      status: "answered",
-      updatedAt: serverTimestamp(),
-    });
-
-    alert("پاسخ با موفقیت در مسیر درست ثبت شد.");
-    setSelectedTicket(null);
-    setTicketReply("");
-  } catch (err) {
-    console.error("خطای کامل ثبت:", err);
-    alert(`خطا: ${err.message}`);
-  }
-};
+  };
 
   const handleCreateOrder = async (e) => {
     e.preventDefault();
@@ -302,7 +324,8 @@ export default function DashboardPage() {
         description: "",
       });
       toast.success("درخواست مشاوره ثبت شد.");
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("خطا در ثبت درخواست.");
     }
   };

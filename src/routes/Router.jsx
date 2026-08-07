@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Route, Routes, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { db } from "../firebase/config";
+import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { FaSpinner } from "react-icons/fa";
 
