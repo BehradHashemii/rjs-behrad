@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import formatPersianDate from "../utils/formatPersianDate";
-import { FcDislike, FcLike } from "react-icons/fc";
 import { FaCopy, FaHeart, FaRegHeart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { isArticleLiked, toggleLikeArticle } from "../utils/storage";
@@ -8,7 +7,6 @@ import { toast, ToastContainer } from "react-toastify";
 
 function ArticleContent({ article, styles, contentRef }) {
   const [isLiked, setIsLiked] = useState(() => isArticleLiked(article?.id));
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const handleLikedChange = () => {
@@ -52,7 +50,7 @@ function ArticleContent({ article, styles, contentRef }) {
                   <a href={`/articles?tag=${encodeURIComponent(trimmedTag)}`}>
                     {trimmedTag}
                   </a>
-                  {index < array.length - 1 && " \، "}
+                  {index < array.length - 1 && " ، "}
                 </span>
               );
             })}

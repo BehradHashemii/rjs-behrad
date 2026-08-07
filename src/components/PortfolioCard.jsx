@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBookmark, FaExternalLinkAlt, FaGithub, FaRegBookmark } from "react-icons/fa";
-import { FiArrowUpLeft } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import Button from "./Button";
 import styles from "./PortfolioCard.module.css";
 import { isPortfolioSaved, toggleSavePortfolio } from "../utils/storage";
 

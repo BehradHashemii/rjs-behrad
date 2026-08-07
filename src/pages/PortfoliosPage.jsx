@@ -1,27 +1,32 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import portfoliosData from "../data/mockData.json";
 import Loading from "../components/Loading";
 
 import styles from "./PortfoliosPage.module.css";
 import PortfolioCard from "../components/PortfolioCard";
+import { getPortfoliosFromFirestore } from "../services/firestoreService";
 
 const ITEMS_PER_PAGE = 9;
 
 function PortfoliosPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = useState(true);
   const [portfolios, setPortfolios] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      setIsLoading(true);
+      const data = await getPortfoliosFromFirestore();
+      setPortfolios(data);
+      setIsLoading(false);
+    }
+    loadData();
+  }, []);
+
   const sortBy = searchParams.get("sortBy") || "desc";
   const tag = searchParams.get("tag") || "all";
   const page = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("search") || "";
-
-  useEffect(() => {
-    setIsLoading(true);
-    setPortfolios(portfoliosData.portfolios || []);
-    setIsLoading(false);
-  }, []);
 
   const uniqueCategories = useMemo(() => {
     if (!Array.isArray(portfolios)) return [];
