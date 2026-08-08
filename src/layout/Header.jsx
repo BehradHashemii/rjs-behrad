@@ -141,8 +141,6 @@ function Header() {
           />
         )}
       </div>
-
-      {/* Navigation Navbar */}
       <nav className={`${styles.navbar} glassBG ${open ? styles.open : ""}`}>
         {!open && (
           <TiThMenu

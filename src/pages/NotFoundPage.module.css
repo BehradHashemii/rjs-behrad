@@ -1,5 +1,4 @@
 .notFoundContainer {
-  min-height: calc(85vh - 100px);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -6,6 +6,7 @@ import {
   FaTicketAlt,
 } from "react-icons/fa";
 import styles from "../../pages/DashboardPage.module.css";
+import { RiSendInsFill } from "react-icons/ri";
 
 function getNormalizedMessages(ticket, defaultUserName = "کاربر") {
   if (!ticket) return [];
@@ -49,12 +50,6 @@ export default function TicketsTab({
 
   const messages = getNormalizedMessages(selectedTicket, userName);
 
-  useEffect(() => {
-    if (selectedTicket && chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [selectedTicket, messages.length]);
-
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -94,29 +89,35 @@ export default function TicketsTab({
           </button>
 
           <div className={styles.ticketHeaderCard}>
+            <div>
+              <h2 className={styles.thTitle}>{selectedTicket.title} - {selectedTicket.category && (
+                <span className={styles.tckCategory}>
+                  {selectedTicket.category}
+                </span>
+              )}</h2>
+              <p className={styles.thDate}>
+                تاریخ ثبت: {selectedTicket.date || "ثبت شده"} -
+              </p>
+            </div>
+
             <div className={styles.thTop}>
               <span className={styles.tckIdBadge}>
                 کد تیکت: {selectedTicket.id?.slice(0, 8)}
               </span>
-              <span className={`${styles.tckStatusBadge} ${
-                selectedTicket.status === "پاسخ داده شده"
-                  ? styles.statusAnswered
-                  : selectedTicket.status === "بسته شده"
+              <span className={`${styles.tckStatusBadge} ${selectedTicket.status === "پاسخ داده شده"
+                ? styles.statusAnswered
+                : selectedTicket.status === "بسته شده"
                   ? styles.statusClosed
                   : styles.statusPending
-              }`}>
-                {selectedTicket.status || "در حال بررسی"}
+                }`}>
+                {selectedTicket.status === "closed" ?
+                  "بسته شده" :
+                  selectedTicket.status === "answered" ? "پاسخ داده شده" :
+                    "درحال بررسی"}
               </span>
-              {selectedTicket.category && (
-                <span className={styles.tckCategory}>
-                  {selectedTicket.category}
-                </span>
-              )}
+
             </div>
-            <h3 className={styles.thTitle}>{selectedTicket.title}</h3>
-            <p className={styles.thDate}>
-              تاریخ ثبت: {selectedTicket.date || "ثبت شده"}
-            </p>
+
           </div>
 
           <div className={styles.threadMessages}>
@@ -128,19 +129,11 @@ export default function TicketsTab({
                 return (
                   <div
                     key={idx}
-                    className={`${styles.msgBubble} ${
-                      isUser ? styles.msgUser : styles.msgSupport
-                    }`}
+                    className={`${styles.msgBubble} ${isUser ? styles.msgUser : styles.msgSupport
+                      }`}
                   >
-                    <div className={styles.msgHeader}>
-                      <strong>
-                        {isUser
-                          ? msg.senderName || userName
-                          : msg.senderName || "پشتیبانی بهراد"}
-                      </strong>
-                      <span className={styles.msgTime}>{msg.time}</span>
-                    </div>
                     <p className={styles.msgText}>{msg.text}</p>
+                    <span className={styles.msgTime}>{msg.time}</span>
                   </div>
                 );
               })
@@ -151,7 +144,7 @@ export default function TicketsTab({
           <form onSubmit={onSendReply} className={styles.replyBox}>
             <textarea
               rows={2}
-              placeholder="پاسخ خود را بنویسید... (Enter برای ارسال)"
+              placeholder="بنویسید ..."
               value={replyMessageText}
               onChange={(e) => setReplyMessageText(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -161,8 +154,8 @@ export default function TicketsTab({
               className={styles.sendReplyBtn}
               disabled={!replyMessageText.trim()}
             >
-              <FaPaperPlane />
-              <span>ارسال پاسخ</span>
+              <span>ارسال</span>
+              <RiSendInsFill />
             </button>
           </form>
         </div>
@@ -192,20 +185,22 @@ export default function TicketsTab({
                   <div className={styles.tckMainInfo}>
                     <div className={styles.tckBadges}>
                       <span className={styles.tckCode}>{tck.id?.slice(0, 8)}</span>
-                      <span className={`${styles.tckStatus} ${
-                        tck.status === "پاسخ داده شده"
-                          ? styles.statusAnswered
-                          : tck.status === "بسته شده"
+                      <span className={`${styles.tckStatus} ${tck.status === "پاسخ داده شده"
+                        ? styles.statusAnswered
+                        : tck.status === "بسته شده"
                           ? styles.statusClosed
                           : styles.statusPending
-                      }`}>
-                        {tck.status || "در حال بررسی"}
+                        }`}>
+                        {tck.status === "closed" ?
+                          "بسته شده" :
+                          tck.status === "answered" ? "پاسخ داده شده" :
+                            "درحال بررسی"}
                       </span>
                       {tck.priority && <span className={styles.tckPri}>{tck.priority}</span>}
                     </div>
                     <h4 className={styles.tckTitleText}>{tck.title}</h4>
                     <p className={styles.tckLastMsg}>
-                      آخرین پیام: {lastMsg?.slice(0, 80)}{lastMsg?.length > 80 ? "..." : ""}
+                      آخرین پیام: {lastMsg}
                     </p>
                   </div>
                   <div className={styles.tckSideInfo}>

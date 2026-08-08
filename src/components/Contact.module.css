@@ -1,9 +1,6 @@
 .contactContainer {
-  margin: 20px auto;
+  margin: 0 auto 20px;
   width: 100%;
-  @media (max-width: 899px) {
-    width: calc(100% - 24px);
-  }
 }
 
 .headerSection {
@@ -223,7 +220,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 
 @media (max-width: 899px) {
   .contactGrid {

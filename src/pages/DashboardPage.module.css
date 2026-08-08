@@ -1,14 +1,6 @@
 .dashboardPage {
-  min-height: calc(100vh - 120px);
-  padding: 32px 0 60px 0;
-  direction: rtl;
-  color: var(--text-primary);
-}
-
-.container {
-  width: 92%;
-  max-width: 1240px;
-  margin: 0 auto;
+  margin: 0 auto 20px;
+  width: 100%;
 }
 
 .unauthCard {
@@ -434,11 +426,10 @@
 }
 
 .contentArea {
-  padding: 28px;
-  border-radius: var(--radius-lg);
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  /* border-radius: var(--radius-lg); */
+  /* background: var(--glass-bg); */
+  /* backdrop-filter: blur(16px); */
+  /* border: 1px solid var(--glass-border); */
   min-height: 480px;
 }
 
@@ -1013,12 +1004,14 @@
 }
 
 .tckMainInfo {
+  width: 60%;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
 .tckBadges {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1058,9 +1051,15 @@
 }
 
 .tckLastMsg {
+  display: -webkit-box;
   font-size: 0.8rem;
   color: var(--text-secondary);
   margin: 0;
+  overflow: hidden;
+  font-weight: 400;
+  text-align: right;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .tckSideInfo {
@@ -1106,17 +1105,23 @@
 }
 
 .ticketHeaderCard {
-  padding: 20px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
+  /* padding: 20px; */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* flex-direction: ; */
 }
 
 .thTop {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+  /* justify-content: right; */
   gap: 10px;
   margin-bottom: 8px;
+  margin-top: 8px;
 }
 
 .thTitle {
@@ -1138,7 +1143,7 @@
   gap: 12px;
   max-height: 380px;
   overflow-y: auto;
-  padding-right: 4px;
+  /* padding: 4px; */
 }
 
 .msgBubble {
@@ -1150,19 +1155,17 @@
 .msgUser {
   align-self: flex-start;
   background: var(--primary-soft);
-  border: 1px solid var(--primary-border);
   color: var(--text-primary);
   border-radius: 25px;
-  border-bottom-right-radius: 0px;
+  border-bottom-right-radius: 5px;
 }
 
 .msgSupport {
   align-self: flex-end;
   background: rgba(16, 185, 129, 0.18);
-  border: 1px solid rgba(16, 185, 129, 0.3);
   color: var(--text-primary);
   border-radius: 25px;
-  border-bottom-left-radius: 0px;
+  border-bottom-left-radius: 5px;
 }
 
 .msgHeader {
@@ -1450,7 +1453,29 @@
 
   .profileBanner {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .bannerLeft {
+    flex-direction: column;
+  }
+
+  .nameRow,
+  .profileMeta {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 10px auto;
+  }
+
+  .dotSeparator {
+    display: none;
+  }
+
+  .ticketHeaderCard {
+    display: flex;
+    /* flex-direction: column; */
   }
 
   .profileFormGrid {

@@ -33,7 +33,7 @@ import {
 } from "firebase/firestore";
 
 import { getArticlesFromFirestore, getPortfoliosFromFirestore } from "../services/firestoreService";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 
 // کامپوننت‌های فرعی تفکیک‌شده
@@ -44,6 +44,7 @@ import TicketsTab from "../components/dashboard/TicketsTab";
 import OrdersTab from "../components/dashboard/OrdersTab";
 import NewTicketModal from "../components/dashboard/NewTicketModal";
 import NewOrderModal from "../components/dashboard/NewOrderModal";
+import Loading from "../components/Loading";
 
 const AVATAR_PRESETS = [
   "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
@@ -357,10 +358,7 @@ export default function DashboardPage() {
 
   if (authLoading) {
     return (
-      <div style={{ textAlign: "center", padding: "100px 0", color: "#fff" }}>
-        <FaSpinner className="spinIcon" style={{ fontSize: "2rem" }} />
-        <p style={{ marginTop: "10px" }}>در حال دریافت اطلاعات...</p>
-      </div>
+      <Loading></Loading>
     );
   }
 
@@ -551,7 +549,7 @@ export default function DashboardPage() {
           </aside>
 
           {/* Main Content Render */}
-          <main className={`${styles.contentArea} glassBG`}>
+          <main className={`${styles.contentArea}`}>
             {activeTab === "overview" && (
               <OverviewTab
                 user={user}
@@ -625,6 +623,7 @@ export default function DashboardPage() {
         setNewOrderData={setNewOrderData}
         onCreateOrder={handleCreateOrder}
       />
+      <ToastContainer rtl position="top-center" />
     </div>
   );
 }

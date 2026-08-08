@@ -234,7 +234,7 @@ export default function LoginModal({ isOpen, onClose }) {
               <div className={styles.metaRow}>
                 <span>نقش کاربری:</span>
                 <span style={{ fontWeight: "700", color: "#1e293b" }}>
-                  {isAdmin ? "مدیر سیستم (Admin)" : "کاربر عمومی"}
+                  {isAdmin ? "مدیر سیستم" : "کاربر عمومی"}
                 </span>
               </div>
             </div>
