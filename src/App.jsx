@@ -10,13 +10,13 @@ import ScrollToTop from "./components/ScrollToTop";
 import "./App.css";
 
 function App() {
-  useEffect(() => {
-    document.documentElement.dir = "ltr"; // اگر صفحه ادمن LTR است
+  // useEffect(() => {
+  //   document.documentElement.dir = "ltr"; // اگر صفحه ادمن LTR است
 
-    return () => {
-      document.documentElement.dir = "rtl"; // موقع خروج دوباره RTL می‌شود
-    };
-  }, []);
+  //   return () => {
+  //     document.documentElement.dir = "rtl"; // موقع خروج دوباره RTL می‌شود
+  //   };
+  // }, []);
   return (
     <>
       <ScrollToTop />
