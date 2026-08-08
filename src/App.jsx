@@ -11,7 +11,7 @@ import "./App.css";
 
 function App() {
   useEffect(() => {
-    document.documentElement.dir = "ltr"; // اگر صفحه ادمن LTR است
+    document.documentElement.dir = "rtl"; // اگر صفحه ادمن LTR است
 
     return () => {
       document.documentElement.dir = "rtl"; // موقع خروج دوباره RTL می‌شود
