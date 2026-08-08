@@ -5,7 +5,7 @@ import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { FaSpinner } from "react-icons/fa";
 
-const HomePage = lazy(() => import("../pages/HomePage"));
+import HomePage from "../pages/HomePage";
 import PortfoliosPage from "../pages/PortfoliosPage";
 import ArticlesPage from "../pages/ArticlesPage";
 import ArticleDetailsPage from "../pages/ArticleDetailsPage";
@@ -60,27 +60,21 @@ function AdminRoute() {
 
 function Router() {
   return (
-    <Suspense
-      fallback={
-        <Loading />
-      }
-    >
-      <Routes>
-        <Route element={<HomePage />} path="/" />
-        <Route element={<PortfoliosPage />} path="/portfolios" />
-        <Route element={<ArticlesPage />} path="/articles" />
-        <Route element={<ArticleDetailsPage />} path="/articles/:slug" />
-        <Route element={<ContactPage />} path="/contact" />
-        <Route element={<SavedPage />} path="/saved" />
-        <Route element={<ProtectedRoute />}>
-          <Route element={<DashboardPage />} path="/dashboard" />
-        </Route>
-        <Route element={<AdminRoute />}>
-          <Route element={<AdminPage />} path="/admin" />
-        </Route>
-        <Route element={<NotFoundPage />} path="*" />
-      </Routes>
-    </Suspense>
+    <Routes>
+      <Route element={<HomePage />} path="/" />
+      <Route element={<PortfoliosPage />} path="/portfolios" />
+      <Route element={<ArticlesPage />} path="/articles" />
+      <Route element={<ArticleDetailsPage />} path="/articles/:slug" />
+      <Route element={<ContactPage />} path="/contact" />
+      <Route element={<SavedPage />} path="/saved" />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardPage />} path="/dashboard" />
+      </Route>
+      <Route element={<AdminRoute />}>
+        <Route element={<AdminPage />} path="/admin" />
+      </Route>
+      <Route element={<NotFoundPage />} path="*" />
+    </Routes>
   );
 }
 
