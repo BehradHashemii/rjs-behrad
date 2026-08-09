@@ -1,0 +1,6 @@
+.router {
+  padding: 12px 10rem;
+  @media (max-width: 900px) {
+    padding: 12px 10px;
+  }
+}

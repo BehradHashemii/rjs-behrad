@@ -9,7 +9,7 @@ import styles from "./Footer.module.css";
 
 function Footer() {
   return (
-    <footer className={`${styles.footer}`}>
+    <footer className={`${styles.footer} glassBG`}>
       <div className={styles.footerContainer}>
         <div className={styles.brand}>
           <h2>

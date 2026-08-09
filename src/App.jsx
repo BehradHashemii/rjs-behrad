@@ -7,22 +7,15 @@ import Footer from "./layout/Footer";
 
 import ScrollToTop from "./components/ScrollToTop";
 
-import "./App.css";
+import styles from "./App.module.css";
 
 function App() {
-  useEffect(() => {
-    document.documentElement.dir = "rtl"; // اگر صفحه ادمن LTR است
-
-    return () => {
-      document.documentElement.dir = "rtl"; // موقع خروج دوباره RTL می‌شود
-    };
-  }, []);
   const alert = {
     msg: "دیتابیس سایت به firebase متصل است. لطفا برای احراز هویت از فیلترشکن استفاده کنید.",
     type: "info", // type: info:#3498db, alert:#e74d3c, warning:#f1c40f
   }
   return (
-    <>
+    <div style={{ direction: "rtl" }}>
       <ScrollToTop />
       <marquee style={{
         width: "100%",
@@ -38,14 +31,14 @@ function App() {
         padding: "5px",
         fontSize: "18px",
       }} scrollamount="10">
-      {alert.msg}
-    </marquee >
+        {alert.msg}
+      </marquee >
       <Header />
-      <div style={{ padding: "12px 10rem" }}>
+      <div className={styles.router}>
         <Router />
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

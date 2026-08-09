@@ -985,12 +985,12 @@ export default function AdminPage() {
                                 <div className={styles.filterBox}>
                                     <FaFilter />
                                     <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
-                                        <option value="all">همه نقش‌ها ({users.length})</option>
+                                        <option value="all">همه نقش‌ها ({e2p(users.length)})</option>
                                         <option value="admin">
-                                            مدیران ({users.filter((u) => u.role === "admin").length})
+                                            مدیران ({e2p(users.filter((u) => u.role === "admin").length)})
                                         </option>
                                         <option value="user">
-                                            کاربران عادی ({users.filter((u) => u.role !== "admin").length})
+                                            کاربران عادی ({e2p(users.filter((u) => u.role !== "admin").length)})
                                         </option>
                                     </select>
                                 </div>

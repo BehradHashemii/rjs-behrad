@@ -3,7 +3,10 @@
   top: 0;
   z-index: 1000;
   width: 100%;
-  padding: 10px 0 14px;
+  padding: 10px 8px 14px;
+  @media (max-width: 900px) {
+    padding: 10px 0px 14px;
+  }
 }
 
 .topHeader,
@@ -12,6 +15,7 @@
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-full);
   box-shadow: var(--glass-shadow);
 }
 
@@ -21,7 +25,6 @@
   align-items: center;
   gap: 12px;
   padding: 8px 14px;
-  /* border-radius: var(--radius-full); */
   transition: box-shadow var(--transition-fast);
 }
 
