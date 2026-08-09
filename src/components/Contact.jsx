@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import styles from "./Contact.module.css";
 import e2p from "../utils/persianNumber";
+import { RiSendInsFill } from "react-icons/ri";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -196,7 +197,7 @@ function Contact() {
                 ) : (
                   <>
                     <span>ارسال پیام</span>
-                    <FaPaperPlane className={styles.sendIcon} />
+                    <RiSendInsFill className={styles.sendIcon} />
                   </>
                 )}
               </button>

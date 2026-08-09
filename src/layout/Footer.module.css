@@ -2,6 +2,11 @@
   margin: 20px auto;
   padding: 36px 32px;
   width: 100%;
+  margin: 0 auto;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
   @media (max-width: 899px) {
     width: calc(100% - 24px);
   }
@@ -11,7 +16,6 @@
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
   gap: 60px;
-  max-width: 1400px;
   margin: 0 auto;
 
   @media (max-width: 900px) {

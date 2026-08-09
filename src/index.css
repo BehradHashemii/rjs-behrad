@@ -121,7 +121,6 @@ html {
 
 body {
   width: 100%;
-  max-width: var(--container-max-width);
   min-width: 320px;
   min-height: 100vh;
   margin: 0 auto;

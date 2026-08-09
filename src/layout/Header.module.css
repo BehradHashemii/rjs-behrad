@@ -21,7 +21,7 @@
   align-items: center;
   gap: 12px;
   padding: 8px 14px;
-  border-radius: var(--radius-full);
+  /* border-radius: var(--radius-full); */
   transition: box-shadow var(--transition-fast);
 }
 
@@ -405,7 +405,7 @@
   justify-content: space-between;
   margin-top: 16px;
   padding: 8px 12px;
-  border-radius: var(--radius-full);
+  /* border-radius: var(--radius-full); */
 }
 
 .navbar ul {

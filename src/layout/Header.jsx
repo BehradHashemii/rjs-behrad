@@ -50,7 +50,7 @@ function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={`${styles.topHeader} glassBG`}>
+      <div className={`${styles.topHeader}`}>
         <Link to="/">
           <div className={styles.title}>
             <img src="/logo2.png" alt="Behrad-logo" />
@@ -141,7 +141,7 @@ function Header() {
           />
         )}
       </div>
-      <nav className={`${styles.navbar} glassBG ${open ? styles.open : ""}`}>
+      <nav className={`${styles.navbar} ${open ? styles.open : ""}`}>
         {!open && (
           <TiThMenu
             color="#fff"
