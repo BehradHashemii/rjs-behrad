@@ -213,7 +213,7 @@ export default function LoginModal({ isOpen, onClose }) {
           <div className={styles.profileContainer}>
             <div className={styles.avatarWrapper}>
               <img
-                src={currentUser.photoURL || "/logo2.png"}
+                src={currentUser.avatar || "/logo2.png"}
                 alt={currentUser.displayName || "User Avatar"}
                 className={styles.profileAvatar}
               />
@@ -234,7 +234,7 @@ export default function LoginModal({ isOpen, onClose }) {
               <div className={styles.metaRow}>
                 <span>نقش کاربری:</span>
                 <span style={{ fontWeight: "700", color: "#1e293b" }}>
-                  {isAdmin ? "مدیر سیستم" : "کاربر عمومی"}
+                  {isAdmin ? "مدیر" : "کاربر عمومی"}
                 </span>
               </div>
             </div>

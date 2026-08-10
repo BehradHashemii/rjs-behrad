@@ -30,7 +30,7 @@ function App() {
         // borderRadius: "25px",
         padding: "5px",
         fontSize: "18px",
-      }} scrollamount="10">
+      }} scrollamount="10" direction="right">
         {alert.msg}
       </marquee >
       <Header />
@@ -38,7 +38,7 @@ function App() {
         <Router />
       </div>
       <Footer />
-    </div>
+    </div >
   );
 }
 

@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
             name: firebaseUser.displayName || firebaseUser.email.split("@")[0],
             email: firebaseUser.email,
             phone: firebaseUser.phoneNumber || "۰۹۱۲۳۴۵۶۷۸۹",
-            role: "کاربر ویژه",
+            role: "admin",
             avatar: firebaseUser.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
             joinedDate: new Date().toLocaleDateString("fa-IR"),
           };
@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
           email: firebaseUser.email,
           name: firestoreProfile.name || firebaseUser.displayName || "کاربر بهراد",
           phone: firestoreProfile.phone || "۰۹۱۲۳۴۵۶۷۸۹",
-          role: firestoreProfile.role || "کاربر ویژه",
+          role: firestoreProfile.role || "admin",
           avatar: firestoreProfile.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
           joinedDate: firestoreProfile.joinedDate || new Date().toLocaleDateString("fa-IR"),
           bio: firestoreProfile.bio || "",
@@ -86,7 +86,7 @@ export function AuthProvider({ children }) {
       name: fullName || email.split("@")[0],
       email: firebaseUser.email,
       phone: "۰۹۱۲۳۴۵۶۷۸۹",
-      role: "کاربر ویژه",
+      role: "admin",
       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
       joinedDate: new Date().toLocaleDateString("fa-IR"),
     };

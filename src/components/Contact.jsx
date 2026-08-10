@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  FaPaperPlane,
   FaPhoneAlt,
   FaEnvelope,
   FaMapMarkerAlt,
@@ -10,6 +9,10 @@ import {
 import styles from "./Contact.module.css";
 import e2p from "../utils/persianNumber";
 import { RiSendInsFill } from "react-icons/ri";
+
+// وارد کردن دیتابیس و توابع فایربیس
+import { db } from "../firebase"; // مسیر فایل firebase.js خود را بررسی کنید
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -33,7 +36,7 @@ function Contact() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
@@ -53,11 +56,26 @@ function Contact() {
 
     setStatus({ submitting: true, submitted: false, error: "" });
 
-    // Simulate form submission delay
-    setTimeout(() => {
+    try {
+      // ذخیره سند جدید در کالکشن messages دیتابیس Firestore
+      await addDoc(collection(db, "messages"), {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        createdAt: serverTimestamp(),
+      });
+
       setStatus({ submitting: false, submitted: true, error: "" });
       setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 1200);
+    } catch (err) {
+      console.error("خطا در ثبت اطلاعات در فایربیس:", err);
+      setStatus({
+        submitting: false,
+        submitted: false,
+        error: "خطا در ارسال پیام. لطفاً تنظیمات فایربیس یا اتصال اینترنت خود را بررسی کنید.",
+      });
+    }
   };
 
   return (

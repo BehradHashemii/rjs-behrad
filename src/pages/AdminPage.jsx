@@ -354,7 +354,7 @@ export default function AdminPage() {
         try {
             const newRole = currentRole === "admin" ? "user" : "admin";
             await updateDoc(doc(db, "users", userId), { role: newRole });
-            toast.success(`نقش کاربر به ${newRole === "admin" ? "مدیر سیستم" : "کاربر عادی"} تغییر یافت.`);
+            toast.success(`نقش کاربر به ${newRole === "admin" ? "مدیر" : "کاربر عادی"} تغییر یافت.`);
         } catch (err) {
             console.error(err);
             toast.error("تغییر نقش با خطا مواجه شد.");
@@ -1044,7 +1044,7 @@ export default function AdminPage() {
                                                                     : styles.userBadge
                                                             }
                                                         >
-                                                            {u.role === "admin" ? "مدیر سیستم" : "کاربر عادی"}
+                                                            {u.role === "admin" ? "مدیر" : "کاربر عادی"}
                                                         </span>
                                                     </td>
                                                     <td>
@@ -1158,7 +1158,7 @@ export default function AdminPage() {
                                                         }
                                                     >
                                                         <option value="user">کاربر عادی</option>
-                                                        <option value="admin">مدیر سیستم (Admin)</option>
+                                                        <option value="admin">مدیر (Admin)</option>
                                                     </select>
                                                 </div>
 
@@ -1247,7 +1247,7 @@ export default function AdminPage() {
                                                         }
                                                     >
                                                         <option value="user">کاربر عادی</option>
-                                                        <option value="admin">مدیر سیستم (Admin)</option>
+                                                        <option value="admin">مدیر (Admin)</option>
                                                     </select>
                                                 </div>
 
@@ -1335,7 +1335,7 @@ export default function AdminPage() {
                                                                 : styles.userBadge
                                                         }
                                                     >
-                                                        {userToDelete.role === "admin" ? "مدیر سیستم" : "کاربر عادی"}
+                                                        {userToDelete.role === "admin" ? "مدیر" : "کاربر عادی"}
                                                     </span>
                                                 </div>
                                             </div>
