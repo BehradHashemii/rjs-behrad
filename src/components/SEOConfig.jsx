@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
  * Dynamic route-aware SEO metadata manager using react-helmet-async
  */
 export default function SEOConfig({
-  title = "پورتفولیو و نمونه کارهای برنامه نویسی | Behrad Profile",
+  title = "پورتفولیو و نمونه کارهای برنامه نویسی | behrad Profile",
   description = "پورتفولیو شخصی، ارائه دهنده نمونه کارها، مقالات تخصصی برنامه‌نویسی و وب، مهارت‌ها و خدمات طراحی وبسایت.",
   keywords = "برنامه‌نویسی, طراحی وب, ری‌اکت, فرانت‌اند, پورتفولیو, React, Web Development",
   ogTitle,
@@ -17,30 +17,30 @@ export default function SEOConfig({
   robots,
   noIndex = false,
   canonical,
-  author = "Behrad",
+  author = "behrad",
   schema,
 }) {
   const location = useLocation();
 
   // Dynamic origin calculation safely handling SSR/browser environment
-  const origin = typeof window !== "undefined" && window.location.origin 
-    ? window.location.origin 
+  const origin = typeof window !== "undefined" && window.location.origin
+    ? window.location.origin
     : "";
 
   // Dynamic canonical URL based on current router location
-  const currentCanonical = canonical 
+  const currentCanonical = canonical
     ? (canonical.startsWith("http") ? canonical : `${origin}${canonical}`)
     : `${origin}${location.pathname}`;
 
   // Formatted page title
-  const formattedTitle = title.includes("Behrad") || title.includes("پورتفولیو") 
-    ? title 
-    : `${title} | Behrad Profile`;
+  const formattedTitle = title.includes("behrad") || title.includes("پورتفولیو")
+    ? title
+    : `${title} | behrad Profile`;
 
   const metaDescription = description;
   const currentOgTitle = ogTitle || formattedTitle;
   const currentOgDesc = ogDescription || metaDescription;
-  
+
   // Resolve absolute image URL if relative path provided
   const absoluteOgImage = ogImage.startsWith("http")
     ? ogImage
@@ -58,9 +58,9 @@ export default function SEOConfig({
       <title>{formattedTitle}</title>
       <meta name="description" content={metaDescription} />
       {keywords && (
-        <meta 
-          name="keywords" 
-          content={Array.isArray(keywords) ? keywords.join(", ") : keywords} 
+        <meta
+          name="keywords"
+          content={Array.isArray(keywords) ? keywords.join(", ") : keywords}
         />
       )}
       <meta name="author" content={author} />
@@ -72,7 +72,7 @@ export default function SEOConfig({
       {currentCanonical && <link rel="canonical" href={currentCanonical} />}
 
       {/* Open Graph / Social Media Cards */}
-      <meta property="og:site_name" content="Behrad Profile" />
+      <meta property="og:site_name" content="behrad Profile" />
       <meta property="og:type" content={ogType} />
       <meta property="og:title" content={currentOgTitle} />
       <meta property="og:description" content={currentOgDesc} />

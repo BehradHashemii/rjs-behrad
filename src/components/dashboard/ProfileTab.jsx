@@ -34,9 +34,8 @@ export default function ProfileTab({
                 key={i}
                 src={url}
                 alt={`Avatar ${i}`}
-                className={`${styles.presetImg} ${
-                  profileForm.avatar === url ? styles.presetSelected : ""
-                }`}
+                className={`${styles.presetImg} ${profileForm.avatar === url ? styles.presetSelected : ""
+                  }`}
                 onClick={() =>
                   setProfileForm({ ...profileForm, avatar: url })
                 }

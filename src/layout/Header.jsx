@@ -53,7 +53,7 @@ function Header() {
       <div className={`${styles.topHeader}`}>
         <Link to="/">
           <div className={styles.title}>
-            <img src="/logo2.png" alt="Behrad-logo" />
+            <img src="/logo2.png" alt="behrad-logo" />
             <h1>بهـــــراد</h1>
           </div>
         </Link>

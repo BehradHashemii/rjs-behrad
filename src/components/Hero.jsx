@@ -98,7 +98,7 @@ function Hero() {
 
             <div className={styles.socialLinks}>
               <a
-                href="https://github.com/BehradHashemii"
+                href="https://github.com/behradHashemii"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="گیت‌هاب"

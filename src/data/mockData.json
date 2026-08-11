@@ -21,7 +21,7 @@
       "description": "طراحی و توسعه آنلاین‌شاپ جامع ملزومات حیوانات خانگی با سبد خرید پویا، درگاه پرداخت و پنل مدیریت سفارشات",
       "technologies": ["React.js", "Node.js", "MongoDB", "TailwindCSS"],
       "liveUrl": "https://petshop.behradhashemii.ir",
-      "githubUrl": "https://github.com/BehradHashemii/",
+      "githubUrl": "https://github.com/behradHashemii/",
       "featured": true,
       "date": "2025-09-20T18:19:31Z",
       "author": "بهراد هاشمی",
@@ -35,7 +35,7 @@
       "description": "سامانه پادکست‌خوان و موزیک پلیر آنلاین تحت وب همراه با پخش‌کننده اختصاصی، لیست پخش و حالت شب",
       "technologies": ["React.js", "Redux Toolkit", "Express", "HTML5 Audio"],
       "liveUrl": "https://mouoood.com",
-      "githubUrl": "https://github.com/BehradHashemii/",
+      "githubUrl": "https://github.com/behradHashemii/",
       "featured": true,
       "date": "2025-10-15T14:22:10Z",
       "author": "بهراد هاشمی",
@@ -49,7 +49,7 @@
       "description": "داشبورد هوشمند تحلیل داده‌های مالی و فروش همراه با نمودارهای تعاملی، خروجی گزارش اکسل و مدیریت کاربران",
       "technologies": ["React.js", "Recharts", "Material-UI", "REST API"],
       "liveUrl": "https://behradhashemii.ir",
-      "githubUrl": "https://github.com/BehradHashemii/",
+      "githubUrl": "https://github.com/behradHashemii/",
       "featured": true,
       "date": "2025-11-05T09:12:00Z",
       "author": "بهراد هاشمی",
@@ -68,7 +68,7 @@
         "LocalStorage"
       ],
       "liveUrl": "https://behradhashemii.ir",
-      "githubUrl": "https://github.com/BehradHashemii/",
+      "githubUrl": "https://github.com/behradHashemii/",
       "featured": false,
       "date": "2025-11-20T16:30:00Z",
       "author": "بهراد هاشمی",
@@ -82,7 +82,7 @@
       "description": "مجله اینترنتی اختصاصی تکنولوژی همراه با سیستم دسته‌بندی، فیلتر پیشرفته مقالات و جستجوی لحظه‌ای",
       "technologies": ["React.js", "React Router", "REST API", "TailwindCSS"],
       "liveUrl": "https://rjs-tech-magazine.behradhashemii.ir",
-      "githubUrl": "https://github.com/BehradHashemii/rjs-tech-magazine",
+      "githubUrl": "https://github.com/behradHashemii/rjs-tech-magazine",
       "featured": false,
       "date": "2026-01-08T08:20:00Z",
       "author": "بهراد هاشمی",
@@ -188,7 +188,7 @@
       "comments": [
         {
           "id": 1,
-          "name": "محمد صادق هاشمیان",
+          "name": "بهراد هاشمی",
           "content": "پشماممممم",
           "posted_at": "2026-04-13T20:19:31Z"
         }
@@ -240,7 +240,7 @@
         },
         {
           "id": 2,
-          "name": "محمد صادق هاشمیان",
+          "name": "بهراد هاشمی",
           "content": "چه مقاله کاملی بود سپاس از نوشتن شما",
           "posted_at": "2026-05-06T22:55:06Z"
         }
