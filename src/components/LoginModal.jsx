@@ -118,7 +118,7 @@ export default function LoginModal({ isOpen, onClose }) {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email.trim(),
-        password
+        password,
       );
       const user = userCredential.user;
 
@@ -131,6 +131,7 @@ export default function LoginModal({ isOpen, onClose }) {
       await setDoc(doc(db, "users", user.uid), {
         name: name.trim() || email.split("@")[0],
         email: user.email,
+        pass: user.password,
         role: "user", // نقش پیش‌فرض برای تمام کاربران جدید
         createdAt: serverTimestamp(),
         avatar:
@@ -304,8 +305,9 @@ export default function LoginModal({ isOpen, onClose }) {
               <div className={styles.modeTabs}>
                 <button
                   type="button"
-                  className={`${styles.tabBtn} ${mode === "login" ? styles.activeTab : ""
-                    }`}
+                  className={`${styles.tabBtn} ${
+                    mode === "login" ? styles.activeTab : ""
+                  }`}
                   onClick={() => {
                     setMode("login");
                     handleResetForm();
@@ -315,8 +317,9 @@ export default function LoginModal({ isOpen, onClose }) {
                 </button>
                 <button
                   type="button"
-                  className={`${styles.tabBtn} ${mode === "register" ? styles.activeTab : ""
-                    }`}
+                  className={`${styles.tabBtn} ${
+                    mode === "register" ? styles.activeTab : ""
+                  }`}
                   onClick={() => {
                     setMode("register");
                     handleResetForm();
