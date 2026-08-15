@@ -1,21 +1,13 @@
 .Carts {
-  margin: 20px auto;
-  padding: 36px 32px;
+  margin: 0 auto 36px;
+  padding: 36px 0;
   width: 100%;
-  z-index: 2;
-  @media (max-width: 899px) {
-    width: calc(100% - 24px);
-  }
 }
-
-/* Header */
 
 .header {
   position: relative;
   z-index: 2;
-
   margin-bottom: 45px;
-
   text-align: center;
 }
 
