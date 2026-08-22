@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import articlesData from "../data/mockData.json";
+// ۱. فایل mockData رو پاک کردیم و axiosInstance رو ایمپورت کردیم
+import api from "../utils/axiosInstance"; 
 import Loading from "../components/Loading";
-
 import styles from "./PortfoliosPage.module.css";
 import ArticleCard from "../components/ArticleCard";
 import e2p from "../utils/persianNumber";
@@ -22,11 +22,31 @@ function ArticlesPage() {
   const searchQuery = searchParams.get("search") || "";
 
   useEffect(() => {
-    setIsLoading(true);
+    // ۲. تابع گرفتن دیتا از بک‌اند
+    const fetchArticles = async () => {
+      setIsLoading(true);
+      try {
+        const response = await api.get('/articles');
+        
+        // ۳. تطبیق دیتای بک‌اند با ساختاری که فرانت‌اندت نیاز داره
+        const formattedData = response.data.map(item => ({
+          ...item,
+          id: item._id, // مونگو دی‌بی _id میده
+          date: item.createdAt, // تاریخ ایجاد مقاله
+          description: item.content, // فعلا متن اصلی رو جای توضیحات میذاریم
+          tags: item.tags || "عمومی", // اگر تگ نداشت مقدار دیفالت بگیره
+        }));
 
-    setArticles(articlesData.articles || []);
-    setIsLoading(false);
-  }, []);
+        setArticles(formattedData);
+      } catch (error) {
+        console.error("خطا در دریافت مقالات:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []); // فقط یک بار موقع لود صفحه اجرا میشه
 
   const uniqueCategories = useMemo(() => {
     if (!Array.isArray(articles)) return [];

@@ -4,12 +4,12 @@ import { useParams } from "react-router-dom";
 import ArticleRelated from "./ArticleRelated";
 import ArticleContent from "./ArticleContent";
 import Loading from "../components/Loading";
-
-import articlesData from "../data/mockData.json";
+import api from "../utils/axiosInstance"; // ارتباط با بک‌اند اضافه شد
 
 import styles from "./ArticleDetailsPage.module.css";
 
 function ArticleDetailsPage() {
+  // این slug در واقع همون آیدی مونگو دی‌بی هست که از url میگیریم
   const { slug } = useParams();
 
   const [article, setArticle] = useState(null);
@@ -19,50 +19,83 @@ function ArticleDetailsPage() {
   const contentRef = useRef(null);
 
   useEffect(() => {
-    setIsLoading(true);
+    const fetchArticleData = async () => {
+      setIsLoading(true);
+      try {
+        // گرفتن کل مقالات از بک‌اند
+        const response = await api.get("/articles");
 
-    const articles = articlesData.articles || [];
+        // تطبیق دیتای سرور با ساختاری که کامپوننت‌های تو نیاز دارن
+        const formattedArticles = response.data.map((item) => ({
+          ...item,
+          id: item._id,
+          date: item.createdAt,
+          description: item.content, // محتوا رو میریزیم تو description
+          image: item.coverImage,
+          tags: item.tags || "عمومی",
+          slug: item._id, // آیدی رو به عنوان اسلاگ استفاده می‌کنیم
+          author: "بهراد هاشمی", // فعلا نام رو دستی میدیم
+        }));
 
-    const foundArticle = articles.find((item) => item.slug === slug);
+        // پیدا کردن مقاله فعلی بر اساس آیدی (slug)
+        const foundArticle = formattedArticles.find(
+          (item) => item.slug === slug,
+        );
 
-    if (!foundArticle) {
-      setArticle(null);
-      setRelatedArticles([]);
-      setIsLoading(false);
-      return;
-    }
+        if (!foundArticle) {
+          setArticle(null);
+          setRelatedArticles([]);
+          setIsLoading(false);
+          return;
+        }
 
-    const currentTags =
-      foundArticle.tags
-        ?.split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean) || [];
-
-    const related = articles
-      .filter((item) => {
-        if (item.id === foundArticle.id) return false;
-
-        const articleTags =
-          item.tags
+        // استخراج تگ‌ها برای پیدا کردن مقالات مرتبط
+        const currentTags =
+          foundArticle.tags
             ?.split(",")
             .map((tag) => tag.trim())
             .filter(Boolean) || [];
 
-        return articleTags.some((tag) => currentTags.includes(tag));
-      })
-      .slice(0, 4);
+        // پیدا کردن ۴ مقاله مرتبط
+        const related = formattedArticles
+          .filter((item) => {
+            if (item.id === foundArticle.id) return false;
 
-    setArticle(foundArticle);
-    setRelatedArticles(related);
-    setIsLoading(false);
-  }, [slug]);
+            const articleTags =
+              item.tags
+                ?.split(",")
+                .map((tag) => tag.trim())
+                .filter(Boolean) || [];
+
+            return articleTags.some((tag) => currentTags.includes(tag));
+          })
+          .slice(0, 4);
+
+        setArticle(foundArticle);
+        setRelatedArticles(related);
+      } catch (error) {
+        console.error("خطا در دریافت اطلاعات مقاله:", error);
+        setArticle(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchArticleData();
+  }, [slug]); // هر بار که روی مقاله مرتبط کلیک بشه و slug عوض بشه، دیتا آپدیت میشه
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (!article) {
-    return <p>مقاله مورد نظر پیدا نشد.</p>;
+    return (
+      <div className={styles.container}>
+        <p style={{ textAlign: "center", marginTop: "50px" }}>
+          مقاله مورد نظر پیدا نشد.
+        </p>
+      </div>
+    );
   }
 
   return (

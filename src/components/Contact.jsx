@@ -40,17 +40,29 @@ function Contact() {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      setStatus({ submitting: false, submitted: false, error: "لطفاً نام و نام خانوادگی خود را وارد کنید." });
+      setStatus({
+        submitting: false,
+        submitted: false,
+        error: "لطفاً نام و نام خانوادگی خود را وارد کنید.",
+      });
       return;
     }
 
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-      setStatus({ submitting: false, submitted: false, error: "لطفاً یک آدرس ایمیل معتبر وارد کنید." });
+      setStatus({
+        submitting: false,
+        submitted: false,
+        error: "لطفاً یک آدرس ایمیل معتبر وارد کنید.",
+      });
       return;
     }
 
     if (!formData.message.trim()) {
-      setStatus({ submitting: false, submitted: false, error: "لطفاً متن پیام خود را بنویسید." });
+      setStatus({
+        submitting: false,
+        submitted: false,
+        error: "لطفاً متن پیام خود را بنویسید.",
+      });
       return;
     }
 
@@ -73,7 +85,8 @@ function Contact() {
       setStatus({
         submitting: false,
         submitted: false,
-        error: "خطا در ارسال پیام. لطفاً تنظیمات فایربیس یا اتصال اینترنت خود را بررسی کنید.",
+        error:
+          "خطا در ارسال پیام. لطفاً تنظیمات فایربیس یا اتصال اینترنت خود را بررسی کنید.",
       });
     }
   };
@@ -81,7 +94,7 @@ function Contact() {
   return (
     <section className={styles.contactContainer}>
       <div className={`${styles.headerSection} glassBG`}>
-        <h2 className={styles.title}>تماس با ما</h2>
+        <h2 className={styles.title}>تماس با من</h2>
         <p className={styles.subtitle}>
           خوشحال می‌شوم نظرات، پیشنهادات یا سوالات خود را با من در میان بگذارید.
         </p>
@@ -109,7 +122,10 @@ function Contact() {
             <div>
               <h3>پست الکترونیکی</h3>
               <p>behrahashemi1386@gmail.com</p>
-              <a href="mailto:behrahashemi1386@gmail.com" className={styles.actionLink}>
+              <a
+                href="mailto:behrahashemi1386@gmail.com"
+                className={styles.actionLink}
+              >
                 ارسال ایمیل
               </a>
             </div>
@@ -138,7 +154,9 @@ function Contact() {
               <button
                 type="button"
                 className={styles.resetBtn}
-                onClick={() => setStatus((prev) => ({ ...prev, submitted: false }))}
+                onClick={() =>
+                  setStatus((prev) => ({ ...prev, submitted: false }))
+                }
               >
                 ارسال پیام جدید
               </button>

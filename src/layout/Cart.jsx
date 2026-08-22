@@ -1,7 +1,8 @@
 import { FiArrowUpLeft } from "react-icons/fi";
 import styles from "./Cart.module.css";
+import { Link } from "react-router-dom";
 
-function Cart({ id, title, description, icon, color, className, index }) {
+function Cart({ id, title, description, icon, color,link, className, index }) {
   return (
     <article
       className={`${styles.Cart} ${styles[className]}`}
@@ -31,9 +32,9 @@ function Cart({ id, title, description, icon, color, className, index }) {
 
       <div className={styles.bottom}>
         <span className={styles.explore}></span>
-        <button className={styles.arrow}>
+        <Link to={link} className={styles.arrow}>
           <FiArrowUpLeft />
-        </button>
+        </Link>
       </div>
 
       <div className={styles.backgroundIcon}>{icon}</div>
