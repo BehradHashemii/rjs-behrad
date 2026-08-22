@@ -11,7 +11,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import articlesData from "../data/mockData.json";
+import { getArticles } from "../services/apiService";
 import { ImBlog } from "react-icons/im";
 import { RiFilePaper2Line } from "react-icons/ri";
 import ArticleCard from "../components/ArticleCard";
@@ -19,7 +19,10 @@ import { FiArrowUpLeft } from "react-icons/fi";
 import { VscGithubProject } from "react-icons/vsc";
 
 function Articles() {
-  const articles = articlesData.articles.slice(-5).reverse();
+  const [articles, setArticles] = React.useState([]);
+  React.useEffect(() => {
+    getArticles().then(res => setArticles((res || []).slice(-5).reverse()));
+  }, []);
 
   const articleSlides = articles.map((article) => (
     <SwiperSlide key={article.id} className={styles.card}>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import mockData from "../data/mockData.json";
+import { getArticles, getPortfolios } from "../services/apiService";
 import PortfolioCard from "../components/PortfolioCard";
 import ArticleCard from "../components/ArticleCard";
 import e2p from "../utils/persianNumber";
@@ -46,11 +46,21 @@ function SavedPage() {
     };
   }, []);
 
-  const savedPortfolios = (mockData.portfolios || []).filter((p) =>
-    savedPortfolioIds.includes(p.id),
+  
+  const [allPortfolios, setAllPortfolios] = useState([]);
+  const [allArticles, setAllArticles] = useState([]);
+
+  useEffect(() => {
+    getPortfolios().then(res => setAllPortfolios(res || []));
+    getArticles().then(res => setAllArticles(res || []));
+  }, []);
+
+  const savedPortfolios = (allPortfolios || []).filter((p) =>
+    savedPortfolioIds.includes(p.id)
   );
 
-  const likedArticles = (mockData.articles || []).filter((a) =>
+
+  const likedArticles = (allArticles || []).filter((a) =>
     likedArticleIds.includes(a.id),
   );
 

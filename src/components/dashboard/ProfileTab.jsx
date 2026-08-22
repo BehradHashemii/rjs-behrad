@@ -126,10 +126,7 @@ export default function ProfileTab({
           <div className={styles.secRow}>
             <div className={styles.secLabel}>
               <FaShieldAlt className={styles.secIcon} />
-              <div>
-                <strong>روش احراز هویت:</strong>
-                <p>پایگاه ایمن فایربیس (Firebase Auth)</p>
-              </div>
+  
             </div>
             <span className={styles.activePill}>فعال و ایمن</span>
           </div>

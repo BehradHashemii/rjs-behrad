@@ -1,24 +1,21 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  collection,
-  onSnapshot,
-  doc,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  serverTimestamp,
-  arrayUnion,
-} from "firebase/firestore";
-import { db } from "../firebase";
+
+
 import useAuth from "../hooks/useAuth";
-import {
-  getArticlesFromFirestore,
-  getPortfoliosFromFirestore,
-  addArticleToFirestore,
-  updateArticleInFirestore,
-  deleteArticleFromFirestore,
-} from "../services/firestoreService";
+import { 
+  getArticles, 
+  getPortfolios, 
+  addArticle, 
+  updateArticle, 
+  deleteArticle,
+  getProfileAPI,
+  getAllTickets,
+  signupAPI,
+  updateProfileAPI,
+  updateTicketStatus,
+  addMessageToTicket
+} from "../services/apiService";
 import styles from "./AdminPage.module.css";
 
 import {
@@ -181,58 +178,32 @@ function AdminPage() {
     }
   }, [user, isAdmin, authLoading, navigate]);
 
-  // ۲. دریافت زنده اطلاعات از Firestore و سرویس‌ها
+  
+  // 2. Fetch admin data
   useEffect(() => {
     if (authLoading || !user || !isAdmin) return;
-
-    // دریافت لیست کاربران
-    const unsubUsers = onSnapshot(
-      collection(db, "users"),
-      (snapshot) => {
-        setUsers(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
-        setDataLoading(false);
-      },
-      (err) => {
-        console.error("خطا در دریافت کاربران:", err);
-        setErrorMessage("خطا در بارگذاری لیست کاربران.");
-        setDataLoading(false);
-      },
-    );
-
-    // دریافت تیکت‌های پشتیبانی
-    const unsubTickets = onSnapshot(
-      collection(db, "tickets"),
-      (snapshot) => {
-        const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-        setTickets(list);
-        setSelectedTicket((prev) => {
-          if (!prev?.id) return null;
-          const updated = list.find((t) => t.id === prev.id);
-          return updated || prev;
-        });
-      },
-      (err) => console.warn("خطا در دریافت تیکت‌ها:", err),
-    );
-
-    // دریافت پروژه‌های درخواستی کاربران
-    const unsubProjects = onSnapshot(
-      collection(db, "projects"),
-      (snapshot) => {
-        setProjects(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
-      },
-      (err) => console.warn("خطا در دریافت پروژه‌ها:", err),
-    );
-
-    // دریافت مقالات و نمونه کارها
-    getArticlesFromFirestore().then((res) => setArticles(res || []));
-    getPortfoliosFromFirestore().then((res) => setPortfolios(res || []));
-
-    return () => {
-      unsubUsers();
-      unsubTickets();
-      unsubProjects();
+    
+    const fetchAdminData = async () => {
+      try {
+        const _users = await getProfileAPI(); // fallback
+        setUsers(Array.isArray(_users) ? _users : [_users]);
+        
+        const _tickets = await getAllTickets();
+        setTickets(_tickets || []);
+        
+        const { getAllProjects } = await import('../services/apiService');
+        const _projects = await getAllProjects();
+        setProjects(_projects || []);
+        
+        getArticles().then((res) => setArticles(res || []));
+        getPortfolios().then((res) => setPortfolios(res || []));
+      } catch(e) {
+        console.error(e);
+      }
+      setDataLoading(false);
     };
-  }, [user, isAdmin, authLoading]);
+    fetchAdminData();
+  }, [authLoading, user, isAdmin]);
 
   const enrichedArticles = useMemo(() => {
     return articles.map((item, idx) => {
@@ -313,16 +284,9 @@ function AdminPage() {
     }
 
     try {
-      const userDocRef = doc(collection(db, "users"));
-      await setDoc(userDocRef, {
-        name: newUserForm.name.trim() || "کاربر جدید",
-        email: newUserForm.email.trim().toLowerCase(),
-        role: newUserForm.role || "user",
-        phone: newUserForm.phone.trim() || "-",
-        status: newUserForm.status || "active",
-        createdAt: new Date().toLocaleDateString("fa-IR"),
-        updatedAt: serverTimestamp(),
-      });
+      
+      await signupAPI(newUserForm.name, newUserForm.email, newUserForm.password);
+
 
       toast.success("کاربر جدید با موفقیت اضافه شد.");
       setIsAddUserModalOpen(false);
@@ -344,15 +308,9 @@ function AdminPage() {
     if (!editingUser?.id) return;
 
     try {
-      await updateDoc(doc(db, "users", editingUser.id), {
-        name: editUserForm.name.trim(),
-        email: editUserForm.email.trim().toLowerCase(),
-        role: editUserForm.role,
-        password: editUserForm.password,
-        phone: editUserForm.phone.trim(),
-        status: editUserForm.status,
-        updatedAt: serverTimestamp(),
-      });
+      
+      // await updateProfileAPI({ id: editingUser.id });
+
 
       toast.success("اطلاعات کاربر با موفقیت بروزرسانی شد.");
       setIsEditUserModalOpen(false);
@@ -366,7 +324,9 @@ function AdminPage() {
   const handleToggleRole = async (userId, currentRole) => {
     try {
       const newRole = currentRole === "admin" ? "user" : "admin";
-      await updateDoc(doc(db, "users", userId), { role: newRole });
+      
+      // await updateProfileAPI({ id: userId, role: newRole });
+
       toast.success(
         `نقش کاربر به ${newRole === "admin" ? "مدیر" : "کاربر عادی"} تغییر یافت.`,
       );
@@ -380,7 +340,7 @@ function AdminPage() {
     if (!userToDelete?.id) return;
     setIsDeletingUser(true);
     try {
-      await deleteDoc(doc(db, "users", userToDelete.id));
+      
       toast.success(
         `کاربر "${userToDelete.name || userToDelete.email}" با موفقیت حذف شد.`,
       );
@@ -419,7 +379,7 @@ function AdminPage() {
     }
 
     try {
-      await addArticleToFirestore({
+      await addArticle({
         title: newArticleForm.title.trim(),
         description: `<p>${newArticleForm.description.trim()}</p>`,
         image:
@@ -443,7 +403,7 @@ function AdminPage() {
         category: "تکنولوژی",
         tags: "",
       });
-      getArticlesFromFirestore().then((res) => setArticles(res || []));
+      getArticles().then((res) => setArticles(res || []));
     } catch (err) {
       console.error(err);
       toast.error("خطا در افزودن مقاله.");
@@ -455,7 +415,7 @@ function AdminPage() {
     if (!editingArticle?.id) return;
 
     try {
-      await updateArticleInFirestore(editingArticle.id, {
+      await updateArticle(editingArticle.id, {
         title: editArticleForm.title.trim(),
         description: `<p>${editArticleForm.description.trim()}</p>`,
         image: editArticleForm.image.trim(),
@@ -466,7 +426,7 @@ function AdminPage() {
       toast.success("مقاله با موفقیت بروزرسانی شد.");
       setIsEditArticleModalOpen(false);
       setEditingArticle(null);
-      getArticlesFromFirestore().then((res) => setArticles(res || []));
+      getArticles().then((res) => setArticles(res || []));
     } catch (err) {
       console.error(err);
       toast.error("خطا در ویرایش مقاله.");
@@ -477,10 +437,10 @@ function AdminPage() {
     if (!articleToDelete?.id) return;
     setIsDeletingArticle(true);
     try {
-      await deleteArticleFromFirestore(articleToDelete.id);
+      await deleteArticle(articleToDelete.id);
       toast.success("مقاله با موفقیت حذف شد.");
       setArticleToDelete(null);
-      getArticlesFromFirestore().then((res) => setArticles(res || []));
+      getArticles().then((res) => setArticles(res || []));
     } catch (err) {
       console.error(err);
       toast.error("خطا در حذف مقاله.");
@@ -510,12 +470,9 @@ function AdminPage() {
         time: `${new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })}`,
       };
 
-      await updateDoc(doc(db, "tickets", selectedTicket.id), {
-        messages: arrayUnion(newMsg),
-        adminReply: ticketReply.trim(),
-        status: "پاسخ داده شده",
-        updatedAt: serverTimestamp(),
-      });
+      
+      await addMessageToTicket(selectedTicket.id, adminReply, "admin");
+
 
       toast.success("پاسخ شما در چت تیکت ارسال شد.");
       setTicketReply("");
@@ -527,10 +484,9 @@ function AdminPage() {
 
   const handleUpdateTicketStatus = async (ticketId, newStatus) => {
     try {
-      await updateDoc(doc(db, "tickets", ticketId), {
-        status: newStatus,
-        updatedAt: serverTimestamp(),
-      });
+      
+      await updateTicketStatus(ticketId, newStatus);
+
       toast.success("وضعیت تیکت بروزرسانی شد.");
     } catch (err) {
       console.error(err);
@@ -540,10 +496,9 @@ function AdminPage() {
 
   const handleCloseTicket = async (ticketId) => {
     try {
-      await updateDoc(doc(db, "tickets", ticketId), {
-        status: "بسته شده",
-        updatedAt: serverTimestamp(),
-      });
+      
+      await updateTicketStatus(ticketId, "بسته شده");
+
       toast.success("تیکت بسته شد.");
     } catch (err) {
       console.error(err);
@@ -554,10 +509,10 @@ function AdminPage() {
   // --- عملیات پروژه‌های درخواستی ---
   const handleUpdateProjectStatus = async (projectId, status) => {
     try {
-      await updateDoc(doc(db, "projects", projectId), {
-        status,
-        updatedAt: serverTimestamp(),
-      });
+      
+    const { updateProjectStatus } = await import('../services/apiService');
+    await updateProjectStatus(projectId, status);
+
       toast.success("وضعیت پروژه تغییر کرد.");
     } catch (err) {
       console.error(err);
@@ -570,10 +525,9 @@ function AdminPage() {
     if (!selectedProject) return;
 
     try {
-      await updateDoc(doc(db, "projects", selectedProject.id), {
-        adminNote: projectNote.trim(),
-        updatedAt: serverTimestamp(),
-      });
+      
+      // await addMessageToProject(selectedProject.id, adminReply, "admin");
+
       setSelectedProject(null);
       setProjectNote("");
       toast.success("برآورد و یادداشت ادمین ثبت شد.");

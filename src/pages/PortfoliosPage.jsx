@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import portfoliosData from "../data/mockData.json";
+import { getPortfolios } from "../services/apiService";
 import Loading from "../components/Loading";
 
 import styles from "./PortfoliosPage.module.css";
@@ -19,8 +19,10 @@ function PortfoliosPage() {
 
   useEffect(() => {
     setIsLoading(true);
-    setPortfolios(portfoliosData.portfolios || []);
-    setIsLoading(false);
+    getPortfolios().then((res) => {
+      setPortfolios(res || []);
+      setIsLoading(false);
+    });
   }, []);
 
   const uniqueCategories = useMemo(() => {
@@ -107,7 +109,9 @@ function PortfoliosPage() {
       </section>
       <section className={styles.portfoliosGrid}>
         {paginatedData.length > 0 ? (
-          paginatedData.map((item) => <PortfolioCard portfolio={item} key={item.id}/>)
+          paginatedData.map((item) => (
+            <PortfolioCard key={item._id} portfolio={item} />
+          ))
         ) : (
           <div className={`${styles.emptyState} glassBG`}>
             <p>پروژه‌ای با این مشخصات یافت نشد.</p>

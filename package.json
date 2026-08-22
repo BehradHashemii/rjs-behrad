@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview --host"
@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^9.2.0",
     "axios": "^1.19.0",
-    "firebase": "^12.17.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-helmet-async": "^3.0.0",

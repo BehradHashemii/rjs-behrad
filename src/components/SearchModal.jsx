@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
+import { getArticles, getPortfolios } from "../services/apiService";
+
 import {
   FaTimes,
   FaFolderOpen,
@@ -10,7 +12,6 @@ import {
   FaFire,
 } from "react-icons/fa";
 import styles from "./SearchModal.module.css";
-import mockData from "../data/mockData.json";
 import e2p from "../utils/persianNumber";
 
 function stripHtml(html) {
@@ -81,7 +82,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
   const query = searchQuery.trim().toLowerCase();
 
   const matchedPortfolios = query
-    ? (mockData.portfolios || []).filter((item) => {
+    ? portfoliosData.filter((item) => {
         const titleMatch = item.title?.toLowerCase().includes(query);
         const descMatch = item.description?.toLowerCase().includes(query);
         const catMatch = item.category?.toLowerCase().includes(query);
@@ -93,7 +94,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
     : [];
 
   const matchedArticles = query
-    ? (mockData.articles || []).filter((item) => {
+    ? articlesData.filter((item) => {
         const titleMatch = item.title?.toLowerCase().includes(query);
         const cleanDesc = stripHtml(item.description).toLowerCase();
         const descMatch = cleanDesc.includes(query);

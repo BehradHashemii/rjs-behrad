@@ -1,9 +1,6 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { FaSpinner } from "react-icons/fa";
 
 import HomePage from "../pages/HomePage";
 import PortfoliosPage from "../pages/PortfoliosPage";
@@ -18,44 +15,24 @@ import Loading from "../components/Loading";
 
 function ProtectedRoute() {
   const { user, loading } = useAuth();
-
   if (loading) {
     return (
       <Loading />
     );
   }
-
   return user ? <Outlet /> : <Navigate to="/" replace />;
 }
+
 function AdminRoute() {
-  const { user, loading: authLoading } = useAuth();
-  const [role, setRole] = useState(null);
-  const [roleLoading, setRoleLoading] = useState(true);
+  const { user, loading: authLoading, isAdmin } = useAuth();
 
-  useEffect(() => {
-    async function fetchUserRole() {
-      if (user?.uid) {
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) {
-            setRole(userDoc.data().role || "user");
-          }
-        } catch (error) {
-          console.error("Error fetching role:", error);
-        }
-      }
-      setRoleLoading(false);
-    }
-
-    fetchUserRole();
-  }, [user]);
-
-  if (authLoading || roleLoading) {
+  if (authLoading) {
     return (
       <Loading />
     );
   }
-  return user && role === "admin" ? <Outlet /> : <Navigate to="/dashboard" replace />;
+
+  return user && isAdmin ? <Outlet /> : <Navigate to="/dashboard" replace />;
 }
 
 function Router() {
@@ -67,12 +44,15 @@ function Router() {
       <Route element={<ArticleDetailsPage />} path="/articles/:slug" />
       <Route element={<ContactPage />} path="/contact" />
       <Route element={<SavedPage />} path="/saved" />
+
       <Route element={<ProtectedRoute />}>
         <Route element={<DashboardPage />} path="/dashboard" />
       </Route>
+
       <Route element={<AdminRoute />}>
         <Route element={<AdminPage />} path="/admin" />
       </Route>
+
       <Route element={<NotFoundPage />} path="*" />
     </Routes>
   );

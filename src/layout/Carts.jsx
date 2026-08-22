@@ -14,7 +14,6 @@ const cards = [
     icon: <ImBlog />,
     color: "var(--primary-color)", // جایگزین #F7763D (#2563eb)
     className: "orange",
-    link: "/articles",
   },
   {
     id: "02",
@@ -23,7 +22,6 @@ const cards = [
     icon: <FaBriefcase />,
     color: "var(--primary-light)", // جایگزین #FF9A6C (#3b82f6)
     className: "peach",
-    link:"/portfolios"
   },
   {
     id: "03",
@@ -32,7 +30,6 @@ const cards = [
     icon: <FaPhoneAlt />,
     color: "var(--primary-dark)", // جایگزین #D95724 (#1d4ed8)
     className: "darkOrange",
-    link:"/contact"
   },
 ];
 
@@ -49,12 +46,19 @@ function Carts() {
           <strong> کشف کردن</strong>
         </h1>
 
-        <p>از مقالات و پروژه‌ها تا ارتباط مستقیم؛ همه چیز اینجاست.</p>
+        <p>
+          از مقالات و پروژه‌ها تا ارتباط مستقیم؛
+          همه چیز اینجاست.
+        </p>
       </div>
 
       <div className={styles.grid}>
         {cards.map((card, index) => (
-          <Cart key={card.id} {...card} index={index} />
+          <Cart
+            key={card.id}
+            {...card}
+            index={index}
+          />
         ))}
       </div>
     </section>

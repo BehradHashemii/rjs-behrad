@@ -16,11 +16,14 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import portfoliosData from "../data/mockData.json";
+import { getPortfolios } from "../services/apiService";
 import PortfolioCard from "../components/PortfolioCard";
 
 function Portfolios() {
-  const portfolios = portfoliosData.portfolios.slice(-5).reverse();
+  const [portfolios, setPortfolios] = React.useState([]);
+  React.useEffect(() => {
+    getPortfolios().then(res => setPortfolios((res || []).slice(-5).reverse()));
+  }, []);
   return (
     <section className={styles.container}>
       <div className={styles.header}>
@@ -62,7 +65,7 @@ function Portfolios() {
         className={styles.swiper}
       >
         {portfolios.map((portfolio) => (
-          <SwiperSlide key={portfolio.id} className={styles.card}>
+          <SwiperSlide key={portfolio._id} className={styles.card}>
             <PortfolioCard portfolio={portfolio} />
           </SwiperSlide>
         ))}

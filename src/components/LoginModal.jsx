@@ -1,17 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  updateProfile,
-} from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "../firebase";
 import useAuth from "../hooks/useAuth";
-
 import styles from "./LoginModal.module.css";
-
 import {
   FaTimes,
   FaEnvelope,
@@ -27,7 +17,7 @@ import {
 
 export default function LoginModal({ isOpen, onClose }) {
   const navigate = useNavigate();
-  const { user: currentUser, logout, isAdmin } = useAuth();
+  const { user: currentUser, logout, isAdmin, login, signup, resetPassword } = useAuth();
 
   const [mode, setMode] = useState("login"); // 'login' | 'register' | 'forgot'
   const [email, setEmail] = useState("");
@@ -39,7 +29,7 @@ export default function LoginModal({ isOpen, onClose }) {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ESC Key handler
+  // بستن مودال با دکمه ESC
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && isOpen) {
@@ -58,6 +48,7 @@ export default function LoginModal({ isOpen, onClose }) {
     setPassword("");
   };
 
+  // 🔹 تابع ورود به حساب
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -71,38 +62,30 @@ export default function LoginModal({ isOpen, onClose }) {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
+      await login(email.trim(), password);
       setSuccess("ورود با موفقیت انجام شد!");
 
       setTimeout(() => {
         onClose();
       }, 800);
-    } catch (firebaseErr) {
-      console.warn("Firebase Auth signin notice:", firebaseErr);
-      if (
-        firebaseErr?.code === "auth/wrong-password" ||
-        firebaseErr?.code === "auth/invalid-credential"
-      ) {
-        setError("ایمیل یا رمز عبور اشتباه است.");
-      } else if (firebaseErr?.code === "auth/user-not-found") {
-        setError("کاربری با این ایمیل یافت نشد.");
-      } else if (firebaseErr?.code === "auth/invalid-email") {
-        setError("فرمت آدرس ایمیل معتبر نیست.");
-      } else {
-        setError("خطا در برقراری ارتباط. لطفاً دوباره تلاش کنید.");
-      }
+    } catch (err) {
+      console.error("خطا در ورود:", err);
+      // خواندن پیام خطای ارسال شده از بک‌اند Node.js
+      const errorMessage = err.response?.data?.message || "ارتباط با سرور برقرار نشد.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
+  // 🔹 تابع ثبت نام
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!email || !password) {
-      setError("لطفاً ایمیل و رمز عبور را وارد کنید.");
+    if (!email || !password || !name) {
+      setError("لطفاً تمامی فیلدها را پر کنید.");
       return;
     }
 
@@ -114,51 +97,23 @@ export default function LoginModal({ isOpen, onClose }) {
     setLoading(true);
 
     try {
-      // ۱. ساخت کاربر در Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email.trim(),
-        password,
-      );
-      const user = userCredential.user;
-
-      // ۲. ثبت نام نمایش داده شده در پروفایل Auth
-      if (name.trim()) {
-        await updateProfile(user, { displayName: name.trim() });
-      }
-
-      // ۳. ساخت خودکار سند کاربر در کلکسیون users در Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        name: name.trim() || email.split("@")[0],
-        email: user.email,
-        pass: user.password,
-        role: "user", // نقش پیش‌فرض برای تمام کاربران جدید
-        createdAt: serverTimestamp(),
-        avatar:
-          "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-      });
-
+      await signup(name.trim(), email.trim(), password);
       setSuccess("حساب کاربری شما با موفقیت ایجاد شد!");
 
       setTimeout(() => {
         onClose();
       }, 800);
-    } catch (firebaseErr) {
-      console.warn("Firebase Auth signup notice:", firebaseErr);
-      if (firebaseErr?.code === "auth/email-already-in-use") {
-        setError("این ایمیل قبلاً ثبت شده است. لطفاً وارد شوید.");
-      } else if (firebaseErr?.code === "auth/weak-password") {
-        setError("رمز عبور بسیار ضعیف است.");
-      } else if (firebaseErr?.code === "auth/invalid-email") {
-        setError("فرمت آدرس ایمیل معتبر نیست.");
-      } else {
-        setError("خطا در ثبت‌نام. لطفاً دوباره تلاش کنید.");
-      }
+    } catch (err) {
+      console.error("خطا در ثبت نام:", err);
+      // نمایش پیام خطای دیتابیس (مثلاً: این ایمیل قبلاً ثبت شده است)
+      const errorMessage = err.response?.data?.message || "خطا در ساخت حساب. لطفاً دوباره تلاش کنید.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
+  // 🔹 تابع فراموشی رمز عبور (فعلاً غیرفعال در بک‌اند)
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     setError("");
@@ -172,22 +127,16 @@ export default function LoginModal({ isOpen, onClose }) {
     setLoading(true);
 
     try {
-      await sendPasswordResetEmail(auth, email.trim());
+      await resetPassword(email.trim());
       setSuccess("لینک بازیابی رمز عبور به ایمیل شما ارسال شد.");
-    } catch (firebaseErr) {
-      console.warn("Password reset notice:", firebaseErr);
-      if (firebaseErr?.code === "auth/user-not-found") {
-        setError("کاربری با این ایمیل یافت نشد.");
-      } else if (firebaseErr?.code === "auth/invalid-email") {
-        setError("فرمت آدرس ایمیل معتبر نیست.");
-      } else {
-        setSuccess("لینک بازنشانی رمز عبور به ایمیل شما ارسال گردید.");
-      }
+    } catch (err) {
+      setError(err.message || "خطا در ارسال ایمیل.");
     } finally {
       setLoading(false);
     }
   };
 
+  // 🔹 تابع خروج
   const handleLogout = async () => {
     await logout();
     setEmail("");
@@ -214,16 +163,18 @@ export default function LoginModal({ isOpen, onClose }) {
           <div className={styles.profileContainer}>
             <div className={styles.avatarWrapper}>
               <img
-                src={currentUser.avatar || "/logo2.png"}
-                alt={currentUser.displayName || "User Avatar"}
+                src={"/logo2.png"} // از لوگوی پیشفرض استفاده میکنیم
+                alt={currentUser.firstName || "کاربر"}
                 className={styles.profileAvatar}
               />
               <span className={styles.statusBadge} title="آنلاین و تایید شده">
                 <FaCheckCircle />
               </span>
             </div>
+            
+            {/* نمایش نام و نام خانوادگی دریافت شده از دیتابیس */}
             <h3 className={styles.userName}>
-              {currentUser.displayName || currentUser.email.split("@")[0]}
+              {currentUser.firstName} {currentUser.lastName}
             </h3>
             <p className={styles.userEmail}>{currentUser.email}</p>
 
@@ -235,7 +186,7 @@ export default function LoginModal({ isOpen, onClose }) {
               <div className={styles.metaRow}>
                 <span>نقش کاربری:</span>
                 <span style={{ fontWeight: "700", color: "#1e293b" }}>
-                  {isAdmin ? "مدیر" : "کاربر عمومی"}
+                  {isAdmin ? "مدیر سایت" : "کاربر عمومی"}
                 </span>
               </div>
             </div>
@@ -250,7 +201,7 @@ export default function LoginModal({ isOpen, onClose }) {
                 }}
               >
                 <FaUserAlt />
-                <span>ورود به داشبورد کاربری</span>
+                <span>ورود به پنل کاربری</span>
               </button>
 
               {isAdmin && (
@@ -264,7 +215,7 @@ export default function LoginModal({ isOpen, onClose }) {
                   }}
                 >
                   <FaShieldAlt />
-                  <span>ورود به پنل مدیریت</span>
+                  <span>ورود به داشبورد ادمین</span>
                 </button>
               )}
 
@@ -287,16 +238,13 @@ export default function LoginModal({ isOpen, onClose }) {
               </div>
               <h2 className={styles.modalTitle}>
                 {mode === "login" && "ورود به حساب کاربری"}
-                {mode === "register" && "ثبت‌نام در سامانه"}
+                {mode === "register" && "ثبت‌نام در سایت"}
                 {mode === "forgot" && "بازیابی رمز عبور"}
               </h2>
               <p className={styles.modalSub}>
-                {mode === "login" &&
-                  "آدرس ایمیل و رمز عبور خود را وارد نمایید."}
-                {mode === "register" &&
-                  "مشخصات خود را جهت ساخت حساب جدید وارد کنید."}
-                {mode === "forgot" &&
-                  "ایمیل ثبت شده خود را جهت دریافت لینک بازیابی وارد نمایید."}
+                {mode === "login" && "آدرس ایمیل و رمز عبور خود را وارد نمایید."}
+                {mode === "register" && "مشخصات خود را جهت ساخت حساب جدید وارد کنید."}
+                {mode === "forgot" && "این قابلیت به زودی در سیستم راه‌اندازی می‌شود."}
               </p>
             </div>
 
@@ -370,7 +318,7 @@ export default function LoginModal({ isOpen, onClose }) {
                     />
                     <button
                       type="button"
-                      className={`${styles.togglePasswordBtn}`}
+                      className={styles.togglePasswordBtn}
                       onClick={() => setShowPassword(!showPassword)}
                       title={showPassword ? "مخفی کردن" : "نمایش"}
                     >
@@ -414,6 +362,7 @@ export default function LoginModal({ isOpen, onClose }) {
                       placeholder="نام کامل شما"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -459,17 +408,14 @@ export default function LoginModal({ isOpen, onClose }) {
                   disabled={loading}
                   className={styles.submitBtn}
                 >
-                  {loading ? "در حال ساخت حساب..." : "ثبت‌نام و ایجاد حساب"}
+                  {loading ? "در حال پردازش..." : "ثبت‌نام و ایجاد حساب"}
                 </button>
               </form>
             )}
 
             {/* Forgot Password Form */}
             {mode === "forgot" && (
-              <form
-                onSubmit={handleForgotPassword}
-                className={styles.formStack}
-              >
+              <form onSubmit={handleForgotPassword} className={styles.formStack}>
                 <div className={styles.inputGroup}>
                   <label>آدرس ایمیل ثبت شده:</label>
                   <div className={styles.inputWrapper}>
@@ -493,7 +439,7 @@ export default function LoginModal({ isOpen, onClose }) {
                 >
                   <FaKey />
                   <span>
-                    {loading ? "در حال ارسال..." : "ارسال لینک بازیابی"}
+                    {loading ? "در حال ارتباط..." : "ارسال لینک بازیابی"}
                   </span>
                 </button>
 

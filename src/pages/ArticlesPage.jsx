@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
-// ۱. فایل mockData رو پاک کردیم و axiosInstance رو ایمپورت کردیم
-import api from "../utils/axiosInstance"; 
+import { getArticles } from "../services/apiService";
 import Loading from "../components/Loading";
+
 import styles from "./PortfoliosPage.module.css";
 import ArticleCard from "../components/ArticleCard";
 import e2p from "../utils/persianNumber";
@@ -21,32 +21,15 @@ function ArticlesPage() {
   const page = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("search") || "";
 
+  
   useEffect(() => {
-    // ۲. تابع گرفتن دیتا از بک‌اند
-    const fetchArticles = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.get('/articles');
-        
-        // ۳. تطبیق دیتای بک‌اند با ساختاری که فرانت‌اندت نیاز داره
-        const formattedData = response.data.map(item => ({
-          ...item,
-          id: item._id, // مونگو دی‌بی _id میده
-          date: item.createdAt, // تاریخ ایجاد مقاله
-          description: item.content, // فعلا متن اصلی رو جای توضیحات میذاریم
-          tags: item.tags || "عمومی", // اگر تگ نداشت مقدار دیفالت بگیره
-        }));
-
-        setArticles(formattedData);
-      } catch (error) {
-        console.error("خطا در دریافت مقالات:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchArticles();
-  }, []); // فقط یک بار موقع لود صفحه اجرا میشه
+    setIsLoading(true);
+    getArticles().then(res => {
+      setArticles(res || []);
+      setIsLoading(false);
+    });
+  }, []);
+  
 
   const uniqueCategories = useMemo(() => {
     if (!Array.isArray(articles)) return [];
@@ -160,7 +143,7 @@ function ArticlesPage() {
       <section className={styles.portfoliosGrid}>
         {paginatedData.length > 0 ? (
           paginatedData.map((article) => (
-            <ArticleCard key={article.id} article={article} />
+            <ArticleCard key={article._id} article={article} />
           ))
         ) : (
           <div className={styles.emptyState}>

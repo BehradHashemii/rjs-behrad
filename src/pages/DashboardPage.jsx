@@ -10,31 +10,15 @@ import {
   FaSignOutAlt,
   FaEdit,
   FaCheckCircle,
-  FaSpinner,
 } from "react-icons/fa";
 import SEOConfig from "../components/SEOConfig";
 import styles from "./DashboardPage.module.css";
 import e2p from "../utils/persianNumber";
 import useAuth from "../hooks/useAuth";
-
-// فایربیس
-import { db } from "../firebase";
-import {
-  doc,
-  updateDoc,
-  collection,
-  query,
-  where,
-  onSnapshot,
-  addDoc,
-  arrayUnion,
-  arrayRemove,
-  serverTimestamp,
-} from "firebase/firestore";
-
-import { getArticlesFromFirestore, getPortfoliosFromFirestore } from "../services/firestoreService";
 import { toast, ToastContainer } from "react-toastify";
 
+// ایمپورت ابزار ارتباط با بک‌اند (جایگزین apiService شد)
+import api from "../utils/axiosInstance";
 
 // کامپوننت‌های فرعی تفکیک‌شده
 import OverviewTab from "../components/dashboard/OverviewTab";
@@ -62,26 +46,14 @@ export default function DashboardPage() {
 
   // Stateها
   const [userData, setUserData] = useState(null);
-  const [savedPortfolios, setSavedPortfolios] = useState([]);
-  const [likedArticles, setLikedArticles] = useState([]);
+  const [savedPortfolios, setSavedPortfolios] = useState([]); // فعلا در لوکال استوریج مدیریت میشه
+  const [likedArticles, setLikedArticles] = useState([]); // فعلا در لوکال استوریج مدیریت میشه
   const [tickets, setTickets] = useState([]);
   const [orders, setOrders] = useState([]);
   const [activities, setActivities] = useState([]);
   const [allPortfolios, setAllPortfolios] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
-
-  useEffect(() => {
-    async function loadItems() {
-      const [ports, arts] = await Promise.all([
-        getPortfoliosFromFirestore(),
-        getArticlesFromFirestore(),
-      ]);
-      setAllPortfolios(ports || []);
-      setAllArticles(arts || []);
-    }
-    loadItems();
-  }, []);
-
+  const [loadingData, setLoadingData] = useState(false);
 
   const [savedSubTab, setSavedSubTab] = useState("portfolios");
   const [profileForm, setProfileForm] = useState({
@@ -96,7 +68,7 @@ export default function DashboardPage() {
   const [isNewTicketModalOpen, setIsNewTicketModalOpen] = useState(false);
   const [newTicketData, setNewTicketData] = useState({
     title: "",
-    category: "مشاوره پروژه",
+    category: "مشاوره پروژه", // مطابق با مقادیر مجاز در دیتابیس
     priority: "عادی",
     description: "",
   });
@@ -105,261 +77,149 @@ export default function DashboardPage() {
   const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
   const [newOrderData, setNewOrderData] = useState({
     title: "",
-    serviceType: "توسعه وب‌سایت فرانت‌اند و بک‌اند",
-    budget: "۲۰ تا ۴۰ میلیون تومان",
+    serviceType: "توسعه وبسایت فول استک", // مطابق با مقادیر مجاز در دیتابیس
+    budget: "20 تا 40", // مطابق با مقادیر مجاز در دیتابیس
     description: "",
   });
 
-  // ۱. دریافت Realtime اطلاعات از فایربیس
+  // ۱. دریافت اطلاعات کامل از بک‌اند Node.js
   useEffect(() => {
-    if (!user?.uid) return;
+    if (!user) return;
 
-    // سند کاربر
-    const unsubUser = onSnapshot(
-      doc(db, "users", user.uid),
-      (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setUserData(data);
-          setSavedPortfolios(data.savedPortfolios || []);
-          setLikedArticles(data.likedArticles || []);
+    const fetchDashboardData = async () => {
+      setLoadingData(true);
+      try {
+        // چون کاربر لاگین هست، توکن خودکار ارسال میشه و بک‌اند تیکت‌های خودش رو میده
+        const [ticketsRes, ordersRes, portsRes, artsRes] = await Promise.all([
+          api.get("/tickets/my-tickets"),
+          api.get("/projects/my-requests"),
+          api.get("/portfolios"), // گرفتن همه نمونه کارها
+          api.get("/articles"), // گرفتن همه مقالات
+        ]);
 
-          setProfileForm({
-            name: data.name || user.displayName || "",
-            email: data.email || user.email || "",
-            bio: data.bio || "",
-            location: data.location || "",
-            avatar: data.avatar || user.photoURL || AVATAR_PRESETS[0],
-          });
-        }
-      },
-      (err) => {
-        console.warn("User snapshot listener warning:", err);
+        setTickets(ticketsRes.data || []);
+        setOrders(ordersRes.data || []);
+        setAllPortfolios(portsRes.data || []);
+        setAllArticles(artsRes.data || []);
+
+        // در صورت نیاز میتونی لیست ذخیره شده‌ها رو از لوکال استوریج بخونی
+        setSavedPortfolios(
+          JSON.parse(localStorage.getItem("savedPortfolios")) || [],
+        );
+        setLikedArticles(
+          JSON.parse(localStorage.getItem("likedArticles")) || [],
+        );
+      } catch (error) {
+        console.error("خطا در دریافت اطلاعات داشبورد:", error);
+      } finally {
+        setLoadingData(false);
       }
-    );
-
-    // تیکت‌ها
-    const unsubTickets = onSnapshot(
-      query(collection(db, "tickets"), where("userId", "==", user.uid)),
-      (snapshot) => {
-        const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-        setTickets(list);
-        setSelectedTicket((prev) => {
-          if (!prev?.id) return null;
-          const updated = list.find((t) => t.id === prev.id);
-          return updated || prev;
-        });
-      },
-      (err) => {
-        console.warn("Tickets snapshot listener warning:", err);
-      }
-    );
-
-    // سفارش‌ها
-    const unsubOrders = onSnapshot(
-      query(collection(db, "orders"), where("userId", "==", user.uid)),
-      (snapshot) => {
-        setOrders(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
-      },
-      (err) => {
-        console.warn("Orders snapshot listener warning:", err);
-      }
-    );
-
-    // فعالیت‌ها (بدون orderBy جهت عدم نیاز به ساخته شدن ایندکس جدید)
-    const unsubActivities = onSnapshot(
-      query(collection(db, "activities"), where("userId", "==", user.uid)),
-      (snapshot) => {
-        const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-        list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-        setActivities(list);
-      },
-      (err) => {
-        console.warn("Activities snapshot listener warning:", err);
-      }
-    );
-
-    return () => {
-      unsubUser();
-      unsubTickets();
-      unsubOrders();
-      unsubActivities();
     };
+
+    fetchDashboardData();
+
+    // تنظیم اطلاعات پروفایل کاربر
+    setUserData(user);
+    setProfileForm({
+      name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+      email: user.email || "",
+      bio: user.bio || "",
+      location: user.location || "",
+      avatar: user.avatar || AVATAR_PRESETS[0],
+    });
   }, [user]);
 
   // اکشن‌ها و متدها
   const logActivity = async (title, type = "info") => {
-    if (!user?.uid) return;
-    try {
-      await addDoc(collection(db, "activities"), {
-        userId: user.uid,
-        title,
-        type,
-        time: new Date().toLocaleTimeString("fa-IR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        createdAt: serverTimestamp(),
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    // تو فاز بعدی میتونیم API لاگ رو تو بک‌اند بسازیم
+    console.log(`Activity Logged: ${title}`);
   };
 
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     if (!profileForm.name.trim()) return toast.error("نام را وارد کنید.");
 
-    try {
-      await updateDoc(doc(db, "users", user.uid), {
-        name: profileForm.name,
-        bio: profileForm.bio,
-        location: profileForm.location,
-        avatar: profileForm.avatar,
-      });
-      await logActivity("ویرایش و به‌روزرسانی اطلاعات حساب کاربری", "info");
-      toast.success("اطلاعات حساب کاربر به‌روز شد.");
-    } catch (err) {
-      console.error(err);
-      toast.error("خطا در ثبت اطلاعات.");
-    }
+    // نکته: API آپدیت پروفایل هنوز در سرور ساخته نشده است
+    toast.info("قابلیت ویرایش پروفایل به زودی فعال می‌شود.");
   };
 
-  const handleRemoveSavedPortfolio = async (id) => {
-    try {
-      await updateDoc(doc(db, "users", user.uid), {
-        savedPortfolios: arrayRemove(id),
-      });
-      toast.info("پروژه حذف شد.");
-    } catch (err) {
-      console.error(err);
-      toast.error("خطا در عملیات.");
-    }
-  };
-
-  const handleRemoveLikedArticle = async (id) => {
-    try {
-      await updateDoc(doc(db, "users", user.uid), {
-        likedArticles: arrayRemove(id),
-      });
-      toast.info("مقاله حذف شد.");
-    } catch (err) {
-      console.error(err);
-      toast.error("خطا در عملیات.");
-    }
-  };
-
+  // ساخت تیکت پشتیبانی جدید
   const handleCreateTicket = async (e) => {
     e.preventDefault();
     if (!newTicketData.title.trim() || !newTicketData.description.trim())
       return toast.error("اطلاعات را کامل کنید.");
 
     try {
-      await addDoc(collection(db, "tickets"), {
-        userId: user.uid,
+      // ارسال به بک‌اند (نیاز به توکن داره که axiosInstance خودش میذاره)
+      const response = await api.post("/tickets", {
         title: newTicketData.title,
-        category: newTicketData.category,
-        priority: newTicketData.priority,
-        status: "در حال بررسی",
-        date: new Date().toLocaleDateString("fa-IR"),
-        createdAt: serverTimestamp(),
-        messages: [
-          {
-            sender: "user",
-            text: newTicketData.description,
-            time: new Date().toLocaleTimeString("fa-IR", {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-          },
-        ],
+        category: newTicketData.category, // باید دقیقا یکی از مقادیر مجاز باشه
+        message: newTicketData.description,
       });
-      await logActivity(`ثبت تیکت جدید: ${newTicketData.title}`, "ticket");
+
+      // اضافه کردن تیکت جدید به استیت برای نمایش فوری
+      setTickets([response.data.ticket, ...tickets]);
+
       setIsNewTicketModalOpen(false);
       setNewTicketData({
         title: "",
-        category: "مشاوره پروژه",
+        category: "پشتیبانی فنی",
         priority: "عادی",
         description: "",
       });
       toast.success("تیکت با موفقیت ارسال شد.");
     } catch (err) {
       console.error(err);
-      toast.error("خطا در ارسال تیکت.");
+      toast.error(err.response?.data?.message || "خطا در ارسال تیکت.");
     }
   };
 
   const handleSendTicketReply = async (e) => {
     e.preventDefault();
-    if (!replyMessageText.trim() || !selectedTicket?.id) return;
-
-    try {
-      const newMsg = {
-        sender: "user",
-        senderName: userData?.name || user?.displayName || user?.email || "کاربر",
-        text: replyMessageText.trim(),
-        time: `${new Date().toLocaleTimeString("fa-IR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })} - ${new Date().toLocaleDateString("fa-IR")}`,
-      };
-      await updateDoc(doc(db, "tickets", selectedTicket.id), {
-        messages: arrayUnion(newMsg),
-        status: "در حال بررسی",
-        updatedAt: serverTimestamp(),
-      });
-      setReplyMessageText("");
-      toast.success("پاسخ شما در گفتگوی تیکت ثبت شد.");
-    } catch (err) {
-      console.error("خطای ثبت پاسخ:", err);
-      toast.error("خطا در ارسال پاسخ تیکت.");
-    }
+    // این بخش نیازمند ساخت API چت در داخل تیکت است که تو مدل دیتابیس فعلی ما نیست
+    toast.info("قابلیت ارسال پیام متنی در داخل تیکت به زودی فعال می‌شود.");
   };
 
+  // ثبت درخواست پروژه جدید
   const handleCreateOrder = async (e) => {
     e.preventDefault();
     if (!newOrderData.title.trim() || !newOrderData.description.trim())
       return toast.error("اطلاعات را کامل کنید.");
 
     try {
-      await addDoc(collection(db, "orders"), {
-        userId: user.uid,
+      const response = await api.post("/projects", {
         title: newOrderData.title,
         serviceType: newOrderData.serviceType,
-        budget: newOrderData.budget,
-        description: newOrderData.description,
-        status: "در انتظار بررسی",
-        date: new Date().toLocaleDateString("fa-IR"),
-        createdAt: serverTimestamp(),
+        budgetRange: newOrderData.budget,
+        requirements: newOrderData.description,
       });
-      await logActivity(`درخواست مشاوره جدید: ${newOrderData.title}`, "order");
+
+      setOrders([response.data.request, ...orders]);
       setIsNewOrderModalOpen(false);
       setNewOrderData({
         title: "",
-        serviceType: "توسعه وب‌سایت فرانت‌اند و بک‌اند",
-        budget: "۲۰ تا ۴۰ میلیون تومان",
+        serviceType: "توسعه وبسایت فول استک",
+        budget: "20 تا 40",
         description: "",
       });
       toast.success("درخواست مشاوره ثبت شد.");
     } catch (err) {
       console.error(err);
-      toast.error("خطا در ثبت درخواست.");
+      toast.error(err.response?.data?.message || "خطا در ثبت درخواست.");
     }
   };
 
-  // پروژه‌ها و مقالات فیلتر شده
+  // پروژه‌ها و مقالات فیلتر شده (آیدی‌ها در مونگو _id هستند)
   const savedPortfolioItems = (allPortfolios || []).filter((p) =>
-    savedPortfolios.includes(p.id)
+    savedPortfolios.includes(p._id || p.id),
   );
 
   const likedArticleItems = (allArticles || []).filter((a) =>
-    likedArticles.includes(a.id)
+    likedArticles.includes(a._id || a.id),
   );
 
-  if (authLoading) {
-    return (
-      <Loading></Loading>
-    );
+  if (authLoading || loadingData) {
+    return <Loading />;
   }
 
   if (!user) return <Navigate to="/" replace />;
@@ -367,11 +227,10 @@ export default function DashboardPage() {
   return (
     <div className={styles.dashboardPage}>
       <SEOConfig
-        title={`داشبورد کاربری (${userData?.name || user.displayName || "کاربر"}) | بهراد`}
+        title={`داشبورد کاربری (${userData?.firstName || "کاربر"}) | بهراد`}
         description="پنل کاربری اختصاصی بهراد جهت پیگیری تیکت‌ها، مشاوره و پروژه‌ها."
         noIndex={true}
       />
-
 
       <div className={styles.container}>
         {/* Profile Banner */}
@@ -379,8 +238,8 @@ export default function DashboardPage() {
           <div className={styles.bannerLeft}>
             <div className={styles.avatarWrapper}>
               <img
-                src={userData?.avatar || user.photoURL || AVATAR_PRESETS[0]}
-                alt={userData?.name || user.displayName}
+                src={userData?.avatar || AVATAR_PRESETS[0]}
+                alt={userData?.firstName}
                 className={styles.avatarImg}
               />
               <div className={styles.verifiedBadge}>
@@ -391,7 +250,7 @@ export default function DashboardPage() {
             <div className={styles.profileDetails}>
               <div className={styles.nameRow}>
                 <h1 className={styles.profileName}>
-                  {userData?.name || user.displayName || "کاربر گرامی"}
+                  {userData?.firstName} {userData?.lastName}
                 </h1>
                 <span className={styles.authBadge}>
                   <FaShieldAlt />
@@ -401,7 +260,10 @@ export default function DashboardPage() {
               <p className={styles.profileMeta}>
                 <span>پست الکترونیک: {user.email || "ثبت‌نشده"}</span>
                 <span className={styles.dotSeparator}>•</span>
-                <span>تاریخ عضویت: {userData?.joinedDate || "۱۴۰۴/۰۵/۰۱"}</span>
+                <span>
+                  نقش کاربری:{" "}
+                  {user.role == "admin" ? "مدیر سایت" : "کاربر عادی"}
+                </span>
               </p>
             </div>
           </div>
@@ -535,7 +397,9 @@ export default function DashboardPage() {
             >
               <FaTicketAlt />
               <span>تیکت‌های پشتیبانی</span>
-              <span className={styles.navCountBadge}>{e2p(tickets.length)}</span>
+              <span className={styles.navCountBadge}>
+                {e2p(tickets.length)}
+              </span>
             </button>
 
             <button
@@ -578,14 +442,13 @@ export default function DashboardPage() {
                 likedArticles={likedArticles}
                 savedPortfolioItems={savedPortfolioItems}
                 likedArticleItems={likedArticleItems}
-                onRemovePortfolio={handleRemoveSavedPortfolio}
-                onRemoveArticle={handleRemoveLikedArticle}
+                // توابع حذف رو میتونی مستقیما تو SavedTab با مدیریت لوکال استوریج هندل کنی
               />
             )}
 
             {activeTab === "tickets" && (
               <TicketsTab
-                tickets={tickets.reverse()}
+                tickets={tickets} // تو بک‌اند سورت شدن نیازی به reverse نیست
                 selectedTicket={selectedTicket}
                 setSelectedTicket={setSelectedTicket}
                 user={user}

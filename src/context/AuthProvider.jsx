@@ -1,131 +1,94 @@
 import { useState, useEffect, useCallback } from "react";
+// این خط رو اضافه کن تا کانتکست رو از فایل خودش بخونه
 import { AuthContext } from "./AuthContext";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  updateProfile,
-} from "firebase/auth";
-import { auth } from "../firebase";
-import {
-  getUserProfileFromFirestore,
-  saveUserProfileToFirestore,
-} from "../services/firestoreService";
-import {
-  getLoggedUser,
-  saveLoggedUser,
-  removeLoggedUser,
-} from "../utils/storage";
+import api from "../utils/axiosInstance";
+
+// ❌ اگر این خط تو کدت هست، پاکش کن چون کانتکست تو فایل جداست:
+// export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => getLoggedUser());
+  const [user, setUser] = useState(null);
+  // ... ادامه کدها بدون هیچ تغییری ...
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        let firestoreProfile = await getUserProfileFromFirestore(firebaseUser.uid);
-        if (!firestoreProfile) {
-          firestoreProfile = {
-            uid: firebaseUser.uid,
-            name: firebaseUser.displayName || firebaseUser.email.split("@")[0],
-            email: firebaseUser.email,
-            phone: firebaseUser.phoneNumber || "",
-            role: "admin",
-            avatar: firebaseUser.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-            joinedDate: new Date().toLocaleDateString("fa-IR"),
-          };
-          await saveUserProfileToFirestore(firebaseUser.uid, firestoreProfile);
-        }
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      const storedUser = localStorage.getItem("user");
 
-        const userData = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          name: firestoreProfile.name || firebaseUser.displayName || "کاربر",
-          password: firestoreProfile.password,
-          phone: firestoreProfile.phone || "",
-          role: firestoreProfile.role || "admin",
-          avatar: firestoreProfile.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-          joinedDate: firestoreProfile.joinedDate || new Date().toLocaleDateString("fa-IR"),
-          bio: firestoreProfile.bio || "",
-          skills: firestoreProfile.skills || ["React.js", "JavaScript", "Firebase"],
-        };
-
-        saveLoggedUser(userData);
-        setUser(userData);
+      if (token && storedUser) {
+        // اگر توکن و اطلاعات کاربر وجود داشت، کاربر لاگین است
+        setUser(JSON.parse(storedUser));
       } else {
-        removeLoggedUser();
         setUser(null);
       }
       setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const loginWithEmail = useCallback(async (email, password) => {
-    const credential = await signInWithEmailAndPassword(auth, email, password);
-    return credential.user;
-  }, []);
-
-  const signupWithEmail = useCallback(async (fullName, email, password) => {
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
-    const firebaseUser = credential.user;
-
-    if (fullName) {
-      try {
-        await updateProfile(firebaseUser, { displayName: fullName });
-      } catch (e) {
-        console.warn("Update profile error:", e);
-      }
-    }
-
-    const newProfile = {
-      uid: firebaseUser.uid,
-      name: fullName || email.split("@")[0],
-      email: firebaseUser.email,
-      phone: "",
-      role: "admin",
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-      joinedDate: new Date().toLocaleDateString("fa-IR"),
     };
-
-    await saveUserProfileToFirestore(firebaseUser.uid, newProfile);
-    saveLoggedUser(newProfile);
-    setUser(newProfile);
-
-    return firebaseUser;
+    checkAuth();
   }, []);
 
-  const logout = useCallback(async () => {
-    await signOut(auth);
-    removeLoggedUser();
+  // ۲. تابع ورود به حساب کاربری
+  const loginWithEmail = useCallback(async (email, password) => {
+    // ارسال درخواست به مسیر لاگین در Node.js
+    const response = await api.post("/auth/login", { email, password });
+
+    // بک‌اند ما token و اطلاعات user رو برمی‌گردونه
+    const { token, user: userData } = response.data;
+
+    // ذخیره در مرورگر
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userData));
+
+    setUser(userData);
+    return userData;
+  }, []);
+
+  // ۳. تابع ثبت‌نام
+  const signupWithEmail = useCallback(
+    async (fullName, email, password) => {
+      // چون فرم تو فقط یک فیلد نام داره ولی دیتابیس ما نام و نام خانوادگی میخواد، اینجا جداش می‌کنیم
+      const nameParts = fullName.trim().split(" ");
+      const firstName = nameParts[0];
+      const lastName = nameParts.slice(1).join(" ") || "کاربر";
+
+      // ارسال درخواست به مسیر ثبت‌نام در Node.js
+      await api.post("/auth/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+
+      // بعد از ثبت‌نام موفق، خودکار تابع لاگین رو صدا می‌زنیم تا توکن رو بگیریم
+      return await loginWithEmail(email, password);
+    },
+    [loginWithEmail],
+  );
+
+  // ۴. تابع خروج از حساب
+  const logout = useCallback(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
   }, []);
 
+  // ۵. توابعی که هنوز در بک‌اند توسعه داده نشدند
   const resetPassword = useCallback(async (email) => {
-    await sendPasswordResetEmail(auth, email);
+    // این قابلیت رو تو فازهای بعدی بک‌اند میسازیم
+    throw new Error(
+      "قابلیت بازیابی رمز عبور هنوز در سرور راه‌اندازی نشده است.",
+    );
   }, []);
 
   const updateUserProfile = useCallback(async (updatedData) => {
-    if (!user?.uid) return;
-    const merged = { ...user, ...updatedData };
-    setUser(merged);
-    saveLoggedUser(merged);
-    await saveUserProfileToFirestore(user.uid, merged);
-  }, [user]);
+    console.warn("API آپدیت پروفایل هنوز در سرور ساخته نشده است.");
+  }, []);
 
+  // متغیرهای کمکی برای کامپوننت‌های دیگر
   const isLoggedIn = Boolean(user);
-  const isAdmin = Boolean(
-    user && (
-      user.role === "admin" ||
-      user.role === "مدیر" ||
-      user.email === "cantikarisma29@gmail.com" ||
-      user.email?.toLowerCase().includes("admin")
-    )
-  );
+
+  // بررسی نقش ادمین مستقیماً از دیتای بازگشتی MongoDB
+  const isAdmin = Boolean(user && user.role === "admin");
 
   return (
     <AuthContext.Provider
@@ -141,10 +104,9 @@ export function AuthProvider({ children }) {
         updateUserProfile,
       }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }
 
 export default AuthProvider;
-
