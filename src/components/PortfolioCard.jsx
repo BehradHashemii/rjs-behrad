@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { FaBookmark, FaExternalLinkAlt, FaGithub, FaRegBookmark } from "react-icons/fa";
-import { FiArrowUpLeft } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import Button from "./Button";
 import styles from "./PortfolioCard.module.css";
 import { isPortfolioSaved, toggleSavePortfolio } from "../utils/storage";
 
 function PortfolioCard({ portfolio }) {
-  const [saved, setSaved] = useState(() => isPortfolioSaved(portfolio?.id));
+  // پشتیبانی از هر دو کلید _id و id برای جلوگیری از undefined شدن
+  const portfolioId = portfolio?._id ?? portfolio?.id;
+
+  const [saved, setSaved] = useState(() => isPortfolioSaved(portfolioId));
 
   useEffect(() => {
     const handleSavedChange = () => {
-      setSaved(isPortfolioSaved(portfolio?.id));
+      setSaved(isPortfolioSaved(portfolioId));
     };
 
     window.addEventListener("portfolio-saved-change", handleSavedChange);
     return () => {
       window.removeEventListener("portfolio-saved-change", handleSavedChange);
     };
-  }, [portfolio?.id]);
+  }, [portfolioId]);
 
   const handleSaveClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!portfolio?.id) return;
-    const updated = toggleSavePortfolio(portfolio.id);
-    setSaved(updated.includes(portfolio.id));
+    if (!portfolioId) return;
+
+    const updated = toggleSavePortfolio(portfolioId);
+    setSaved(updated.some((id) => String(id) === String(portfolioId)));
   };
 
   return (
@@ -37,20 +38,26 @@ function PortfolioCard({ portfolio }) {
           className={styles.image}
         />
 
-        <div className={styles.category}>{portfolio.category}</div>
+        {portfolio.category && (
+          <div className={styles.category}>{portfolio.category}</div>
+        )}
 
         {portfolio.featured && (
           <span className={styles.featured}>Featured</span>
         )}
       </div>
+
       <div className={styles.content}>
         <h3>{portfolio.title}</h3>
         <p className={styles.description}>{portfolio.description}</p>
-        <div className={styles.technologies}>
-          {portfolio.technologies.map((technology) => (
-            <span key={technology}>{technology}</span>
-          ))}
-        </div>
+
+        {Array.isArray(portfolio.technologies) && (
+          <div className={styles.technologies}>
+            {portfolio.technologies.map((technology) => (
+              <span key={technology}>{technology}</span>
+            ))}
+          </div>
+        )}
 
         <div className={styles.footer}>
           <div className={styles.saveStatusLabel}>

@@ -16,6 +16,10 @@
   gap: 16px;
 }
 
+.sendIcon {
+  transform: scaleX(-1);
+}
+
 .badge {
   padding: 6px 16px;
   border-radius: 20px;

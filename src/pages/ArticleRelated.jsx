@@ -19,7 +19,7 @@ function ArticleRelated({ styles, relatedArticles }) {
               />
               <div className={styles.relatedInfo}>
                 <h4>{rel.title}</h4>
-                <span>{formatPersianDate(rel.date)}</span>
+                <span>{formatPersianDate(rel.createdAt)}</span>
               </div>
             </a>
           ))}

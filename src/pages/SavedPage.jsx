@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { getArticles, getPortfolios } from "../services/apiService";
 import PortfolioCard from "../components/PortfolioCard";
 import ArticleCard from "../components/ArticleCard";
 import e2p from "../utils/persianNumber";
 import { getSavedPortfolios, getLikedArticles } from "../utils/storage";
+
+// خواندن مستقیم دیتا از فایل محلی
+import { articles as mockArticles, portfolios as mockPortfolios } from "../data/mockData.json";
+
 import {
   FaBookmark,
   FaHeart,
@@ -19,50 +22,47 @@ function SavedPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "portfolios";
 
+  // شناسه آیتم‌های ذخیره شده در localStorage
   const [savedPortfolioIds, setSavedPortfolioIds] = useState(() =>
-    getSavedPortfolios(),
+    getSavedPortfolios() || []
   );
   const [likedArticleIds, setLikedArticleIds] = useState(() =>
-    getLikedArticles(),
+    getLikedArticles() || []
   );
 
+  // گوش دادن به تغییرات سفارشی localStorage
   useEffect(() => {
     const handlePortfolioChange = () => {
-      setSavedPortfolioIds(getSavedPortfolios());
+      setSavedPortfolioIds(getSavedPortfolios() || []);
     };
     const handleArticleChange = () => {
-      setLikedArticleIds(getLikedArticles());
+      setLikedArticleIds(getLikedArticles() || []);
     };
 
     window.addEventListener("portfolio-saved-change", handlePortfolioChange);
     window.addEventListener("article-liked-change", handleArticleChange);
 
     return () => {
-      window.removeEventListener(
-        "portfolio-saved-change",
-        handlePortfolioChange,
-      );
+      window.removeEventListener("portfolio-saved-change", handlePortfolioChange);
       window.removeEventListener("article-liked-change", handleArticleChange);
     };
   }, []);
 
-  
-  const [allPortfolios, setAllPortfolios] = useState([]);
-  const [allArticles, setAllArticles] = useState([]);
+  // فیلتر نمونه‌کارهای ذخیره‌شده (پشتیبانی از _id و id با تبدیل به رشته/عدد)
+  const savedPortfolios = useMemo(() => {
+    return (mockPortfolios || []).filter((p) => {
+      const currentId = p._id ?? p.id;
+      return savedPortfolioIds.some((id) => String(id) === String(currentId));
+    });
+  }, [savedPortfolioIds]);
 
-  useEffect(() => {
-    getPortfolios().then(res => setAllPortfolios(res || []));
-    getArticles().then(res => setAllArticles(res || []));
-  }, []);
-
-  const savedPortfolios = (allPortfolios || []).filter((p) =>
-    savedPortfolioIds.includes(p.id)
-  );
-
-
-  const likedArticles = (allArticles || []).filter((a) =>
-    likedArticleIds.includes(a.id),
-  );
+  // فیلتر مقالات پسندیده‌شده (پشتیبانی از _id و id با تبدیل به رشته/عدد)
+  const likedArticles = useMemo(() => {
+    return (mockArticles || []).filter((a) => {
+      const currentId = a._id ?? a.id;
+      return likedArticleIds.some((id) => String(id) === String(currentId));
+    });
+  }, [likedArticleIds]);
 
   const handleTabChange = (tab) => {
     setSearchParams({ tab });
@@ -80,7 +80,9 @@ function SavedPage() {
         <div className={savedStyles.tabsRow}>
           <button
             type="button"
-            className={`${savedStyles.tabBtn} ${activeTab === "portfolios" ? savedStyles.activeTab : ""}`}
+            className={`${savedStyles.tabBtn} ${
+              activeTab === "portfolios" ? savedStyles.activeTab : ""
+            }`}
             onClick={() => handleTabChange("portfolios")}
           >
             <FaBookmark />
@@ -89,7 +91,9 @@ function SavedPage() {
 
           <button
             type="button"
-            className={`${savedStyles.tabBtn} ${activeTab === "articles" ? savedStyles.activeTab : ""}`}
+            className={`${savedStyles.tabBtn} ${
+              activeTab === "articles" ? savedStyles.activeTab : ""
+            }`}
             onClick={() => handleTabChange("articles")}
           >
             <FaHeart
@@ -104,8 +108,8 @@ function SavedPage() {
       {activeTab === "portfolios" && (
         <section className={styles.portfoliosGrid}>
           {savedPortfolios.length > 0 ? (
-            savedPortfolios.map((portfolio, index) => (
-              <div key={portfolio.id} direction="up" delay={(index % 3) * 100}>
+            savedPortfolios.map((portfolio) => (
+              <div key={portfolio._id || portfolio.id}>
                 <PortfolioCard portfolio={portfolio} />
               </div>
             ))
@@ -130,8 +134,8 @@ function SavedPage() {
       {activeTab === "articles" && (
         <section className={styles.portfoliosGrid}>
           {likedArticles.length > 0 ? (
-            likedArticles.map((article, index) => (
-              <div key={article.id} direction="up" delay={(index % 3) * 100}>
+            likedArticles.map((article) => (
+              <div key={article._id || article.id}>
                 <ArticleCard article={article} />
               </div>
             ))

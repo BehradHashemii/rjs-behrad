@@ -1,50 +1,34 @@
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { getArticles } from "../services/apiService";
-import Loading from "../components/Loading";
-
-import styles from "./PortfoliosPage.module.css";
+import { articles as mockArticles } from "../data/mockData.json";
 import ArticleCard from "../components/ArticleCard";
 import e2p from "../utils/persianNumber";
+import styles from "./PortfoliosPage.module.css";
 
 const ITEMS_PER_PAGE = 8;
 
 function ArticlesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [articles, setArticles] = useState([]);
-
   const sortBy = searchParams.get("sortBy") || "desc";
   const tag = searchParams.get("tag") || "all";
   const page = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("search") || "";
 
-  
-  useEffect(() => {
-    setIsLoading(true);
-    getArticles().then(res => {
-      setArticles(res || []);
-      setIsLoading(false);
-    });
-  }, []);
-  
-
+  // استخراج دسته‌بندی‌های یکتا
   const uniqueCategories = useMemo(() => {
-    if (!Array.isArray(articles)) return [];
-
     return [
       ...new Set(
-        articles.flatMap((article) =>
+        mockArticles.flatMap((article) =>
           article.tags
             ?.split(",")
-            .map((tag) => tag.trim())
+            .map((t) => t.trim())
             .filter(Boolean),
         ),
       ),
     ];
-  }, [articles]);
+  }, []);
 
   const updateParams = (key, value) => {
     const newParams = new URLSearchParams(searchParams);
@@ -62,12 +46,13 @@ function ArticlesPage() {
     setSearchParams(newParams);
   };
 
+  // فیلتر، جستجو و مرتب‌سازی داده‌ها
   const processedData = useMemo(() => {
-    let filtered = Array.isArray(articles) ? [...articles] : [];
+    let filtered = [...mockArticles];
 
+    // ۱. فیلتر جستجو
     if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-
+      const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter(
         (item) =>
           item.title?.toLowerCase().includes(query) ||
@@ -76,6 +61,7 @@ function ArticlesPage() {
       );
     }
 
+    // ۲. فیلتر تگ
     if (tag !== "all") {
       filtered = filtered.filter((item) =>
         item.tags
@@ -85,15 +71,16 @@ function ArticlesPage() {
       );
     }
 
+    // ۳. مرتب‌سازی زمانی (اصلاح‌شده بر اساس createdAt)
     filtered.sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
 
       return sortBy === "desc" ? dateB - dateA : dateA - dateB;
     });
 
     return filtered;
-  }, [articles, searchQuery, tag, sortBy]);
+  }, [searchQuery, tag, sortBy]);
 
   const totalPages = Math.ceil(processedData.length / ITEMS_PER_PAGE);
 
@@ -102,17 +89,13 @@ function ArticlesPage() {
     page * ITEMS_PER_PAGE,
   );
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <main className={styles.container}>
       {/* Filters */}
       <section className={styles.filtersSection}>
         <input
           type="text"
-          placeholder="جستجو در عنوان و توضیحات مقاله..."
+          placeholder="جستجو در عنوان، محتوا و برچسب‌ها..."
           value={searchQuery}
           onChange={(e) => updateParams("search", e.target.value)}
         />
@@ -130,16 +113,15 @@ function ArticlesPage() {
           onChange={(e) => updateParams("tag", e.target.value)}
         >
           <option value="all">همه دسته‌بندی‌ها</option>
-
           {uniqueCategories.map((category) => (
             <option key={category} value={category}>
-              {" "}
-              {category}{" "}
+              {category}
             </option>
           ))}
         </select>
       </section>
 
+      {/* Grid */}
       <section className={styles.portfoliosGrid}>
         {paginatedData.length > 0 ? (
           paginatedData.map((article) => (
@@ -151,6 +133,8 @@ function ArticlesPage() {
           </div>
         )}
       </section>
+
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className={styles.pagination}>
           <button

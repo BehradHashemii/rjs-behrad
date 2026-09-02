@@ -20,7 +20,7 @@ function ArticleCard({ article }) {
 
           <p>
             <FaCalendarAlt />
-            {formatPersianDate(article.date)}
+            {formatPersianDate(article.createdAt)}
           </p>
         </div>
 

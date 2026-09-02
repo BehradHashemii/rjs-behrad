@@ -1,43 +1,36 @@
-import React from "react";
+// getArticles().then(res => setArticles((res || [])));
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
-import { IoPersonSharp } from "react-icons/io5";
-import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { RiFilePaper2Line } from "react-icons/ri";
+import { FiArrowUpLeft } from "react-icons/fi";
 
+import ArticleCard from "../components/ArticleCard";
 import styles from "./Articles.module.css";
-import formatPersianDate from "../utils/formatPersianDate";
+
+// ۱. ایمپورت مستقیم از مسیر سورس پروژه
+import mockData from "../data/mockData.json";
+
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { getArticles } from "../services/apiService";
-import { ImBlog } from "react-icons/im";
-import { RiFilePaper2Line } from "react-icons/ri";
-import ArticleCard from "../components/ArticleCard";
-import { FiArrowUpLeft } from "react-icons/fi";
-import { VscGithubProject } from "react-icons/vsc";
-
 function Articles() {
-  const [articles, setArticles] = React.useState([]);
-  React.useEffect(() => {
-    getArticles().then(res => setArticles((res || []).slice(-5).reverse()));
-  }, []);
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const articleSlides = articles.map((article) => (
-    <SwiperSlide key={article.id} className={styles.card}>
-      {/* <Link to={`/articles/${article.slug}`}> */}
-      <ArticleCard article={article} />
-      {/* </Link> */}
-    </SwiperSlide>
-  ));
+  useEffect(() => {
+    setArticles(mockData.articles.slice(-5).reverse() || []);
+    setIsLoading(false);
+  }, []);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
           <span className={styles.eyebrow}>MY ARTICLE</span>
-
           <h2>
             <RiFilePaper2Line />
             آخرین مقالات
@@ -53,23 +46,28 @@ function Articles() {
       <Swiper
         modules={[Navigation, Pagination, FreeMode]}
         loop={false}
-        spaceBetween={50}
+        spaceBetween={30}
         navigation={{
-          clickable: true,
           nextEl: ".scroll-swiper-button-next",
           prevEl: ".scroll-swiper-button-prev",
         }}
         pagination={{
           el: "#pagination-articles",
+          clickable: true,
         }}
         breakpoints={{
           320: { slidesPerView: 1 },
           640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
         }}
       >
-        {articleSlides}
+        {articles.map((article) => (
+          <SwiperSlide key={article._id}>
+            <ArticleCard article={article} />
+          </SwiperSlide>
+        ))}
       </Swiper>
+
       <div className={styles.swiperButtons}>
         <div className={styles.navigation}>
           <div className="scroll-swiper-button-prev">

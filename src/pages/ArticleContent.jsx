@@ -65,7 +65,7 @@ function ArticleContent({ article, styles, contentRef }) {
               opacity: "0.8",
             }}
           >
-            {formatPersianDate(article?.date)}
+            {formatPersianDate(article?.createdAt)}
           </p>
         </div>
       </div>

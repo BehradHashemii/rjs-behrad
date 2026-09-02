@@ -1,34 +1,33 @@
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getPortfolios } from "../services/apiService";
-import Loading from "../components/Loading";
 
-import styles from "./PortfoliosPage.module.css";
+// ایمپورت مستقیم داده‌های لوکال (مشابه مقالات)
+import { portfolios as mockPortfolios } from "../data/mockData.json";
 import PortfolioCard from "../components/PortfolioCard";
+import e2p from "../utils/persianNumber";
+import styles from "./PortfoliosPage.module.css";
 
 const ITEMS_PER_PAGE = 9;
 
 function PortfoliosPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [portfolios, setPortfolios] = useState([]);
+
   const sortBy = searchParams.get("sortBy") || "desc";
   const tag = searchParams.get("tag") || "all";
   const page = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("search") || "";
 
-  useEffect(() => {
-    setIsLoading(true);
-    getPortfolios().then((res) => {
-      setPortfolios(res || []);
-      setIsLoading(false);
-    });
-  }, []);
-
+  // استخراج دسته‌بندی‌های یکتا
   const uniqueCategories = useMemo(() => {
-    if (!Array.isArray(portfolios)) return [];
-    return [...new Set(portfolios.map((item) => item.category))];
-  }, [portfolios]);
+    const list = mockPortfolios || [];
+    return [
+      ...new Set(
+        list
+          .map((item) => item?.category?.trim())
+          .filter(Boolean)
+      ),
+    ];
+  }, []);
 
   const updateParams = (key, value) => {
     const newParams = new URLSearchParams(searchParams);
@@ -43,42 +42,50 @@ function PortfoliosPage() {
     setSearchParams(newParams);
   };
 
+  // فیلتر، جستجو و مرتب‌سازی داده‌ها
   const processedData = useMemo(() => {
-    let filtered = Array.isArray(portfolios) ? [...portfolios] : [];
+    let filtered = [...(mockPortfolios || [])];
 
-    if (searchQuery) {
+    // ۱. فیلتر جستجو امن
+    if (searchQuery.trim()) {
+      const query = searchQuery.trim().toLowerCase();
       filtered = filtered.filter(
         (item) =>
-          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase()),
+          item?.title?.toLowerCase().includes(query) ||
+          item?.description?.toLowerCase().includes(query) ||
+          item?.category?.toLowerCase().includes(query)
       );
     }
 
+    // ۲. فیلتر دسته‌بندی
     if (tag !== "all") {
-      filtered = filtered.filter((item) => item.category === tag);
+      filtered = filtered.filter((item) => item?.category === tag);
     }
 
+    // ۳. مرتب‌سازی بر اساس تاریخ (پشتیبانی از createdAt و date)
     filtered.sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
+      const rawDateA = a.createdAt || a.date;
+      const rawDateB = b.createdAt || b.date;
+
+      const dateA = rawDateA ? new Date(rawDateA).getTime() : 0;
+      const dateB = rawDateB ? new Date(rawDateB).getTime() : 0;
+
       return sortBy === "desc" ? dateB - dateA : dateA - dateB;
     });
+
     return filtered;
-  }, [portfolios, searchQuery, tag, sortBy]);
+  }, [searchQuery, tag, sortBy]);
 
   const totalPages = Math.ceil(processedData.length / ITEMS_PER_PAGE);
 
   const paginatedData = processedData.slice(
     (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
   );
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <main className={styles.container}>
+      {/* بخش فیلترها */}
       <section className={styles.filtersSection}>
         <div className={styles.searchWrapper}>
           <input
@@ -88,6 +95,7 @@ function PortfoliosPage() {
             onChange={(e) => updateParams("search", e.target.value)}
           />
         </div>
+
         <select
           value={sortBy}
           onChange={(e) => updateParams("sortBy", e.target.value)}
@@ -95,6 +103,7 @@ function PortfoliosPage() {
           <option value="desc">جدیدترین پروژه‌ها</option>
           <option value="asc">قدیمی‌ترین پروژه‌ها</option>
         </select>
+
         <select
           value={tag}
           onChange={(e) => updateParams("tag", e.target.value)}
@@ -107,10 +116,12 @@ function PortfoliosPage() {
           ))}
         </select>
       </section>
+
+      {/* گرید نمونه‌کارها */}
       <section className={styles.portfoliosGrid}>
         {paginatedData.length > 0 ? (
           paginatedData.map((item) => (
-            <PortfolioCard key={item._id} portfolio={item} />
+            <PortfolioCard key={item._id || item.id} portfolio={item} />
           ))
         ) : (
           <div className={`${styles.emptyState} glassBG`}>
@@ -118,6 +129,8 @@ function PortfoliosPage() {
           </div>
         )}
       </section>
+
+      {/* صفحه‌بندی */}
       {totalPages > 1 && (
         <div className={styles.pagination}>
           <button
@@ -127,12 +140,15 @@ function PortfoliosPage() {
           >
             قبلی
           </button>
+
           <span className={styles.pageInfo}>
-            صفحه {page} از {totalPages}
+            صفحه {typeof e2p === "function" ? e2p(page) : page} از{" "}
+            {typeof e2p === "function" ? e2p(totalPages) : totalPages}
           </span>
+
           <button
             className={styles.paginationButton}
-            disabled={page === totalPages}
+            disabled={page >= totalPages}
             onClick={() => updateParams("page", (page + 1).toString())}
           >
             بعدی

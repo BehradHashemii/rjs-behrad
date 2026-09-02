@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
@@ -16,13 +16,16 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { getPortfolios } from "../services/apiService";
+import mockData from "../data/mockData.json";
 import PortfolioCard from "../components/PortfolioCard";
 
 function Portfolios() {
-  const [portfolios, setPortfolios] = React.useState([]);
-  React.useEffect(() => {
-    getPortfolios().then(res => setPortfolios((res || []).slice(-5).reverse()));
+  const [portfolios, setPortfolios] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setPortfolios(mockData.portfolios.slice(-5).reverse() || []);
+    setIsLoading(false);
   }, []);
   return (
     <section className={styles.container}>
@@ -52,20 +55,14 @@ function Portfolios() {
           clickable: true,
         }}
         breakpoints={{
-          320: {
-            slidesPerView: 1,
-          },
-          640: {
-            slidesPerView: 2,
-          },
-          1024: {
-            slidesPerView: 3,
-          },
+          320: { slidesPerView: 1 },
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 4 },
         }}
         className={styles.swiper}
       >
         {portfolios.map((portfolio) => (
-          <SwiperSlide key={portfolio._id} className={styles.card}>
+          <SwiperSlide key={portfolio._id}>
             <PortfolioCard portfolio={portfolio} />
           </SwiperSlide>
         ))}

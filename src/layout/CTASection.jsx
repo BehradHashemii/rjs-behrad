@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaPaperPlane, FaFolderOpen } from "react-icons/fa";
 import styles from "./CTASection.module.css";
+import { RiSendInsFill } from "react-icons/ri";
 
 function CTASection() {
   return (
@@ -17,7 +18,7 @@ function CTASection() {
 
         <div className={styles.buttons}>
           <Link to="/contact" className={styles.primaryBtn}>
-            <FaPaperPlane />
+            <RiSendInsFill className={styles.sendIcon}/>
             <span>شروع گفتگو و تماس</span>
           </Link>
 

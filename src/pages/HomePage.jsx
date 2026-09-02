@@ -11,6 +11,9 @@ import Contact from "../components/Contact";
 function HomePage() {
   return (
     <div>
+      <>
+      
+      </>
       <Banner />
       <Hero />
       <SkillsSection />
