@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "author": "بهراد هاشمی",
+    "createdAt": "2026-08-11T06:35:21Z",
+    "title": "پرامپت فانتزی",
+    "prompt": "Create an exaggerated stylized 3D caricature character portrait with strong intentional deformation and a clean, controlled surface finish. Use the person from the ATTACHED REFERENCE PHOTO. Preserve the subject’s identity, facial likeness, skin tone, and defining features, but reinterpret them into a bold caricatured 3D form with an elongated neck, oversized head-to-neck ratio, droopy eyelids, heavy lips, and slightly asymmetrical facial structure. Render as a human-like 3D character with smooth, studio-clean skin and intentionally designed detail, avoiding random texture or noise. Style with bold accessories such as round or oval glasses, hoop earrings, gold chains, headscarves or bandanas, and street-luxury clothing. Use neutral studio lighting with soft shadows and even illumination, no dramatic contrast, against a plain neutral grey or off-white background. The overall aesthetic should feel weird, fashion-forward, collectible, and character-driven rather than cute or realistic.\nUltra high definition, premium cinematic 3D render quality, hyper realistic hyper realism, clean materials, no freckles, no dirt, no grain, no noise, no speckling, no text, no logos, no watermarks. Aspect ratio 4:5",
+    "type": "text-to-image",
+    "tool": "gemini",
+    "niche": "فانتزی",
+    "aspectRatio": "4:5",
+    "tips": "",
+    "image": "https://content-management-files.canva.com/0b1b415d-db2c-4d8f-8d05-d60f9f5ee821/sunrise-over-snowcapped-vibrant2x.png?resize-format=auto&resize-quality=70",
+    "slug": "پرامپت_فانتزی"
+  },
+  {
+    "id": "2",
+    "author": "بهراد هاشمی",
+    "createdAt": "2026-09-06T06:35:21Z",
+    "title": "پرامپت تولد",
+    "prompt": "Ultra-realistic vertical 9:16 street portrait. Preserve the girl’s face, hair, and identity exactly as the reference. Natural asymmetric pose, one leg slightly forward. Strong vivid pink color theme throughout the image and alley, with rich pink tones dominating the atmosphere. She holds a small cake with one satin pink bow and one white lit candle, no text. White doll-style blouse with ruffled hem, worn outside light-blue wide fabric baggy pants. Pink ribbon in her hair, round sunglasses, hoop earrings. Elegant aesthetic alley with greenery, pink-toned lighting, three matte pink balloons tied to a metal pole, and a dark-blue Persian street sign reading exactly «کوچه مهر».",
+    "type": "text-to-image",
+    "tool": "gemini",
+    "niche": "فانتزی",
+    "aspectRatio": "vertical 9:16",
+    "tips": "",
+    "image": "https://content-management-files.canva.com/0b1b415d-db2c-4d8f-8d05-d60f9f5ee821/sunrise-over-snowcapped-vibrant2x.png?resize-format=auto&resize-quality=70",
+    "slug": "پرامپت_فانتزی"
+  }
+]

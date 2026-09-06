@@ -12,6 +12,8 @@ import NotFoundPage from "../pages/NotFoundPage";
 import DashboardPage from "../pages/DashboardPage";
 import AdminPage from "../pages/AdminPage";
 import Loading from "../components/Loading";
+import PromptsPage from "../pages/PromptsPage";
+import PromptDetailsPage from "../pages/PromptDetailsPage";
 
 function ProtectedRoute() {
   const { user, loading } = useAuth();
@@ -42,6 +44,8 @@ function Router() {
       <Route element={<PortfoliosPage />} path="/portfolios" />
       <Route element={<ArticlesPage />} path="/articles" />
       <Route element={<ArticleDetailsPage />} path="/articles/:slug" />
+      <Route element={<PromptsPage />} path="/prompts" />
+      <Route element={<PromptDetailsPage />} path="/prompts/:slug" />
       <Route element={<ContactPage />} path="/contact" />
       <Route element={<SavedPage />} path="/saved" />
 

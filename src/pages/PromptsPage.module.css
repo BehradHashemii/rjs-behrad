@@ -1,0 +1,351 @@
+.container {
+  margin: 0 auto 20px;
+  width: 100%;
+}
+
+.headerSection {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.filtersSection {
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) 220px 220px;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.filtersSection input,
+.filtersSection select {
+  width: 100%;
+  height: 52px;
+  padding: 0 1rem;
+  border: none;
+  border-radius: var(--radius-lg);
+  outline: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.15),
+    var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.filtersSection option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.filtersSection input::placeholder {
+  color: var(--text-muted);
+}
+
+.promptsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.promptCard {
+  position: relative;
+  overflow: hidden;
+  padding: 0 !important;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px) saturate(180%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.15),
+    var(--shadow-lg);
+  transition:
+    transform var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+/* هاله نوری سفید در گوشه کارت */
+.promptCard::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 180px;
+  height: 180px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.35);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+/* هاله نوری آبی پرایمری (Tech Blue Glow) در گوشه پایین کارت */
+.promptCard::after {
+  content: "";
+  position: absolute;
+  right: -80px;
+  bottom: -100px;
+  width: 220px;
+  height: 220px;
+  border-radius: var(--radius-full);
+  background: var(--primary-shadow);
+  filter: blur(45px);
+  pointer-events: none;
+}
+
+.promptCard:hover {
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    var(--shadow-xl),
+    0 0 35px var(--primary-shadow);
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 220px;
+  border-bottom: 1px solid var(--glass-border-subtle);
+}
+
+.imageWrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 55%, rgba(0, 0, 0, 0.15));
+  pointer-events: none;
+}
+
+.promptCard {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.6s ease;
+}
+
+.promptCard:hover .portfolioImage {
+  transform: scale(1.08);
+}
+
+.cardContent {
+  position: relative;
+  z-index: 1;
+  padding: 1.4rem;
+}
+
+.category {
+  display: inline-block;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.title {
+  margin: 1rem 0 0.6rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  text-align: right;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* خنثی‌سازی تگ‌های احتمالی داخل توضیحات نمونه‌کار */
+.description * {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+  line-height: inherit !important;
+  font-family: inherit !important;
+  text-decoration: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline !important;
+}
+
+.technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.tech {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xs);
+  background: var(--white-glass);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    0 3px 8px rgba(0, 0, 0, 0.03);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all var(--transition-normal);
+}
+
+.liveLink {
+  border: 1px solid var(--primary-border);
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  box-shadow:
+    0 8px 20px var(--primary-shadow),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.liveLink:hover {
+  background: var(--primary-dark);
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 25px var(--primary-shadow),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.githubLink {
+  border: 1px solid var(--glass-border);
+  background: var(--white-glass);
+  color: var(--text-secondary);
+  backdrop-filter: blur(12px);
+}
+
+.githubLink:hover {
+  border-color: var(--primary-border);
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 250px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  color: var(--text-muted);
+  backdrop-filter: blur(20px);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.paginationButton {
+  min-width: 90px;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: var(--white-glass);
+  color: var(--primary-color);
+  cursor: pointer;
+  font-family: inherit;
+  backdrop-filter: blur(15px);
+  transition: all var(--transition-normal);
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  transform: translateY(-3px);
+}
+
+.paginationButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.pageInfo {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 900px) {
+  .filtersSection {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filtersSection input {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .portfoliosContainer {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .filtersSection {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .searchWrapper {
+    grid-column: 1 / -1;
+  }
+
+  .portfoliosGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .imageWrapper {
+    height: 200px;
+  }
+
+  .portfolioCard {
+    border-radius: var(--radius-md);
+  }
+
+  .pagination {
+    gap: 0.5rem;
+  }
+
+  .paginationButton {
+    min-width: 75px;
+  }
+}

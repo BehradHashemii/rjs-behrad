@@ -170,6 +170,7 @@
       "createdAt": "2026-04-01T18:19:31Z",
       "author": "بهراد هاشمی",
       "author_id": "@behradhashemi",
+      "isEditorPick": true,
       "slug": "ai-helping-f-35-spot-enemy-air-defenses",
       "tags": "مهندسی,هوش مصنوعی",
       "keywords": ""
@@ -228,8 +229,9 @@
       "createdAt": "2026-05-06T18:16:21Z",
       "author": "بهراد هاشمی",
       "author_id": "@behradhashemi",
+      "isEditorPick": true,
       "slug": "building-electrical-wiring-system",
-      "tags": "برق,مهندسی برق,فنی و مهندسی",
+      "tags": "برق,مهندسی برق,مهندسی",
       "keywords": "برق,مهندسی برق,electrical,engineering,electrical engineering,فنی و مهندسی",
       "comments": [
         {
@@ -264,7 +266,7 @@
           "content": "چه مقاله کاملی بود سپاس از نوشتن شما",
           "posted_at": "2026-08-11T07:35:21Z"
         }
-      ] 
+      ]
     }
   ]
 }

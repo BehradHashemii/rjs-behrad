@@ -132,7 +132,7 @@ function SavedPage() {
 
       {/* Tab 2: Articles */}
       {activeTab === "articles" && (
-        <section className={styles.portfoliosGrid}>
+        <section className={styles.articlesGrid}>
           {likedArticles.length > 0 ? (
             likedArticles.map((article) => (
               <div key={article._id || article.id}>

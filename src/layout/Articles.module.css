@@ -4,6 +4,10 @@
   margin: 50px auto;
 }
 
+.swiperSlide {
+  padding: 2rem;
+}
+
 .card {
   width: 100%;
   max-width: 500px;
@@ -218,6 +222,10 @@
 @media (max-width: 600px) {
   .container {
     margin: 50px auto;
+  }
+
+  .swiperSlide {
+    padding: 2rem 1rem;
   }
 
   .header {

@@ -1,22 +1,29 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { articles as mockArticles } from "../data/mockData.json";
 import ArticleCard from "../components/ArticleCard";
 import e2p from "../utils/persianNumber";
-import styles from "./PortfoliosPage.module.css";
+import styles from "./ArticlesPage.module.css";
+import FeaturedCard from "../components/FeaturedCard";
 
 const ITEMS_PER_PAGE = 8;
 
 function ArticlesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isCategoryOpen, setIsCategoryOpen] = useState(true);
 
   const sortBy = searchParams.get("sortBy") || "desc";
   const tag = searchParams.get("tag") || "all";
   const page = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("search") || "";
 
-  // استخراج دسته‌بندی‌های یکتا
+  const featuredArticles = useMemo(() => {
+    return mockArticles
+      .filter((article) => article.isEditorPick === true)
+      .slice(0, 2);
+  }, []);
+
   const uniqueCategories = useMemo(() => {
     return [
       ...new Set(
@@ -45,12 +52,8 @@ function ArticlesPage() {
 
     setSearchParams(newParams);
   };
-
-  // فیلتر، جستجو و مرتب‌سازی داده‌ها
   const processedData = useMemo(() => {
     let filtered = [...mockArticles];
-
-    // ۱. فیلتر جستجو
     if (searchQuery) {
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter(
@@ -61,7 +64,6 @@ function ArticlesPage() {
       );
     }
 
-    // ۲. فیلتر تگ
     if (tag !== "all") {
       filtered = filtered.filter((item) =>
         item.tags
@@ -70,8 +72,6 @@ function ArticlesPage() {
           .includes(tag),
       );
     }
-
-    // ۳. مرتب‌سازی زمانی (اصلاح‌شده بر اساس createdAt)
     filtered.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime();
       const dateB = new Date(b.createdAt).getTime();
@@ -91,73 +91,151 @@ function ArticlesPage() {
 
   return (
     <main className={styles.container}>
-      {/* Filters */}
-      <section className={styles.filtersSection}>
-        <input
-          type="text"
-          placeholder="جستجو در عنوان، محتوا و برچسب‌ها..."
-          value={searchQuery}
-          onChange={(e) => updateParams("search", e.target.value)}
-        />
-
-        <select
-          value={sortBy}
-          onChange={(e) => updateParams("sortBy", e.target.value)}
-        >
-          <option value="desc">جدیدترین مقالات</option>
-          <option value="asc">قدیمی‌ترین مقالات</option>
-        </select>
-
-        <select
-          value={tag}
-          onChange={(e) => updateParams("tag", e.target.value)}
-        >
-          <option value="all">همه دسته‌بندی‌ها</option>
-          {uniqueCategories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
+      <section className={styles.headerSection}>
+        <h1 className={styles.pageTitle}>مقالات آموزشی</h1>
+        <p className={styles.pageSubtitle}>
+          آموزش، دانستنی و تحلیل دنیای کامپیوتر و برنامه‌نویسی
+        </p>
       </section>
 
-      {/* Grid */}
-      <section className={styles.portfoliosGrid}>
-        {paginatedData.length > 0 ? (
-          paginatedData.map((article) => (
-            <ArticleCard key={article._id} article={article} />
-          ))
-        ) : (
-          <div className={styles.emptyState}>
-            <p>مقاله‌ای با این مشخصات یافت نشد.</p>
+      {featuredArticles.length > 0 && (
+        <section className={styles.featuredSection}>
+          <div className={styles.featuredHeader}>
+            <span className={styles.featuredBadge}>پیشنهاد سردبیر</span>
+            <div className={styles.featuredDivider}></div>
           </div>
-        )}
-      </section>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className={styles.pagination}>
-          <button
-            className={styles.paginationButton}
-            disabled={page === 1}
-            onClick={() => updateParams("page", (page - 1).toString())}
-          >
-            قبلی
-          </button>
-
-          <span className={styles.pageInfo}>
-            صفحه {e2p(page)} از {e2p(totalPages)}
-          </span>
-
-          <button
-            className={styles.paginationButton}
-            disabled={page === totalPages}
-            onClick={() => updateParams("page", (page + 1).toString())}
-          >
-            بعدی
-          </button>
-        </div>
+          <div className={styles.featuredGrid}>
+            {featuredArticles.map((article) => (
+              <FeaturedCard key={`featured-${article._id}`} article={article} />
+            ))}
+          </div>
+        </section>
       )}
+
+      <div className={styles.contentLayout}>
+        <div className={styles.articlesColumn}>
+          <div className={styles.topControls}>
+            <div className={styles.searchWrapper}>
+              <input
+                type="text"
+                className={styles.searchInput}
+                placeholder="جستجو در عنوان و خلاصه‌ی مقالات..."
+                value={searchQuery}
+                onChange={(e) => updateParams("search", e.target.value)}
+              />
+              <svg
+                className={styles.searchIcon}
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+
+            <div className={styles.articlesCount}>
+              <span>{e2p(processedData.length)}</span> مقاله
+            </div>
+          </div>
+
+          {/* لیست مقالات */}
+          <section className={styles.articlesGrid}>
+            {paginatedData.length > 0 ? (
+              paginatedData.map((article) => (
+                <ArticleCard key={article._id} article={article} />
+              ))
+            ) : (
+              <div className={styles.emptyState}>
+                <p>مقاله‌ای با این مشخصات یافت نشد.</p>
+              </div>
+            )}
+          </section>
+
+          {/* صفحه‌بندی */}
+          {totalPages > 1 && (
+            <div className={styles.pagination}>
+              <button
+                className={styles.paginationButton}
+                disabled={page === 1}
+                onClick={() => updateParams("page", (page - 1).toString())}
+              >
+                قبلی
+              </button>
+
+              <span className={styles.pageInfo}>
+                صفحه {e2p(page)} از {e2p(totalPages)}
+              </span>
+
+              <button
+                className={styles.paginationButton}
+                disabled={page === totalPages}
+                onClick={() => updateParams("page", (page + 1).toString())}
+              >
+                بعدی
+              </button>
+            </div>
+          )}
+        </div>
+
+        <aside className={styles.sidebarColumn}>
+          <div className={styles.categoryCard}>
+            <p
+              className={styles.categoryHeaderBtn}
+              type="button"
+            >
+              <span className={styles.categoryTitle}>دسته‌بندی‌ها</span>
+              <svg
+                className={`${styles.categoryArrow} ${
+                  isCategoryOpen ? styles.arrowOpen : ""
+                }`}
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="18 15 12 9 6 15"></polyline>
+              </svg>
+            </p>
+
+            {isCategoryOpen && (
+              <ul className={styles.categoryList}>
+                <li>
+                  <button
+                    className={`${styles.categoryItemBtn} ${
+                      tag === "all" ? styles.activeCategory : ""
+                    }`}
+                    onClick={() => updateParams("tag", "all")}
+                  >
+                    همه مقالات
+                  </button>
+                </li>
+                {uniqueCategories.map((cat) => (
+                  <li key={cat}>
+                    <button
+                      className={`${styles.categoryItemBtn} ${
+                        tag === cat ? styles.activeCategory : ""
+                      }`}
+                      onClick={() => updateParams("tag", cat)}
+                    >
+                      {cat}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </aside>
+      </div>
     </main>
   );
 }

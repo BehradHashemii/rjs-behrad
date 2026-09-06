@@ -1,0 +1,375 @@
+.container {
+  width: 100%;
+  margin: 50px auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.articleContainer {
+  width: 60%;
+  margin: 20px auto;
+}
+
+.articleContainer h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  margin: 10px auto 20px;
+}
+
+.meta p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.meta a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.detail {
+  overflow: hidden;
+}
+
+.imageContainer {
+  width: 100%;
+  max-height: 450px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  position: relative;
+  border: 1px solid var(--glass-border);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.contentWrapper {
+  margin: 24px auto;
+}
+
+/* مشخصات و برچسب‌های فنی پرامپت */
+.specsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.specBadge {
+  background: var(--bg-surface);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+}
+
+.specBadge strong {
+  color: var(--text-primary);
+  margin-left: 4px;
+}
+
+/* جعبه متن پرامپت */
+.promptContainer {
+  margin: 25px 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.promptBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--glass-border-subtle);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.copyPromptBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.copyPromptBtn:hover {
+  background: var(--primary-dark);
+}
+
+.promptCodeBlock {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 20px 24px;
+  overflow-x: auto;
+  color: var(--text-inverse);
+  background: var(--text-primary);
+  direction: ltr !important;
+  text-align: left !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.promptCodeBlock code {
+  display: block;
+  font-family: "Fira Code", "Consolas", monospace !important;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* کادر نکات */
+.tipsBox {
+  margin: 25px 0;
+  padding: 16px 20px;
+  background: var(--white-glass);
+  color: var(--text-secondary);
+  border-right: 3px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+}
+
+.tipsBox h4 {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+}
+
+.tipsBox p {
+  line-height: 1.9;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* اکشن‌ها */
+.actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.actionsBtn {
+  display: flex;
+  align-items: center;
+  text-align: center !important;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid var(--primary-border);
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  box-shadow:
+    0 8px 20px var(--primary-shadow),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.favNotActive,
+.favActive,
+.copyBtn {
+  background: var(--bg-surface);
+  color: var(--primary-color);
+}
+
+.back {
+  background: var(--primary-color);
+  color: var(--text-inverse);
+}
+
+.actionsBtn svg {
+  font-size: 1.2rem;
+}
+
+/* سایدبار موارد مرتبط */
+.sidebar {
+  width: 30%;
+  margin-bottom: 20px;
+  border-radius: var(--radius-md);
+}
+
+.sidebar h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.relatedList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.relatedCard {
+  display: flex;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-fast);
+}
+
+.relatedImg {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.relatedInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  overflow: hidden;
+}
+
+.relatedInfo h4 {
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.relatedInfo span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.noRelated {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.notFound p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.notFound h2 {
+  color: var(--danger-color);
+  margin-bottom: 1rem;
+}
+
+/* ریسپانسیو مشابه ArticleDetailsPage */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .articleContainer {
+    width: 100%;
+  }
+
+  .meta,
+  .articleContainer h1,
+  .contentWrapper,
+  .sidebar {
+    padding: 0 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+    margin-top: 2rem;
+  }
+
+  .relatedList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0;
+  }
+
+  .articleContainer h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .actionsBtn {
+    width: 45%;
+  }
+
+  .back {
+    width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  .actionsBtn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}

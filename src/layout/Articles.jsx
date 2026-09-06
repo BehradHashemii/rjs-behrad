@@ -58,11 +58,11 @@ function Articles() {
         breakpoints={{
           320: { slidesPerView: 1 },
           640: { slidesPerView: 2 },
-          1024: { slidesPerView: 4 },
+          1024: { slidesPerView: 2 },
         }}
       >
         {articles.map((article) => (
-          <SwiperSlide key={article._id}>
+          <SwiperSlide key={article._id} className={styles.swiperSlide}>
             <ArticleCard article={article} />
           </SwiperSlide>
         ))}

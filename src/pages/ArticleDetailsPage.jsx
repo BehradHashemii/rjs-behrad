@@ -1,10 +1,11 @@
 import { useMemo, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import ArticleRelated from "./ArticleRelated";
 import ArticleContent from "./ArticleContent";
 import { articles } from "../data/mockData.json";
 import styles from "./ArticleDetailsPage.module.css";
+import Breadcrumb from "../components/Breadcrumb";
 
 function ArticleDetailsPage() {
   const { slug } = useParams();
@@ -48,14 +49,57 @@ function ArticleDetailsPage() {
     );
   }
 
+  const tags = Array.isArray(article?.tags)
+    ? article.tags
+    : article?.tags
+        ?.split(",")
+        .map((t) => t.trim())
+        .filter(Boolean) || [];
+
+  const breadcrumbItems = [
+    { label: "خانه", link: "/" },
+    { label: "مقالات", link: "/articles" },
+    ...(tags.length > 0
+      ? [
+          {
+            label: (
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                {tags.map((tag, index) => (
+                  <span key={tag}>
+                    <Link
+                      to={`/articles?tag=${encodeURIComponent(tag)}`}
+                      className={styles.tech}
+                    >
+                      {tag}
+                    </Link>
+                    {index < tags.length - 1 && "، "}
+                  </span>
+                ))}
+              </span>
+            ),
+          },
+        ]
+      : []),
+    { label: article?.title },
+  ];
+
   return (
     <div className={styles.container}>
-      <ArticleContent
-        article={article}
-        styles={styles}
-        contentRef={contentRef}
-      />
-      <ArticleRelated relatedArticles={relatedArticles} styles={styles} />
+      <Breadcrumb items={breadcrumbItems} />
+      <div className={styles.container}>
+        <ArticleContent
+          article={article}
+          styles={styles}
+          contentRef={contentRef}
+        />
+        <ArticleRelated relatedArticles={relatedArticles} styles={styles} />
+      </div>
     </div>
   );
 }

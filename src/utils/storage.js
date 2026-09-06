@@ -1,3 +1,6 @@
+// ==========================================
+// 1. Articles Liked Storage
+// ==========================================
 export function getLikedArticles() {
   try {
     const data = localStorage.getItem("liked_articles");
@@ -27,6 +30,41 @@ export function toggleLikeArticle(id) {
   return updated;
 }
 
+// ==========================================
+// 2. Prompts Liked Storage (جدید)
+// ==========================================
+export function getLikedPrompts() {
+  try {
+    const data = localStorage.getItem("liked_prompts");
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function isPromptLiked(id) {
+  const list = getLikedPrompts();
+  return list.includes(id);
+}
+
+export function toggleLikePrompt(id) {
+  const list = getLikedPrompts();
+  let updated;
+  if (list.includes(id)) {
+    updated = list.filter((item) => item !== id);
+  } else {
+    updated = [...list, id];
+  }
+  localStorage.setItem("liked_prompts", JSON.stringify(updated));
+  window.dispatchEvent(
+    new CustomEvent("prompt-liked-change", { detail: updated }),
+  );
+  return updated;
+}
+
+// ==========================================
+// 3. Portfolios Saved Storage
+// ==========================================
 export function getSavedPortfolios() {
   try {
     const data = localStorage.getItem("saved_portfolios");
@@ -56,6 +94,9 @@ export function toggleSavePortfolio(id) {
   return updated;
 }
 
+// ==========================================
+// 4. User Authentication Profile
+// ==========================================
 export function getLoggedUser() {
   try {
     const user = localStorage.getItem("user_profile");
@@ -75,7 +116,9 @@ export function removeLoggedUser() {
   window.dispatchEvent(new CustomEvent("user-auth-change", { detail: null }));
 }
 
-// Initial Mock Tickets
+// ==========================================
+// 5. Support Tickets Storage & Management
+// ==========================================
 const INITIAL_TICKETS = [
   {
     id: "TCK-1082",
@@ -176,6 +219,9 @@ export function addMessageToTicket(ticketId, messageText) {
   return updated;
 }
 
+// ==========================================
+// 6. Project Orders Storage
+// ==========================================
 const INITIAL_ORDERS = [
   {
     id: "PRJ-901",
@@ -218,7 +264,9 @@ export function addProjectOrder(newOrder) {
   return updated;
 }
 
-// User Activities
+// ==========================================
+// 7. User Activities Storage
+// ==========================================
 const INITIAL_ACTIVITIES = [];
 
 export function getUserActivities() {

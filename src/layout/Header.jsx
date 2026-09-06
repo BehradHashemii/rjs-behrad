@@ -16,6 +16,7 @@ import { CiSearch } from "react-icons/ci";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaTimes, FaRegBookmark } from "react-icons/fa";
+import { RiGeminiFill } from "react-icons/ri";
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -163,6 +164,12 @@ function Header() {
           <li>
             <NavLink to="/articles" onClick={() => setOpen(false)}>
               مقالات
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/prompts" onClick={() => setOpen(false)}>
+              پرامپت ها
+              <RiGeminiFill style={{ marginRight: "5px" }} />
             </NavLink>
           </li>
           <li>

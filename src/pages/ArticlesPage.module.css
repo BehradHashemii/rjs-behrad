@@ -1,0 +1,234 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.headerSection {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.pageTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.pageSubtitle {
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* پیشنهاد سردبیر */
+.featuredSection {
+  margin-bottom: 40px;
+}
+
+.featuredHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.featuredBadge {
+  background: #f1f5f9;
+  color: #3b82f6;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.featuredDivider {
+  flex: 1;
+  height: 1px;
+  background-color: #e2e8f0;
+}
+
+.featuredGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* لایه اصلی دو ستونه */
+.contentLayout {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.articlesColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* سایدبار دسته‌بندی */
+.sidebarColumn {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.categoryCard {
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.categoryHeaderBtn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px 14px;
+}
+
+.categoryTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.categoryArrow {
+  transition: transform 0.2s ease;
+  color: #64748b;
+}
+
+.arrowOpen {
+  transform: rotate(0deg);
+}
+
+.categoryArrow:not(.arrowOpen) {
+  transform: rotate(180deg);
+}
+
+.categoryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.categoryItemBtn {
+  width: 100%;
+  text-align: right;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.categoryItemBtn:hover {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+.activeCategory {
+  background-color: #eef2ff !important;
+  color: var(--primary-color) !important;
+  font-weight: 700;
+}
+
+/* کنترل‌های بالای مقالات (جستجو و شمارنده) */
+.topControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.articlesCount {
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 42px 10px 16px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  outline: none;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  border-color: #6366f1;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+/* کارت‌های مقالات و گرید */
+.articlesGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+  background: #ffffff;
+  border-radius: 16px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.paginationButton {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .contentLayout {
+    flex-direction: column;
+  }
+  .sidebarColumn {
+    width: 100%;
+  }
+}

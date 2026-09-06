@@ -57,12 +57,12 @@ function Portfolios() {
         breakpoints={{
           320: { slidesPerView: 1 },
           640: { slidesPerView: 2 },
-          1024: { slidesPerView: 4 },
+          1024: { slidesPerView: 3 },
         }}
         className={styles.swiper}
       >
         {portfolios.map((portfolio) => (
-          <SwiperSlide key={portfolio._id}>
+          <SwiperSlide key={portfolio._id} className={styles.swiperSlide}>
             <PortfolioCard portfolio={portfolio} />
           </SwiperSlide>
         ))}

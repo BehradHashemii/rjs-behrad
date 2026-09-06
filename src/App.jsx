@@ -14,7 +14,6 @@ function App() {
   return (
     <div style={{ direction: "rtl" }}>
       <ScrollToTop />
-      
       <Header />
       <div className={styles.router}>
         <Router />
