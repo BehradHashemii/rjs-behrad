@@ -110,6 +110,7 @@
     -apple-system,
     sans-serif !important;
   -webkit-tap-highlight-color: transparent;
+  /* user-select: none; */
 }
 
 html {

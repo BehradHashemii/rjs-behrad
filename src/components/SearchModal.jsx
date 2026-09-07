@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-import { getArticles, getPortfolios } from "../services/apiService";
-
 import {
   FaTimes,
   FaFolderOpen,
@@ -11,8 +9,14 @@ import {
   FaArrowLeft,
   FaFire,
 } from "react-icons/fa";
+
+import mockData from "../data/mockData.json";
 import styles from "./SearchModal.module.css";
 import e2p from "../utils/persianNumber";
+
+// استخراج ایمن داده‌ها از فایل جیسون
+const portfoliosData = mockData.portfolios || [];
+const articlesData = mockData.articles || [];
 
 function stripHtml(html) {
   if (!html) return "";
@@ -28,33 +32,39 @@ const POPULAR_SEARCHES = [
   "مقالات",
 ];
 
+const SITE_PAGES = [
+  { title: "صفحه اصلی", path: "/", icon: <FaLink /> },
+  {
+    title: "نمونه‌کارها و پروژه‌ها",
+    path: "/portfolios",
+    icon: <FaFolderOpen />,
+  },
+  { title: "مقالات و یادداشت‌ها", path: "/articles", icon: <FaNewspaper /> },
+  { title: "تماس و ارتباط با بهراد", path: "/contact", icon: <FaLink /> },
+  {
+    title: "ذخیره‌شده‌ها و علاقه‌مندی‌ها",
+    path: "/saved",
+    icon: <FaFolderOpen />,
+  },
+];
+
 function SearchModal({ isOpen, onClose, initialQuery = "" }) {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
-  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
-  // Reset search query when modal opens
-  if (isOpen !== prevIsOpen) {
-    setPrevIsOpen(isOpen);
-    if (isOpen) {
-      setSearchQuery(initialQuery);
-    }
-  }
-
-  // Focus input on open
+  // ریست مقدار جستجو و فوکوس با باز شدن مدال
   useEffect(() => {
     if (isOpen) {
+      setSearchQuery(initialQuery);
       const timer = setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+        inputRef.current?.focus();
       }, 50);
       return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, initialQuery]);
 
-  // Lock body scroll when modal is open
+  // قفل اسکرول بدنه هنگام باز بودن مدال
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -66,7 +76,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
     };
   }, [isOpen]);
 
-  // Close modal on Escape key press
+  // بستن با دکمه Escape
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && isOpen) {
@@ -81,46 +91,35 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
 
   const query = searchQuery.trim().toLowerCase();
 
+  // فیلتر نمونه‌کارها (با مدیریت رشته یا آرایه بودن تکنولوژی‌ها)
   const matchedPortfolios = query
     ? portfoliosData.filter((item) => {
         const titleMatch = item.title?.toLowerCase().includes(query);
         const descMatch = item.description?.toLowerCase().includes(query);
         const catMatch = item.category?.toLowerCase().includes(query);
-        const techMatch = item.technologies?.some((t) =>
-          t.toLowerCase().includes(query),
-        );
+        const techMatch = Array.isArray(item.technologies)
+          ? item.technologies.some((t) => t.toLowerCase().includes(query))
+          : item.technologies?.toLowerCase().includes(query);
+
         return titleMatch || descMatch || catMatch || techMatch;
       })
     : [];
 
+  // فیلتر مقالات (با پاکسازی تگ‌های HTML)
   const matchedArticles = query
     ? articlesData.filter((item) => {
         const titleMatch = item.title?.toLowerCase().includes(query);
         const cleanDesc = stripHtml(item.description).toLowerCase();
         const descMatch = cleanDesc.includes(query);
         const tagMatch = item.tags?.toLowerCase().includes(query);
+
         return titleMatch || descMatch || tagMatch;
       })
     : [];
 
-  const sitePages = [
-    { title: "صفحه اصلی", path: "/", icon: <FaLink /> },
-    {
-      title: "نمونه‌کارها و پروژه‌ها",
-      path: "/portfolios",
-      icon: <FaFolderOpen />,
-    },
-    { title: "مقالات و یادداشت‌ها", path: "/articles", icon: <FaNewspaper /> },
-    { title: "تماس و ارتباط با بهراد", path: "/contact", icon: <FaLink /> },
-    {
-      title: "ذخیره‌شده‌ها و علاقه‌مندی‌ها",
-      path: "/saved",
-      icon: <FaFolderOpen />,
-    },
-  ];
-
+  // فیلتر صفحات ثابت
   const matchedPages = query
-    ? sitePages.filter((p) => p.title.toLowerCase().includes(query))
+    ? SITE_PAGES.filter((p) => p.title.toLowerCase().includes(query))
     : [];
 
   const totalResultsCount =
@@ -131,7 +130,6 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
     if (!query) return;
 
     onClose();
-    navigate(`/portfolios?search=${encodeURIComponent(query)}`);
   };
 
   const handleItemClick = (path) => {
@@ -142,9 +140,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
 
   const handlePopularSearchClick = (tag) => {
     setSearchQuery(tag);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    inputRef.current?.focus();
   };
 
   return (
@@ -155,7 +151,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
       aria-modal="true"
     >
       <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
-        {/* Header Search Input */}
+        {/* اینپوت فرم جستجو */}
         <form className={styles.searchForm} onSubmit={handleSearchSubmit}>
           <CiSearch className={styles.searchIcon} />
           <input
@@ -172,7 +168,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
               className={styles.clearBtn}
               onClick={() => {
                 setSearchQuery("");
-                if (inputRef.current) inputRef.current.focus();
+                inputRef.current?.focus();
               }}
               title="پاک کردن"
             >
@@ -189,30 +185,28 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
           </button>
         </form>
 
-        {/* Modal Results & Content Body */}
+        {/* بدنه محتوا */}
         <div className={styles.modalBody}>
           {query.length === 0 ? (
-            /* Popular Search Suggestions when query is empty */
             <div className={styles.popularSection}>
               <div className={styles.popularTitle}>
                 <FaFire className={styles.fireIcon} />
                 <span>جستجوهای محبوب</span>
               </div>
               <div className={styles.tagList}>
-                {POPULAR_SEARCHES.map((tag, idx) => (
+                {POPULAR_SEARCHES.map((tagItem, idx) => (
                   <button
                     key={idx}
                     type="button"
                     className={styles.popularTag}
-                    onClick={() => handlePopularSearchClick(tag)}
+                    onClick={() => handlePopularSearchClick(tagItem)}
                   >
-                    {tag}
+                    {tagItem}
                   </button>
                 ))}
               </div>
             </div>
           ) : totalResultsCount === 0 ? (
-            /* No Results Message */
             <div className={styles.noResults}>
               <p>
                 هیچ نتیجه‌ای برای «<strong>{searchQuery}</strong>» یافت نشد.
@@ -223,9 +217,8 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
               </span>
             </div>
           ) : (
-            /* Search Results Lists */
             <div className={styles.resultsContainer}>
-              {/* Portfolios Group */}
+              {/* بخش نمونه‌کارها */}
               {matchedPortfolios.length > 0 && (
                 <div className={styles.resultGroup}>
                   <div className={styles.groupHeader}>
@@ -235,7 +228,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                   <div className={styles.groupList}>
                     {matchedPortfolios.slice(0, 4).map((item) => (
                       <div
-                        key={item.id}
+                        key={item._id || item.id}
                         className={styles.resultItem}
                         onClick={() =>
                           handleItemClick(
@@ -244,7 +237,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                         }
                       >
                         <img
-                          src={item.image}
+                          src={item.image || "/placeholder.jpg"}
                           alt={item.title}
                           className={styles.resultThumb}
                           width="48"
@@ -264,7 +257,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                 </div>
               )}
 
-              {/* Articles Group */}
+              {/* بخش مقالات */}
               {matchedArticles.length > 0 && (
                 <div className={styles.resultGroup}>
                   <div className={styles.groupHeader}>
@@ -274,14 +267,14 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                   <div className={styles.groupList}>
                     {matchedArticles.slice(0, 4).map((article) => (
                       <div
-                        key={article.id}
+                        key={article._id || article.id}
                         className={styles.resultItem}
                         onClick={() =>
                           handleItemClick(`/articles/${article.slug}`)
                         }
                       >
                         <img
-                          src={article.image}
+                          src={article.image || "/placeholder.jpg"}
                           alt={article.title}
                           className={styles.resultThumb}
                           width="48"
@@ -303,7 +296,7 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                 </div>
               )}
 
-              {/* Pages Group */}
+              {/* بخش صفحات سایت */}
               {matchedPages.length > 0 && (
                 <div className={styles.resultGroup}>
                   <div className={styles.groupHeader}>
@@ -311,15 +304,19 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                     <span>صفحات ({e2p(matchedPages.length)})</span>
                   </div>
                   <div className={styles.groupList}>
-                    {matchedPages.map((page, index) => (
+                    {matchedPages.map((pageItem, index) => (
                       <div
                         key={index}
                         className={styles.resultItem}
-                        onClick={() => handleItemClick(page.path)}
+                        onClick={() => handleItemClick(pageItem.path)}
                       >
-                        <div className={styles.pageIconBox}>{page.icon}</div>
+                        <div className={styles.pageIconBox}>
+                          {pageItem.icon}
+                        </div>
                         <div className={styles.resultInfo}>
-                          <div className={styles.resultTitle}>{page.title}</div>
+                          <div className={styles.resultTitle}>
+                            {pageItem.title}
+                          </div>
                         </div>
                         <FaArrowLeft className={styles.resultArrow} />
                       </div>
@@ -331,15 +328,11 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
           )}
         </div>
 
-        {/* Modal Footer */}
+        {/* دکمه مشاهده همه */}
         {query.length > 0 && totalResultsCount > 0 && (
           <div className={styles.modalFooter}>
-            <button
-              type="button"
-              className={styles.viewAllBtn}
-              onClick={handleSearchSubmit}
-            >
-              مشاهده تمام نتایج ({e2p(totalResultsCount)})
+            <button className={styles.viewAllBtn}>
+              تمام نتایج ({e2p(totalResultsCount)})
             </button>
           </div>
         )}

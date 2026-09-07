@@ -1,7 +1,6 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 16px;
 }
 
 .headerSection {
@@ -20,7 +19,6 @@
   margin-top: 8px;
 }
 
-/* پیشنهاد سردبیر */
 .featuredSection {
   margin-bottom: 40px;
 }
@@ -63,6 +61,8 @@
 
 .articlesColumn {
   flex: 1;
+  min-width: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -188,11 +188,13 @@
   pointer-events: none;
 }
 
-/* کارت‌های مقالات و گرید */
 .articlesGrid {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  display: grid;
   gap: 16px;
+  grid-template-columns: minmax(0, 1fr); /* جلوگیری از باز شدن بیش از حد ستون */
+  box-sizing: border-box;
 }
 
 .emptyState {
@@ -230,5 +232,22 @@
   }
   .sidebarColumn {
     width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .topControls {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .searchWrapper {
+    max-width: 100%;
+  }
+
+  .articlesCount {
+    text-align: left;
+    font-size: 0.85rem;
   }
 }

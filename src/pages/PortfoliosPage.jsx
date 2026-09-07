@@ -21,11 +21,7 @@ function PortfoliosPage() {
   const uniqueCategories = useMemo(() => {
     const list = mockPortfolios || [];
     return [
-      ...new Set(
-        list
-          .map((item) => item?.category?.trim())
-          .filter(Boolean)
-      ),
+      ...new Set(list.map((item) => item?.category?.trim()).filter(Boolean)),
     ];
   }, []);
 
@@ -53,7 +49,7 @@ function PortfoliosPage() {
         (item) =>
           item?.title?.toLowerCase().includes(query) ||
           item?.description?.toLowerCase().includes(query) ||
-          item?.category?.toLowerCase().includes(query)
+          item?.category?.toLowerCase().includes(query),
       );
     }
 
@@ -80,12 +76,16 @@ function PortfoliosPage() {
 
   const paginatedData = processedData.slice(
     (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
+    page * ITEMS_PER_PAGE,
   );
 
   return (
     <main className={styles.container}>
-      {/* بخش فیلترها */}
+      <section className={styles.headerSection}>
+        <h1 className={styles.pageTitle}>نمونه کار ها</h1>
+        <p className={styles.pageSubtitle}>نمونه کار</p>
+      </section>
+
       <section className={styles.filtersSection}>
         <div className={styles.searchWrapper}>
           <input

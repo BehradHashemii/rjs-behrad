@@ -37,9 +37,7 @@ export default function SavedTab({
           onClick={() => setSavedSubTab("portfolios")}
         >
           <FaBookmark />
-          <span>
-            پروژه‌های نشان‌شده ({e2p(savedPortfolios.length)})
-          </span>
+          <span>پروژه‌های نشان‌شده ({e2p(savedPortfolios.length)})</span>
         </button>
 
         <button
@@ -50,9 +48,7 @@ export default function SavedTab({
           onClick={() => setSavedSubTab("articles")}
         >
           <FaHeart />
-          <span>
-            مقالات پسندیده‌شده ({e2p(likedArticles.length)})
-          </span>
+          <span>مقالات پسندیده‌شده ({e2p(likedArticles.length)})</span>
         </button>
       </div>
 
@@ -63,8 +59,8 @@ export default function SavedTab({
               <FaBookmark className={styles.emptyIcon} />
               <h3>هیچ پروژه‌ای نشان نشده است!</h3>
               <p>
-                شما می‌توانید با مراجعه به بخش نمونه‌کارها، پروژه‌های دلخواه
-                را ذخیره کنید.
+                شما می‌توانید با مراجعه به بخش نمونه‌کارها، پروژه‌های دلخواه را
+                ذخیره کنید.
               </p>
               <Link to="/portfolios" className={styles.emptyLinkBtn}>
                 مشاهده نمونه‌کارها
@@ -129,7 +125,7 @@ export default function SavedTab({
           ) : (
             <div className={styles.savedGrid}>
               {likedArticleItems.map((article) => (
-                <div key={article.id} className={styles.savedCard}>
+                <div key={article._id} className={styles.savedCard}>
                   <img
                     src={article.image}
                     alt={article.title}
@@ -151,7 +147,7 @@ export default function SavedTab({
                       <button
                         type="button"
                         className={styles.removeSavedBtn}
-                        onClick={() => onRemoveArticle(article.id)}
+                        onClick={() => onRemoveArticle(article._id)}
                         title="حذف از پسندیده‌شده‌ها"
                       >
                         <FaTrash />

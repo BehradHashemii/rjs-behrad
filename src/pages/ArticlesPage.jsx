@@ -94,7 +94,7 @@ function ArticlesPage() {
       <section className={styles.headerSection}>
         <h1 className={styles.pageTitle}>مقالات آموزشی</h1>
         <p className={styles.pageSubtitle}>
-          آموزش، دانستنی و تحلیل دنیای کامپیوتر و برنامه‌نویسی
+          آموزش، دانستنی و تحلیل دنیای کامپیوتر ، برنامه‌نویسی و برق.
         </p>
       </section>
 
@@ -157,7 +157,6 @@ function ArticlesPage() {
             )}
           </section>
 
-          {/* صفحه‌بندی */}
           {totalPages > 1 && (
             <div className={styles.pagination}>
               <button
@@ -185,10 +184,7 @@ function ArticlesPage() {
 
         <aside className={styles.sidebarColumn}>
           <div className={styles.categoryCard}>
-            <p
-              className={styles.categoryHeaderBtn}
-              type="button"
-            >
+            <p className={styles.categoryHeaderBtn} type="button">
               <span className={styles.categoryTitle}>دسته‌بندی‌ها</span>
               <svg
                 className={`${styles.categoryArrow} ${

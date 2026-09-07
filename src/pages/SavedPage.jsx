@@ -6,7 +6,10 @@ import e2p from "../utils/persianNumber";
 import { getSavedPortfolios, getLikedArticles } from "../utils/storage";
 
 // خواندن مستقیم دیتا از فایل محلی
-import { articles as mockArticles, portfolios as mockPortfolios } from "../data/mockData.json";
+import {
+  articles as mockArticles,
+  portfolios as mockPortfolios,
+} from "../data/mockData.json";
 
 import {
   FaBookmark,
@@ -23,11 +26,11 @@ function SavedPage() {
   const activeTab = searchParams.get("tab") || "portfolios";
 
   // شناسه آیتم‌های ذخیره شده در localStorage
-  const [savedPortfolioIds, setSavedPortfolioIds] = useState(() =>
-    getSavedPortfolios() || []
+  const [savedPortfolioIds, setSavedPortfolioIds] = useState(
+    () => getSavedPortfolios() || [],
   );
-  const [likedArticleIds, setLikedArticleIds] = useState(() =>
-    getLikedArticles() || []
+  const [likedArticleIds, setLikedArticleIds] = useState(
+    () => getLikedArticles() || [],
   );
 
   // گوش دادن به تغییرات سفارشی localStorage
@@ -43,7 +46,10 @@ function SavedPage() {
     window.addEventListener("article-liked-change", handleArticleChange);
 
     return () => {
-      window.removeEventListener("portfolio-saved-change", handlePortfolioChange);
+      window.removeEventListener(
+        "portfolio-saved-change",
+        handlePortfolioChange,
+      );
       window.removeEventListener("article-liked-change", handleArticleChange);
     };
   }, []);
@@ -135,7 +141,7 @@ function SavedPage() {
         <section className={styles.articlesGrid}>
           {likedArticles.length > 0 ? (
             likedArticles.map((article) => (
-              <div key={article._id || article.id}>
+              <div key={article._id || article._id}>
                 <ArticleCard article={article} />
               </div>
             ))

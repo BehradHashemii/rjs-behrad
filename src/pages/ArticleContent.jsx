@@ -7,37 +7,57 @@ import { isArticleLiked, toggleLikeArticle } from "../utils/storage";
 import { toast, ToastContainer } from "react-toastify";
 
 function ArticleContent({ article, styles, contentRef }) {
-  const [isLiked, setIsLiked] = useState(() => isArticleLiked(article?.id));
+  const [isLiked, setIsLiked] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // هماهنگ‌سازی با لود شدن مقاله و تغییر id
+  useEffect(() => {
+    if (article?._id) {
+      setIsLiked(isArticleLiked(article._id));
+    }
+  }, [article?._id]);
+
+  // لیسنر تغییرات در صورت باز بودن تب‌های دیگر یا کامپوننت‌های هم‌زمان
   useEffect(() => {
     const handleLikedChange = () => {
-      setIsLiked(isArticleLiked(article?.id));
+      if (article?._id) {
+        setIsLiked(isArticleLiked(article._id));
+      }
     };
 
     window.addEventListener("article-liked-change", handleLikedChange);
     return () => {
       window.removeEventListener("article-liked-change", handleLikedChange);
     };
-  }, [article?.id]);
+  }, [article?._id]);
 
   const handleToggleLike = () => {
-    if (!article?.id) return;
-    const updatedList = toggleLikeArticle(article.id);
-    setIsLiked(updatedList.includes(article.id));
-    toast.info(
-      isLiked
-        ? "مقاله با موفقیت به علاقه‌مندی‌ها اضافه شد."
-        : "مقاله از علاقه‌مندی‌ها حذف شد.",
-      {},
-    );
+    // اگر مقاله هنوز کامل لود نشده هیچ کاری نکن
+    if (!article?._id) {
+      console.warn("شناسه مقاله نامعتبر است:", article);
+      return;
+    }
+
+    const updatedList = toggleLikeArticle(article._id);
+    const nowLiked = updatedList.includes(String(article._id));
+
+    setIsLiked(nowLiked);
+
+    if (nowLiked) {
+      toast.success("مقاله با موفقیت به علاقه‌مندی‌ها اضافه شد.");
+    } else {
+      toast.info("مقاله از علاقه‌مندی‌ها حذف شد.");
+    }
   };
+
   const shortenLink = () => {
-    navigator.clipboard.writeText(location.href);
-    toast.success("کپی شد!", {});
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    toast.success("کپی شد!");
   };
+
   return (
-    <article className={`${styles.articleContainer}`}>
+    <article className={styles.articleContainer}>
       <h1>{article?.title}</h1>
       <div className={styles.meta}>
         <p style={{ opacity: "0.8" }}>{article?.author}</p>
@@ -45,14 +65,14 @@ function ArticleContent({ article, styles, contentRef }) {
           style={{ display: "flex", alignItems: "center", fontSize: "1rem" }}
         >
           <p style={{ opacity: "0.8" }}>
-            {article.tags.split(",").map((tag, index, array) => {
+            {article?.tags?.split(",").map((tag, index, array) => {
               const trimmedTag = tag.trim();
               return (
                 <span key={index}>
-                  <a href={`/articles?tag=${encodeURIComponent(trimmedTag)}`}>
+                  <Link to={`/articles?tag=${encodeURIComponent(trimmedTag)}`}>
                     {trimmedTag}
-                  </a>
-                  {index < array.length - 1 && " \، "}
+                  </Link>
+                  {index < array.length - 1 && " ، "}
                 </span>
               );
             })}
@@ -72,8 +92,8 @@ function ArticleContent({ article, styles, contentRef }) {
       <div className={styles.detail}>
         <div className={styles.imageContainer}>
           <img
-            src={article.image}
-            alt={article.title}
+            src={article?.image}
+            alt={article?.title}
             className={styles.image}
           />
         </div>
@@ -82,10 +102,12 @@ function ArticleContent({ article, styles, contentRef }) {
           <section
             ref={contentRef}
             className={styles.content}
-            dangerouslySetInnerHTML={{ __html: article.description }}
+            dangerouslySetInnerHTML={{ __html: article?.description || "" }}
           ></section>
+
           <div className={styles.actions}>
             <button
+              type="button"
               onClick={handleToggleLike}
               className={`${isLiked ? styles.favActive : styles.favNotActive} ${styles.actionsBtn}`}
               aria-label={isLiked ? "حذف از پسندیده‌ها" : "پسندیدن مقاله"}
@@ -103,11 +125,12 @@ function ArticleContent({ article, styles, contentRef }) {
               )}
             </button>
             <button
+              type="button"
               onClick={shortenLink}
               className={`${styles.copyBtn} ${styles.actionsBtn}`}
             >
               <FaCopy />
-              <span>کپی لینک</span>
+              <span>{copied ? "کپی شد" : "کپی لینک"}</span>
             </button>
             <Link
               to="/articles"

@@ -1,32 +1,41 @@
-// ==========================================
-// 1. Articles Liked Storage
-// ==========================================
 export function getLikedArticles() {
   try {
     const data = localStorage.getItem("liked_articles");
-    return data ? JSON.parse(data) : [];
+    const parsed = data ? JSON.parse(data) : [];
+    // تبدیل همه شناسه‌ها به String برای جلوگیری از باگ Type Mismatch
+    return parsed.map(String);
   } catch {
     return [];
   }
 }
 
 export function isArticleLiked(id) {
+  if (!id) return false;
   const list = getLikedArticles();
-  return list.includes(id);
+  return list.includes(String(id));
 }
 
 export function toggleLikeArticle(id) {
+  if (!id) return [];
+  const strId = String(id);
   const list = getLikedArticles();
+
   let updated;
-  if (list.includes(id)) {
-    updated = list.filter((item) => item !== id);
+  if (list.includes(strId)) {
+    updated = list.filter((item) => item !== strId);
   } else {
-    updated = [...list, id];
+    updated = [...list, strId];
   }
+
   localStorage.setItem("liked_articles", JSON.stringify(updated));
+
+  // ارسال ایونت به همراه شناسه تغییر یافته
   window.dispatchEvent(
-    new CustomEvent("article-liked-change", { detail: updated }),
+    new CustomEvent("article-liked-change", {
+      detail: { updated, articleId: strId },
+    }),
   );
+
   return updated;
 }
 

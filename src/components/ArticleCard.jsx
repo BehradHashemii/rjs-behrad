@@ -43,7 +43,7 @@ function ArticleCard({ article }) {
             className={styles.desc}
             dangerouslySetInnerHTML={{
               __html: article.description,
-            }}
+            }}  
           />
 
           <div className={styles.info}>

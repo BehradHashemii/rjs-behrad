@@ -1,20 +1,19 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-
 import useAuth from "../hooks/useAuth";
-import { 
-  getArticles, 
-  getPortfolios, 
-  addArticle, 
-  updateArticle, 
+import {
+  getArticles,
+  getPortfolios,
+  addArticle,
+  updateArticle,
   deleteArticle,
   getProfileAPI,
   getAllTickets,
   signupAPI,
   updateProfileAPI,
   updateTicketStatus,
-  addMessageToTicket
+  addMessageToTicket,
 } from "../services/apiService";
 import styles from "./AdminPage.module.css";
 
@@ -178,26 +177,25 @@ function AdminPage() {
     }
   }, [user, isAdmin, authLoading, navigate]);
 
-  
   // 2. Fetch admin data
   useEffect(() => {
     if (authLoading || !user || !isAdmin) return;
-    
+
     const fetchAdminData = async () => {
       try {
         const _users = await getProfileAPI(); // fallback
         setUsers(Array.isArray(_users) ? _users : [_users]);
-        
+
         const _tickets = await getAllTickets();
         setTickets(_tickets || []);
-        
-        const { getAllProjects } = await import('../services/apiService');
+
+        const { getAllProjects } = await import("../services/apiService");
         const _projects = await getAllProjects();
         setProjects(_projects || []);
-        
+
         getArticles().then((res) => setArticles(res || []));
         getPortfolios().then((res) => setPortfolios(res || []));
-      } catch(e) {
+      } catch (e) {
         console.error(e);
       }
       setDataLoading(false);
@@ -284,9 +282,11 @@ function AdminPage() {
     }
 
     try {
-      
-      await signupAPI(newUserForm.name, newUserForm.email, newUserForm.password);
-
+      await signupAPI(
+        newUserForm.name,
+        newUserForm.email,
+        newUserForm.password,
+      );
 
       toast.success("کاربر جدید با موفقیت اضافه شد.");
       setIsAddUserModalOpen(false);
@@ -308,9 +308,7 @@ function AdminPage() {
     if (!editingUser?.id) return;
 
     try {
-      
       // await updateProfileAPI({ id: editingUser.id });
-
 
       toast.success("اطلاعات کاربر با موفقیت بروزرسانی شد.");
       setIsEditUserModalOpen(false);
@@ -324,7 +322,7 @@ function AdminPage() {
   const handleToggleRole = async (userId, currentRole) => {
     try {
       const newRole = currentRole === "admin" ? "user" : "admin";
-      
+
       // await updateProfileAPI({ id: userId, role: newRole });
 
       toast.success(
@@ -340,7 +338,6 @@ function AdminPage() {
     if (!userToDelete?.id) return;
     setIsDeletingUser(true);
     try {
-      
       toast.success(
         `کاربر "${userToDelete.name || userToDelete.email}" با موفقیت حذف شد.`,
       );
@@ -415,7 +412,7 @@ function AdminPage() {
     if (!editingArticle?.id) return;
 
     try {
-      await updateArticle(editingArticle.id, {
+      await updateArticle(editingarticle._id, {
         title: editArticleForm.title.trim(),
         description: `<p>${editArticleForm.description.trim()}</p>`,
         image: editArticleForm.image.trim(),
@@ -470,9 +467,7 @@ function AdminPage() {
         time: `${new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })}`,
       };
 
-      
       await addMessageToTicket(selectedTicket.id, adminReply, "admin");
-
 
       toast.success("پاسخ شما در چت تیکت ارسال شد.");
       setTicketReply("");
@@ -484,7 +479,6 @@ function AdminPage() {
 
   const handleUpdateTicketStatus = async (ticketId, newStatus) => {
     try {
-      
       await updateTicketStatus(ticketId, newStatus);
 
       toast.success("وضعیت تیکت بروزرسانی شد.");
@@ -496,7 +490,6 @@ function AdminPage() {
 
   const handleCloseTicket = async (ticketId) => {
     try {
-      
       await updateTicketStatus(ticketId, "بسته شده");
 
       toast.success("تیکت بسته شد.");
@@ -509,9 +502,8 @@ function AdminPage() {
   // --- عملیات پروژه‌های درخواستی ---
   const handleUpdateProjectStatus = async (projectId, status) => {
     try {
-      
-    const { updateProjectStatus } = await import('../services/apiService');
-    await updateProjectStatus(projectId, status);
+      const { updateProjectStatus } = await import("../services/apiService");
+      await updateProjectStatus(projectId, status);
 
       toast.success("وضعیت پروژه تغییر کرد.");
     } catch (err) {
@@ -525,7 +517,6 @@ function AdminPage() {
     if (!selectedProject) return;
 
     try {
-      
       // await addMessageToProject(selectedProject.id, adminReply, "admin");
 
       setSelectedProject(null);
