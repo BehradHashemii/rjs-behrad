@@ -9,11 +9,12 @@ import ArticleDetailsPage from "../pages/ArticleDetailsPage";
 import SavedPage from "../pages/SavedPage";
 import ContactPage from "../pages/ContactPage";
 import NotFoundPage from "../pages/NotFoundPage";
-import DashboardPage from "../pages/DashboardPage";
-import AdminPage from "../pages/AdminPage";
 import Loading from "../components/Loading";
 import PromptsPage from "../pages/PromptsPage";
 import PromptDetailsPage from "../pages/PromptDetailsPage";
+
+const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const AdminPage = lazy(() => import("../pages/AdminPage"));
 
 function ProtectedRoute() {
   const { user, loading } = useAuth();
@@ -50,11 +51,25 @@ function Router() {
       <Route element={<SavedPage />} path="/saved" />
 
       <Route element={<ProtectedRoute />}>
-        <Route element={<DashboardPage />} path="/dashboard" />
+        <Route
+          element={
+            <Suspense fallback={<Loading />}>
+              <DashboardPage />
+            </Suspense>
+          }
+          path="/dashboard"
+        />
       </Route>
 
       <Route element={<AdminRoute />}>
-        <Route element={<AdminPage />} path="/admin" />
+        <Route
+          element={
+            <Suspense fallback={<Loading />}>
+              <AdminPage />
+            </Suspense>
+          }
+          path="/admin"
+        />
       </Route>
 
       <Route element={<NotFoundPage />} path="*" />

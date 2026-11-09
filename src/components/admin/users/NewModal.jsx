@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCheck, FaEye, FaEyeSlash, FaTimes, FaUserPlus } from "react-icons/fa";
 
 function NewModal({

@@ -56,8 +56,8 @@ function SearchModal({ isOpen, onClose, initialQuery = "" }) {
   // ریست مقدار جستجو و فوکوس با باز شدن مدال
   useEffect(() => {
     if (isOpen) {
-      setSearchQuery(initialQuery);
       const timer = setTimeout(() => {
+        setSearchQuery(initialQuery);
         inputRef.current?.focus();
       }, 50);
       return () => clearTimeout(timer);

@@ -1,375 +1,747 @@
-.container {
+.pageWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+/* لایه دو ستونه اصلی */
+.layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+
+.mainContent {
+  flex: 1;
+  min-width: 0;
   width: 100%;
-  margin: 50px auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
 }
 
+.sidebarContent {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 90px;
+}
+
+/* کارت اصلی محتوای پرامپت - استایل لیکویید گلس */
 .articleContainer {
-  width: 60%;
-  margin: 20px auto;
-}
-
-.articleContainer h1 {
-  font-size: 1.85rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-}
-
-.meta {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--liquid-glass-border, rgba(255, 255, 255, 0.5));
+  background: var(--liquid-glass-bg, linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.25)));
+  backdrop-filter: var(--liquid-glass-blur, blur(25px) saturate(190%));
+  -webkit-backdrop-filter: var(--liquid-glass-blur, blur(25px) saturate(190%));
+  box-shadow: var(--liquid-glass-shadow, 0 16px 36px -10px rgba(99, 102, 241, 0.12));
+  padding: 32px;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   flex-direction: column;
-  margin: 10px auto 20px;
+  gap: 28px;
 }
 
-.meta p {
+.articleContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* سربرگ پرامپت */
+.promptHeader {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.badgeGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolBadge {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 1rem;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toolBadge.midjourney {
+  background: linear-gradient(135deg, #1e1b4b, #4338ca);
+}
+
+.toolBadge.gemini {
+  background: linear-gradient(135deg, #0369a1, #6366f1);
+}
+
+.toolBadge.chatgpt {
+  background: linear-gradient(135deg, #065f46, #10b981);
+}
+
+.toolBadge.claude {
+  background: linear-gradient(135deg, #c2410c, #ea580c);
+}
+
+.nicheBadge {
+  display: inline-flex;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.nicheBadge:hover {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
+.typeBadge,
+.aspectBadge {
+  display: inline-flex;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  color: #475569;
+  background: rgba(241, 245, 249, 0.8);
+  border: 1px solid rgba(203, 213, 225, 0.6);
+}
+
+.title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.metaBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.86rem;
+  color: #64748b;
   font-weight: 600;
 }
 
-.meta a {
+.metaItem svg {
   color: var(--primary-color);
-  text-decoration: none;
+  font-size: 0.95rem;
 }
 
-.detail {
-  overflow: hidden;
+.heartActive {
+  color: #ef4444 !important;
 }
 
+/* تصویر نمونه خروجی */
 .imageContainer {
-  width: 100%;
-  max-height: 450px;
-  overflow: hidden;
-  border-radius: var(--radius-md);
   position: relative;
-  border: 1px solid var(--glass-border);
+  width: 100%;
+  max-height: 480px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  background: #0f172a;
 }
 
 .image {
   width: 100%;
   height: 100%;
+  max-height: 480px;
   object-fit: cover;
   display: block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.contentWrapper {
-  margin: 24px auto;
+.imageContainer:hover .image {
+  transform: scale(1.03);
 }
 
-/* مشخصات و برچسب‌های فنی پرامپت */
-.specsWrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.specBadge {
-  background: var(--bg-surface);
-  border: 1px solid var(--glass-border);
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-}
-
-.specBadge strong {
-  color: var(--text-primary);
-  margin-left: 4px;
-}
-
-/* جعبه متن پرامپت */
-.promptContainer {
-  margin: 25px 0;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-}
-
-.promptBar {
-  display: flex;
-  justify-content: space-between;
+.imageOverlayBadge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: inline-flex;
   align-items: center;
-  padding: 10px 16px;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--glass-border-subtle);
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
   font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--text-primary);
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.imageOverlayBadge svg {
+  color: #38bdf8;
+}
+
+/* ترمینال و پنجره کد پرامپت (macOS Terminal) */
+.terminalContainer {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid #334155;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+  background: #090d16;
+}
+
+.terminalBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+
+.terminalDots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dotClose,
+.dotMinimize,
+.dotMaximize {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dotClose {
+  background-color: #ff5f56;
+}
+
+.dotMinimize {
+  background-color: #ffbd2e;
+}
+
+.dotMaximize {
+  background-color: #27c93f;
+}
+
+.terminalTitle {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  letter-spacing: 0.3px;
 }
 
 .copyPromptBtn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--primary-color);
-  color: var(--text-inverse);
-  border: none;
   padding: 6px 14px;
-  border-radius: var(--radius-xs);
-  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--primary-border);
+  background: var(--primary-color);
+  color: #ffffff;
   font-family: inherit;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
   transition: all var(--transition-fast);
+  box-shadow: 0 4px 12px var(--primary-shadow);
 }
 
 .copyPromptBtn:hover {
   background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.copyPromptBtn.copied {
+  background: #10b981;
+  border-color: #059669;
+}
+
+.terminalBody {
+  background: #090d16;
 }
 
 .promptCodeBlock {
-  position: relative;
-  display: block;
-  width: 100%;
   margin: 0;
-  padding: 20px 24px;
-  overflow-x: auto;
-  color: var(--text-inverse);
-  background: var(--text-primary);
+  padding: 22px 24px;
   direction: ltr !important;
   text-align: left !important;
-  -webkit-overflow-scrolling: touch;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  font-family: "Fira Code", "JetBrains Mono", Consolas, monospace !important;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: #f1f5f9;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .promptCodeBlock code {
-  display: block;
-  font-family: "Fira Code", "Consolas", monospace !important;
-  font-size: 0.95rem;
-  line-height: 1.8;
-  white-space: pre-wrap;
-  word-break: break-word;
+  font-family: inherit;
+  color: inherit;
 }
 
-/* کادر نکات */
-.tipsBox {
-  margin: 25px 0;
-  padding: 16px 20px;
-  background: var(--white-glass);
-  color: var(--text-secondary);
-  border-right: 3px solid var(--primary-color);
-  border-radius: var(--radius-sm);
+/* مشخصات فنی و پارامترها */
+.specsCard {
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.tipsBox h4 {
-  color: var(--primary-color);
-  margin-bottom: 8px;
+.specsTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 1.05rem;
-}
-
-.tipsBox p {
-  line-height: 1.9;
-  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1e293b;
   margin: 0;
 }
 
-/* اکشن‌ها */
-.actions {
-  display: flex;
-  justify-content: flex-start;
-  gap: 10px;
-  align-items: center;
-  margin-top: 30px;
-}
-
-.actionsBtn {
-  display: flex;
-  align-items: center;
-  text-align: center !important;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-md);
-  white-space: nowrap;
-  cursor: pointer;
-  border: 1px solid var(--primary-border);
-  background: var(--primary-color);
-  color: var(--text-inverse);
-  box-shadow:
-    0 8px 20px var(--primary-shadow),
-    inset 0 1px 1px rgba(255, 255, 255, 0.5);
-  font-family: inherit;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.favNotActive,
-.favActive,
-.copyBtn {
-  background: var(--bg-surface);
+.specsTitle svg {
   color: var(--primary-color);
+  font-size: 1.2rem;
 }
 
-.back {
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.specItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(241, 245, 249, 0.8);
+}
+
+.specLabel {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.specValue {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.tagsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.tagsLabel {
+  font-size: 0.84rem;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.tagsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tagItem {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  background: var(--primary-soft);
+  padding: 4px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid var(--primary-border);
+  transition: all var(--transition-fast);
+}
+
+.tagItem:hover {
   background: var(--primary-color);
-  color: var(--text-inverse);
+  color: #ffffff;
 }
 
-.actionsBtn svg {
-  font-size: 1.2rem;
+/* باکس نکات طلایی */
+.tipsBox {
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.65), rgba(253, 230, 138, 0.35));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-right: 4px solid #f59e0b;
 }
 
-/* سایدبار موارد مرتبط */
+.tipsHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #b45309;
+}
+
+.tipsHeader svg {
+  font-size: 1.3rem;
+}
+
+.tipsHeader h4 {
+  font-size: 0.98rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.tipsBox p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: #78350f;
+}
+
+/* نوار دکمه‌های اکشن */
+.actionsBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.likedBtn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.likedBtn:hover {
+  background: #fecaca;
+}
+
+.notLikedBtn {
+  background: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.notLikedBtn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.shareBtn {
+  background: #ffffff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.shareBtn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: var(--primary-soft);
+}
+
+.backBtn {
+  margin-right: auto;
+  background: var(--primary-color);
+  color: #ffffff;
+  border: 1px solid var(--primary-border);
+  box-shadow: 0 4px 12px var(--primary-shadow);
+}
+
+.backBtn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px var(--primary-shadow);
+}
+
+/* ============================
+   سایدبار پرامپت‌های مرتبط
+============================ */
 .sidebar {
-  width: 30%;
-  margin-bottom: 20px;
-  border-radius: var(--radius-md);
+  width: 100%;
 }
 
-.sidebar h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  color: var(--text-primary);
-  border-bottom: 2px solid var(--primary-color);
-  padding-bottom: 0.5rem;
-  display: inline-block;
+.sidebarCard {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--liquid-glass-border, rgba(255, 255, 255, 0.45));
+  background: var(--liquid-glass-bg, #ffffff);
+  backdrop-filter: var(--liquid-glass-blur, blur(16px));
+  box-shadow: var(--liquid-glass-shadow, 0 4px 20px rgba(0, 0, 0, 0.03));
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sidebarHeader svg {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+}
+
+.sidebarHeader h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
 }
 
 .relatedList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .relatedCard {
   display: flex;
+  align-items: center;
   gap: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: rgba(248, 250, 252, 0.8);
   text-decoration: none;
   color: inherit;
-  padding: 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
   transition: all var(--transition-fast);
 }
 
-.relatedImg {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
+.relatedCard:hover {
+  background: #ffffff;
+  border-color: var(--primary-border);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.relatedImgWrapper {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
   flex-shrink: 0;
+  background: #f1f5f9;
+}
+
+.relatedImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.relatedToolBadge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
 }
 
 .relatedInfo {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  gap: 6px;
   overflow: hidden;
+  flex: 1;
 }
 
 .relatedInfo h4 {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1e293b;
   margin: 0;
-  line-height: 1.4;
-  color: var(--text-primary);
+  line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.relatedInfo span {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+.relatedMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: #94a3b8;
+}
+
+.relatedMeta svg {
+  color: var(--primary-color);
 }
 
 .noRelated {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+  color: #94a3b8;
+  font-size: 0.86rem;
+  text-align: center;
+  padding: 18px 0;
 }
 
-.notFound {
+.sidebarFooter {
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.exploreAllBtn {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 50vh;
-  text-align: center;
-  padding: 2rem;
+  gap: 6px;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--primary-border);
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--transition-fast);
 }
 
-.notFound p {
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+.exploreAllBtn:hover {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
+/* صفحه عدم وجود پرامپت (Not Found) */
+.notFound {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--liquid-glass-bg, #ffffff);
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius-xl);
+  margin-top: 40px;
 }
 
 .notFound h2 {
-  color: var(--danger-color);
-  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  color: #ef4444;
+  margin: 0 0 10px;
 }
 
-/* ریسپانسیو مشابه ArticleDetailsPage */
+.notFound p {
+  color: #64748b;
+  margin: 0 0 24px;
+}
+
+/* واکنش‌گرایی */
 @media (max-width: 992px) {
-  .container {
+  .layout {
     flex-direction: column;
   }
 
-  .articleContainer {
-    width: 100%;
-  }
-
-  .meta,
-  .articleContainer h1,
-  .contentWrapper,
-  .sidebar {
-    padding: 0 1rem;
-  }
-
-  .sidebar {
+  .sidebarContent {
     width: 100%;
     position: static;
-    margin-top: 2rem;
   }
 
   .relatedList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
   }
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0;
+@media (max-width: 640px) {
+  .articleContainer {
+    padding: 20px 16px;
+    gap: 20px;
   }
 
-  .articleContainer h1 {
-    font-size: 1.6rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .container {
-    width: 100%;
-    margin: 0 auto;
+  .title {
+    font-size: 1.45rem;
   }
 
-  .actions {
-    flex-wrap: wrap;
-    justify-content: space-between;
+  .terminalBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 
-  .actionsBtn {
-    width: 45%;
+  .copyPromptBtn {
+    align-self: flex-end;
   }
 
-  .back {
-    width: 100%;
+  .promptCodeBlock {
+    padding: 16px;
+    font-size: 0.88rem;
   }
-}
 
-@media (max-width: 450px) {
-  .actionsBtn {
-    width: 100%;
-    text-align: center;
+  .actionsBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actionBtn {
     justify-content: center;
+  }
+
+  .backBtn {
+    margin-right: 0;
   }
 }

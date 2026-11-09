@@ -27,7 +27,6 @@ function ArticleDetailsPage() {
 
     return articles
       .filter((item) => {
-        // اصلاح کلید: _id به جای id
         if (item._id === article._id) return false;
 
         const itemTags =
@@ -44,7 +43,13 @@ function ArticleDetailsPage() {
   if (!article) {
     return (
       <div className={styles.container}>
-        <p>مقاله مورد نظر پیدا نشد.</p>
+        <div className={styles.notFound}>
+          <h2>مقاله‌ای یافت نشد</h2>
+          <p>متاسفانه مقاله مورد نظر شما پیدا نشد یا حذف شده است.</p>
+          <Link to="/articles" className={styles.backBtn}>
+            بازگشت به لیست مقالات
+          </Link>
+        </div>
       </div>
     );
   }
@@ -94,6 +99,7 @@ function ArticleDetailsPage() {
       <Breadcrumb items={breadcrumbItems} />
       <div className={styles.container}>
         <ArticleContent
+          key={article._id || article.slug}
           article={article}
           styles={styles}
           contentRef={contentRef}

@@ -15,7 +15,14 @@ import SEOConfig from "../components/SEOConfig";
 import styles from "./DashboardPage.module.css";
 import e2p from "../utils/persianNumber";
 import useAuth from "../hooks/useAuth";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import mockData from "../data/mockData.json";
+import {
+  getSavedPortfolios,
+  getLikedArticles,
+  toggleSavePortfolio,
+  toggleLikeArticle,
+} from "../utils/storage";
 
 // ایمپورت ابزار ارتباط با بک‌اند (جایگزین apiService شد)
 import api from "../utils/axiosInstance";
@@ -50,7 +57,7 @@ export default function DashboardPage() {
   const [likedArticles, setLikedArticles] = useState([]); // فعلا در لوکال استوریج مدیریت میشه
   const [tickets, setTickets] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [activities, setActivities] = useState([]);
+  const [activities] = useState([]);
   const [allPortfolios, setAllPortfolios] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
@@ -99,40 +106,63 @@ export default function DashboardPage() {
 
         setTickets(ticketsRes.data || []);
         setOrders(ordersRes.data || []);
-        setAllPortfolios(portsRes.data || []);
-        setAllArticles(artsRes.data || []);
+        setAllPortfolios(
+          portsRes.data && portsRes.data.length > 0
+            ? portsRes.data
+            : mockData.portfolios || [],
+        );
+        setAllArticles(
+          artsRes.data && artsRes.data.length > 0
+            ? artsRes.data
+            : mockData.articles || [],
+        );
 
-        // در صورت نیاز میتونی لیست ذخیره شده‌ها رو از لوکال استوریج بخونی
-        setSavedPortfolios(
-          JSON.parse(localStorage.getItem("savedPortfolios")) || [],
-        );
-        setLikedArticles(
-          JSON.parse(localStorage.getItem("likedArticles")) || [],
-        );
+        setSavedPortfolios(getSavedPortfolios());
+        setLikedArticles(getLikedArticles());
+        setUserData(user);
+        setProfileForm({
+          name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+          email: user.email || "",
+          bio: user.bio || "",
+          location: user.location || "",
+          avatar: user.avatar || AVATAR_PRESETS[0],
+        });
       } catch (error) {
         console.error("خطا در دریافت اطلاعات داشبورد:", error);
+        setAllPortfolios(mockData.portfolios || []);
+        setAllArticles(mockData.articles || []);
+        setSavedPortfolios(getSavedPortfolios());
+        setLikedArticles(getLikedArticles());
+        setUserData(user);
       } finally {
         setLoadingData(false);
       }
     };
 
     fetchDashboardData();
-
-    // تنظیم اطلاعات پروفایل کاربر
-    setUserData(user);
-    setProfileForm({
-      name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
-      email: user.email || "",
-      bio: user.bio || "",
-      location: user.location || "",
-      avatar: user.avatar || AVATAR_PRESETS[0],
-    });
   }, [user]);
 
-  // اکشن‌ها و متدها
-  const logActivity = async (title, type = "info") => {
-    // تو فاز بعدی میتونیم API لاگ رو تو بک‌اند بسازیم
-    console.log(`Activity Logged: ${title}`);
+  useEffect(() => {
+    const handlePortfolioChange = () => setSavedPortfolios(getSavedPortfolios());
+    const handleArticleChange = () => setLikedArticles(getLikedArticles());
+    window.addEventListener("portfolio-saved-change", handlePortfolioChange);
+    window.addEventListener("article-liked-change", handleArticleChange);
+    return () => {
+      window.removeEventListener("portfolio-saved-change", handlePortfolioChange);
+      window.removeEventListener("article-liked-change", handleArticleChange);
+    };
+  }, []);
+
+  const handleRemovePortfolio = (id) => {
+    toggleSavePortfolio(id);
+    setSavedPortfolios(getSavedPortfolios());
+    toast.info("نمونه‌کار از نشان‌شده‌ها حذف شد.");
+  };
+
+  const handleRemoveArticle = (id) => {
+    toggleLikeArticle(id);
+    setLikedArticles(getLikedArticles());
+    toast.info("مقاله از پسندیده‌شده‌ها حذف شد.");
   };
 
   const handleSaveProfile = async (e) => {
@@ -209,14 +239,16 @@ export default function DashboardPage() {
     }
   };
 
-  // پروژه‌ها و مقالات فیلتر شده (آیدی‌ها در مونگو _id هستند)
-  const savedPortfolioItems = (allPortfolios || []).filter((p) =>
-    savedPortfolios.includes(p._id || p.id),
-  );
+  // پروژه‌ها و مقالات فیلتر شده (پشتیبانی از _id و id و مقایسه امن به صورت رشته)
+  const savedPortfolioItems = (allPortfolios || []).filter((p) => {
+    const pId = String(p._id ?? p.id ?? "");
+    return savedPortfolios.some((id) => String(id) === pId);
+  });
 
-  const likedArticleItems = (allArticles || []).filter((a) =>
-    likedArticles.includes(a._id || a.id),
-  );
+  const likedArticleItems = (allArticles || []).filter((a) => {
+    const aId = String(a._id ?? a.id ?? "");
+    return likedArticles.some((id) => String(id) === aId);
+  });
 
   if (authLoading || loadingData) {
     return <Loading />;
@@ -442,7 +474,8 @@ export default function DashboardPage() {
                 likedArticles={likedArticles}
                 savedPortfolioItems={savedPortfolioItems}
                 likedArticleItems={likedArticleItems}
-                // توابع حذف رو میتونی مستقیما تو SavedTab با مدیریت لوکال استوریج هندل کنی
+                onRemovePortfolio={handleRemovePortfolio}
+                onRemoveArticle={handleRemoveArticle}
               />
             )}
 
@@ -486,7 +519,6 @@ export default function DashboardPage() {
         setNewOrderData={setNewOrderData}
         onCreateOrder={handleCreateOrder}
       />
-      <ToastContainer rtl position="top-center" />
     </div>
   );
 }

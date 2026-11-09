@@ -184,7 +184,12 @@ function ArticlesPage() {
 
         <aside className={styles.sidebarColumn}>
           <div className={styles.categoryCard}>
-            <p className={styles.categoryHeaderBtn} type="button">
+            <button
+              className={styles.categoryHeaderBtn}
+              type="button"
+              onClick={() => setIsCategoryOpen((prev) => !prev)}
+              aria-label="تغییر وضعیت نمایش دسته‌بندی‌ها"
+            >
               <span className={styles.categoryTitle}>دسته‌بندی‌ها</span>
               <svg
                 className={`${styles.categoryArrow} ${
@@ -201,7 +206,7 @@ function ArticlesPage() {
               >
                 <polyline points="18 15 12 9 6 15"></polyline>
               </svg>
-            </p>
+            </button>
 
             {isCategoryOpen && (
               <ul className={styles.categoryList}>

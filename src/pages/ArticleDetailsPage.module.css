@@ -1,3 +1,6 @@
+/* ==========================================================================
+   طرح‌بندی صفحه جزییات مقاله (Article Details Page Layout)
+   ========================================================================== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -5,40 +8,105 @@
   align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
-
-  
+  width: 100%;
 }
 
 .articleContainer {
-  width: 60%;
-  margin: 20px auto;
+  width: 65%;
+  margin: 20px 0;
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  -webkit-backdrop-filter: var(--liquid-glass-blur);
+  border: 1px solid var(--liquid-glass-border);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  box-shadow: var(--liquid-glass-shadow);
+  direction: rtl;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow var(--transition-normal);
 }
 
+.articleContainer::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.14) 0%, transparent 70%);
+  filter: blur(45px);
+  pointer-events: none;
+}
+
+.articleContainer::after {
+  content: "";
+  position: absolute;
+  bottom: -140px;
+  right: -140px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(247, 118, 61, 0.1) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.articleContainer h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   بخش نظرات مقاله (Comments Section)
+   ========================================================================== */
 .commentsSection {
   width: 100%;
-  margin-top: 60px;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid var(--glass-border-subtle);
   border-radius: var(--radius-lg);
 }
 
 .commentsSection h3 {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 35px;
-  padding-right: 16px;
+  margin-bottom: 25px;
+  padding-right: 14px;
   border-right: 4px solid var(--primary-color);
   letter-spacing: -0.3px;
 }
 
 .commentBox {
   width: 100%;
-  margin-bottom: 24px;
-  padding: 24px 28px;
-  background: var(--bg-surface);
+  margin-bottom: 20px;
+  padding: 22px 26px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.55) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--liquid-glass-border);
   position: relative;
-  /* box-shadow: var(--shadow-sm); */
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    0 4px 18px rgba(0, 0, 0, 0.03);
+  transition: all var(--transition-normal);
+}
+
+.commentBox:hover {
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 1),
+    0 8px 24px rgba(37, 99, 235, 0.08);
 }
 
 .commentBox:last-child {
@@ -69,14 +137,14 @@
   line-height: 2;
   font-size: 0.95rem;
   text-align: justify;
-  /* padding: 18px 20px; */
   border-radius: var(--radius-sm);
-  font-weight: 600;
-  margin-top: 14px;
+  font-weight: 500;
+  margin-top: 12px;
   font-family: inherit;
 }
 
 .commentDate {
+  display: flex;
   gap: 6px;
   color: var(--text-muted);
   font-size: 0.8rem;
@@ -98,20 +166,20 @@
 
 @media (max-width: 768px) {
   .commentsSection {
-    padding: 28px 20px;
-    margin-top: 40px;
+    padding: 20px 0;
+    margin-top: 35px;
   }
 
   .commentsSection h3 {
-    font-size: 1.35rem;
-    margin-bottom: 28px;
+    font-size: 1.25rem;
+    margin-bottom: 22px;
     padding-right: 12px;
     border-right-width: 3px;
   }
 
   .commentBox {
-    padding: 18px 20px;
-    margin-bottom: 18px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
   }
 
   .commentName {
@@ -126,17 +194,16 @@
 
 @media (max-width: 576px) {
   .commentsSection {
-    padding: 22px 16px;
     border-radius: var(--radius-md);
   }
 
   .commentsSection h3 {
-    font-size: 1.2rem;
-    margin-bottom: 22px;
+    font-size: 1.15rem;
+    margin-bottom: 18px;
   }
 
   .commentBox {
-    padding: 16px;
+    padding: 14px 16px;
     border-radius: var(--radius-sm);
   }
 
@@ -158,244 +225,386 @@
   }
 }
 
+/* ==========================================================================
+   جزییات تصویر و هدر مقاله
+   ========================================================================== */
 .detail {
   overflow: hidden;
 }
 
 .imageContainer {
   width: 100%;
-  height: 100%;
+  max-height: 480px;
   overflow: hidden;
   position: relative;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--liquid-glass-border);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    0 8px 24px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
 }
 
 .image {
   width: 100%;
   height: 100%;
+  max-height: 480px;
   object-fit: cover;
+  display: block;
 }
 
 .contentWrapper {
   margin: 20px auto;
 }
 
+/* ==========================================================================
+   دکمه‌های اقدام پایین مقاله (Actions) با فینیش لیکویید گلس براق
+   ========================================================================== */
 .actions {
   display: flex;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
+  flex-wrap: wrap;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border-subtle);
 }
 
 .actionsBtn {
-  /* 
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all var(--transition-normal);
-   */
-
-  display: flex;
-  align-items: center;
-  text-align: center !important;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.4rem;
   border-radius: var(--radius-md);
   white-space: nowrap;
   cursor: pointer;
-  border: 1px solid var(--primary-border);
-  background: var(--primary-color);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.92), rgba(29, 78, 216, 0.98));
   color: var(--text-inverse);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   box-shadow:
-    0 8px 20px var(--primary-shadow),
-    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    inset 0 1px 2px rgba(255, 255, 255, 0.6),
+    0 8px 22px var(--primary-shadow);
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.actionsBtn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.8),
+    0 12px 28px var(--primary-shadow);
 }
 
 .favNotActive {
-  background: var(--bg-surface);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 246, 255, 0.75));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--primary-color);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    0 4px 14px rgba(37, 99, 235, 0.08);
 }
 
 .favActive {
-  background: var(--bg-surface);
-  color: var(--primary-color);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(254, 242, 242, 0.85));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--danger-color, #ef4444);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    0 6px 20px rgba(239, 68, 68, 0.15);
 }
 
 .copyBtn {
-  background: var(--bg-surface);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 246, 255, 0.75));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--primary-color);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    0 4px 14px rgba(37, 99, 235, 0.08);
 }
 
 .back {
-  background: var(--primary-color);
-  color: var(--text-inverse);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.92), rgba(29, 78, 216, 0.98));
+  color: var(--text-inverse) !important;
+  text-decoration: none;
 }
 
 .actionsBtn svg {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
+/* ==========================================================================
+   متادیتای بالای مقاله (نویسنده، تاریخ، تگ‌ها)
+   ========================================================================== */
 .meta {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-direction: column;
   margin: 10px auto 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--glass-border-subtle);
 }
 
 .meta p {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
+  color: var(--text-muted);
 }
 
-.content {
-  line-height: 2.1;
+.tech {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   استایل بدنه و متن مقاله با کلاس ثابت (.content و .article-content)
+   پوشش ۱۰۰٪ تمام تگ‌ها و ساختارهای mockData.json
+   ========================================================================== */
+.content,
+:global(.article-content) {
+  line-height: 2.15;
   font-size: 1.05rem;
   text-align: right;
-}
-
-.content p {
-  font-family: var(--yekanbakh-m);
-  margin-bottom: 1.2rem;
-}
-
-.content h2 {
-  font-size: 1.5rem;
-  margin: 35px 0 15px;
-  color: var(--text-primary);
-}
-
-.content h3 {
-  font-size: 1.25rem;
-  margin: 30px 0 12px;
-  color: var(--primary-color);
-}
-
-.content h4 {
-  font-size: 1.1rem;
-  margin: 25px 0 10px;
+  direction: rtl;
   color: var(--text-secondary);
 }
 
-.content a {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 600;
+.content p,
+:global(.article-content p) {
+  margin-bottom: 1.4rem;
+  line-height: 2.15;
+  text-align: justify;
+  font-size: 1.05rem;
 }
 
-.content a:hover {
+.content h2,
+:global(.article-content h2) {
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 40px 0 16px;
+  color: var(--text-primary);
+  padding-right: 14px;
+  border-right: 4px solid var(--primary-color);
+  line-height: 1.55;
+  scroll-margin-top: 100px;
+}
+
+.content h3,
+:global(.article-content h3) {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 30px 0 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  scroll-margin-top: 90px;
+}
+
+.content h4,
+:global(.article-content h4) {
+  font-size: 1.12rem;
+  font-weight: 700;
+  margin: 25px 0 12px;
+  color: var(--primary-color);
+}
+
+.content strong,
+:global(.article-content strong),
+.content b,
+:global(.article-content b) {
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+.content a,
+:global(.article-content a) {
+  color: var(--primary-color);
   text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 700;
+  transition: color var(--transition-fast, 0.2s ease);
+}
+
+.content a:hover,
+:global(.article-content a:hover) {
+  color: var(--primary-dark);
 }
 
 .content ul,
-.content ol {
-  margin: 20px 0;
-  padding-right: 20px;
+:global(.article-content ul),
+.content ol,
+:global(.article-content ol) {
+  margin: 20px 0 24px;
+  padding-right: 28px;
 }
 
-.content li {
-  margin-bottom: 8px;
-  line-height: 1.9;
-}
-
-.notFound {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  text-align: center;
-  padding: 2rem;
-}
-
-.notFound p {
+.content li,
+:global(.article-content li) {
+  margin-bottom: 10px;
+  line-height: 2;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
 }
 
-.notFound h2 {
-  color: var(--danger-color);
-  margin-bottom: 1rem;
-}
-
-.sidebar {
-  width: 30%;
-  margin-bottom: 20px;
+/* فهرست مطالب در مقاله ۵ (ul.quote) */
+.content ul.quote,
+:global(.article-content ul.quote) {
+  list-style: none;
+  padding: 16px 20px;
+  margin: 26px 0;
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
   border-radius: var(--radius-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+
+.content ul.quote li,
+:global(.article-content ul.quote li) {
+  margin: 0;
+  padding: 0;
+}
+
+.content ul.quote li a,
+:global(.article-content ul.quote li a) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.content ul.quote li a:hover,
+:global(.article-content ul.quote li a:hover) {
+  transform: translateX(-4px);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   سایدبار و مقالات مرتبط (Sidebar)
+   ========================================================================== */
+.sidebar {
+  width: 32%;
+  margin: 20px 0;
+  border-radius: var(--radius-xl);
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  -webkit-backdrop-filter: var(--liquid-glass-blur);
+  border: 1px solid var(--liquid-glass-border);
+  padding: 24px;
+  box-shadow: var(--liquid-glass-shadow);
+  position: sticky;
+  top: 90px;
+  direction: rtl;
+  overflow: hidden;
 }
 
 .sidebar h3 {
   font-size: 1.2rem;
-  margin-bottom: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 1.4rem;
   color: var(--text-primary);
   border-bottom: 2px solid var(--primary-color);
-  padding-bottom: 0.5rem;
-  display: inline-block;
+  padding-bottom: 0.6rem;
 }
 
 .relatedList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .relatedCard {
   display: flex;
+  align-items: center;
   gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   text-decoration: none;
   color: inherit;
-  padding: 10px;
-  transition: all var(--transition-fast);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.relatedCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-border);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 1),
+    0 8px 24px var(--primary-shadow);
 }
 
 .relatedImg {
-  width: 70px;
-  height: 70px;
+  width: 68px;
+  height: 68px;
   object-fit: cover;
-  border-radius: inherit;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
 
 .relatedInfo {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  gap: 4px;
   overflow: hidden;
 }
 
 .relatedInfo h4 {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 700;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--text-primary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  transition: color var(--transition-fast);
+}
+
+.relatedCard:hover .relatedInfo h4 {
+  color: var(--primary-color);
 }
 
 .relatedInfo span {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
 .noRelated {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
+/* ==========================================================================
+   عملیات ادمین (Admin Actions)
+   ========================================================================== */
 .adminActions {
   display: flex;
   gap: 10px;
   margin: 15px 0;
-  /* padding: 15px; */
-  /* background-color: var(--bg-color); */
-  /* border: 1px dashed var(--glass-border); */
   border-radius: var(--radius-sm);
   justify-content: flex-end;
 }
@@ -408,6 +617,7 @@
   border-radius: var(--radius-xs);
   cursor: pointer;
   font-family: inherit;
+  font-weight: 600;
 }
 
 .deleteBtn {
@@ -418,90 +628,56 @@
   border-radius: var(--radius-xs);
   cursor: pointer;
   font-family: inherit;
+  font-weight: 600;
 }
 
 .editBtn:hover {
   background-color: var(--primary-dark);
 }
+
 .deleteBtn:hover {
   background-color: #dc2626;
 }
 
-@media (max-width: 992px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .articleContainer {
-    width: 100%;
-  }
-
-  .meta,
-  .articleContainer h1,
-  .contentWrapper,
-  .sidebar {
-    padding: 0 1rem;
-  }
-
-  .sidebar {
-    width: 100%;
-    position: static;
-    margin-top: 2rem;
-  }
-
-  .relatedList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
+/* ==========================================================================
+   صفحه پیدا نشد (Not Found)
+   ========================================================================== */
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+  padding: 2rem;
+  width: 100%;
 }
 
-@media (max-width: 768px) {
-  .imageContainer {
-    height: 300px;
-  }
-
-  .container {
-    padding: 0;
-  }
-
-  .articleContainer h1 {
-    font-size: 1.6rem;
-  }
+.notFound p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 576px) {
-  .container {
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .imageContainer {
-    height: 250px;
-  }
-
-  .actions {
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .actionsBtn {
-    width: 45%;
-  }
-
-  .back {
-    width: 100%;
-  }
+.notFound h2 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 800;
 }
 
-@media (max-width: 450px) {
-  .actionsBtn {
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-  }
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-color);
+  color: #ffffff !important;
+  font-weight: 700;
+  text-decoration: none;
 }
 
+/* ==========================================================================
+   کلاس‌های سراسری موجود در مقالات mockData.json (:global)
+   ========================================================================== */
 :global(.copy-btn-magic) {
   position: absolute;
   top: 8px;
@@ -528,7 +704,9 @@
   padding: 0;
   display: block;
   height: auto;
-  margin: 10px auto;
+  margin: 20px auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
 }
 
 :global(.right) {
@@ -544,24 +722,54 @@
 :global(.quote) {
   width: 100%;
   display: block;
-  background-color: var(--white-glass);
-  color: var(--primary-color);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(239, 246, 255, 0.65) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
   font-weight: 600;
-  border-right: 3px solid var(--primary-color);
-  padding: 15px;
+  border-right: 4px solid var(--primary-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  border-left: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 18px 22px;
+  border-radius: var(--radius-sm);
+  margin: 26px 0;
+  line-height: 1.95;
+  box-shadow:
+    inset 0 1px 1.5px rgba(255, 255, 255, 1),
+    0 6px 20px rgba(37, 99, 235, 0.05);
 }
 
 :global(.typography) {
-  margin: 25px 0;
-  padding: 15px;
-  background: var(--white-glass);
-  color: var(--text-secondary);
-  border-right: 3px solid var(--primary-color);
+  margin: 26px 0;
+  padding: 18px 22px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(239, 246, 255, 0.65) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  border-right: 4px solid var(--primary-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  border-left: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  line-height: 1.95;
+  box-shadow:
+    inset 0 1px 1.5px rgba(255, 255, 255, 1),
+    0 6px 20px rgba(37, 99, 235, 0.05);
 }
 
 :global(.line-article) {
   width: 100%;
-  margin: 50px auto;
+  margin: 44px auto;
   background: linear-gradient(
     90deg,
     transparent,
@@ -569,14 +777,35 @@
     transparent
   );
   border: none;
-  height: 3px;
+  height: 2px;
 }
 
 :global(.link) {
   color: var(--primary-color) !important;
-  text-decoration: none !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+  font-weight: 700;
 }
 
+:global(.math-formula) {
+  display: inline-block;
+  direction: ltr !important;
+  unicode-bidi: isolate;
+  font-family: "Cambria Math", "Latin Modern Math", "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  padding: 1px 7px;
+  margin: 0 4px;
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-xs);
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+   استایل‌های کامل جداول (:global table و کلاس‌های کمکی)
+   ========================================================================== */
 :global(table) {
   width: 100% !important;
   max-width: 100% !important;
@@ -584,28 +813,31 @@
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 0.92rem;
-  background: var(--bg-surface);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  white-space: nowrap;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--glass-border);
-  @media (max-width: 768px) {
-    display: block;
-    overflow-x: auto;
-  }
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    var(--shadow-sm);
+  border: 1px solid var(--liquid-glass-border);
 }
 
 :global(table thead) {
-  background: var(--text-primary);
-  color: var(--text-inverse);
+  background: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.12) 0%,
+    rgba(37, 99, 235, 0.04) 100%
+  );
+  color: var(--primary-dark);
 }
 
 :global(table thead th) {
   padding: 14px 18px;
-  text-align: center;
+  text-align: right;
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   letter-spacing: 0.2px;
   border: none;
   white-space: nowrap;
@@ -620,7 +852,7 @@
 }
 
 :global(table tbody tr:nth-child(even)) {
-  background: var(--bg-color);
+  background: rgba(15, 23, 42, 0.02);
 }
 
 :global(table tbody tr:nth-child(odd)) {
@@ -629,7 +861,7 @@
 
 :global(table tbody td) {
   padding: 12px 18px;
-  text-align: center;
+  text-align: right;
   color: var(--text-secondary);
   line-height: 1.7;
   vertical-align: middle;
@@ -659,16 +891,15 @@
 }
 
 :global(table:not(:has(thead)) tr:first-child) {
-  background: var(--text-primary);
-  color: var(--text-inverse);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
 }
 
 :global(table:not(:has(thead)) tr:first-child td) {
-  color: var(--text-inverse);
+  color: var(--primary-dark);
   font-weight: 700;
 }
 
-/* کپشن جدول */
 :global(table caption) {
   caption-side: bottom;
   padding: 10px 18px;
@@ -680,12 +911,13 @@
   border-top: 2px solid var(--glass-border);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   :global(table) {
     font-size: 0.85rem;
     border-radius: var(--radius-sm);
     margin: 22px 0;
+    display: block;
+    overflow-x: auto;
   }
 
   :global(table thead th),
@@ -698,23 +930,12 @@
   }
 }
 
-@media (max-width: 768px) {
-  :global(table.responsive),
-  :global(.table-responsive table) {
-    display: block;
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-  }
-
-  :global(table:not(.responsive):not(.table-responsive table)) {
-    font-size: 0.8rem;
-  }
-
-  :global(table thead th),
-  :global(table tbody td) {
-    padding: 8px 10px;
-  }
+:global(table.responsive),
+:global(.table-responsive table) {
+  display: block;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
 }
 
 :global(table.striped-alt tbody tr:nth-child(even)) {
@@ -742,24 +963,26 @@
 
 /* ==========================================================================
    استایل‌های کدهای خطی (Inline Code) و بلاک‌های برنامه‌نویسی (Pre / Code Blocks)
+   با حفظ ۱۰۰٪ دندانه‌بندی و جهت‌دهی LTR برای تمام زبان‌ها
    ========================================================================== */
 
-/* ۱. کدهای خطی (مثلاً نام توابع یا تگ‌ها در وسط متون فارسی و پاراگراف‌ها) */
+/* ۱. کدهای خطی (Inline Code) */
 :global(code:not(pre code)) {
   display: inline-block;
-  padding: 3px 8px;
-  margin: 0 3px;
+  padding: 2px 7px;
+  margin: 0 4px;
   color: var(--primary-dark);
   background: var(--primary-soft);
   border: 1px solid var(--primary-border);
   border-radius: var(--radius-xs);
-  font-family: "Fira Code", "Consolas", "Courier New", monospace !important;
-  font-size: 0.85em;
+  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace !important;
+  font-size: 0.88em;
   font-weight: 600;
   direction: ltr !important;
   text-align: left !important;
   word-break: break-word;
   vertical-align: middle;
+  unicode-bidi: isolate;
 }
 
 /* ۲. کادر اصلی بلاک‌های کد (Pre) */
@@ -768,77 +991,209 @@
   display: block;
   width: 100%;
   margin: 28px 0;
-  padding: 20px 24px;
-  overflow-x: auto;
-
-  /* استفاده از رنگ تیره (Slate 900) برای پس‌زمینه کد جهت کنتراست عالی */
-  color: var(--text-inverse);
-  background: var(--text-primary);
-  border: 1px solid var(--glass-border);
+  padding: 0;
+  overflow: hidden;
+  color: #f1f5f9;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-
-  /* اجبار جهت‌دهی چپ‌به‌راست برای جلوگیری از به‌هم‌ریختگی سینتکس در سایت فارسی */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   direction: ltr !important;
   text-align: left !important;
-
+  unicode-bidi: isolate;
   -webkit-overflow-scrolling: touch;
-  tab-size: 2;
 }
 
-/* ۳. استایل متنِ داخل بلاک کد */
+/* نوار هدر ادیتور در بالای بلاک کد */
+:global(.code-header) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #1e293b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  user-select: none;
+}
+
+:global(.code-dots) {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+:global(.code-dots .dot) {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+:global(.code-dots .dot.red) { background: #ef4444; }
+:global(.code-dots .dot.yellow) { background: #f59e0b; }
+:global(.code-dots .dot.green) { background: #10b981; }
+
+:global(.code-lang) {
+  color: #94a3b8;
+  font-size: 0.74rem;
+  font-weight: 700;
+  margin-left: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+}
+
+:global(.code-copy-btn) {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+:global(.code-copy-btn:hover) {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+:global(.code-copy-btn.copied) {
+  color: #10b981;
+  border-color: #10b981;
+}
+
+/* ۳. استایل متنِ داخل بلاک کد (حفظ دقیق فواصل، تورفتگی‌ها و تب‌ها) */
 :global(pre code) {
   display: block;
-  padding: 0;
+  padding: 18px 22px;
   margin: 0;
-  color: inherit;
+  color: #f1f5f9;
   background: transparent;
   border: none;
   border-radius: 0;
-  font-family: "Fira Code", monospace !important;
-  font-size: 0.92rem;
+  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace !important;
+  font-size: 0.94rem;
   font-weight: 400;
   line-height: 1.8;
   direction: ltr !important;
   text-align: left !important;
-  white-space: pre;
+  tab-size: 4 !important;
+  -moz-tab-size: 4 !important;
+  white-space: pre !important;
+  overflow-x: auto;
   word-spacing: normal;
   word-break: normal;
+  unicode-bidi: isolate;
+  letter-spacing: 0.3px;
 }
 
-:global(pre::-webkit-scrollbar) {
+:global(pre code::-webkit-scrollbar) {
   height: 8px;
 }
 
-:global(pre::-webkit-scrollbar-track) {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
+:global(pre code::-webkit-scrollbar-track) {
+  background: rgba(255, 255, 255, 0.04);
 }
 
-:global(pre::-webkit-scrollbar-thumb) {
-  background: rgba(255, 255, 255, 0.2);
+:global(pre code::-webkit-scrollbar-thumb) {
+  background: rgba(255, 255, 255, 0.22);
   border-radius: var(--radius-full);
   transition: background var(--transition-fast);
 }
 
-:global(pre::-webkit-scrollbar-thumb:hover) {
+:global(pre code::-webkit-scrollbar-thumb:hover) {
   background: var(--primary-light);
 }
 
+/* ==========================================================================
+   ریسپانسیو صفحه و ستون‌ها
+   ========================================================================== */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .articleContainer {
+    width: 100%;
+    padding: 22px 20px;
+  }
+
+  .meta,
+  .articleContainer h1,
+  .contentWrapper,
+  .sidebar {
+    padding: 0;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+    margin-top: 2rem;
+  }
+
+  .relatedList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .imageContainer {
+    max-height: 300px;
+  }
+
+  .articleContainer h1 {
+    font-size: 1.55rem;
+  }
+
   :global(pre) {
-    padding: 16px 18px;
     margin: 20px 0;
     border-radius: var(--radius-sm);
   }
 
   :global(pre code) {
-    font-size: 0.85rem;
+    font-size: 0.86rem;
     line-height: 1.7;
+    padding: 14px 16px;
   }
 
   :global(code:not(pre code)) {
     padding: 2px 6px;
-    font-size: 0.8em;
+    font-size: 0.82em;
+  }
+}
+
+@media (max-width: 576px) {
+  .imageContainer {
+    max-height: 240px;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .actionsBtn {
+    width: 48%;
+  }
+
+  .back {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .actionsBtn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
   }
 }

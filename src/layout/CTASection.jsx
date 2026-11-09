@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaPaperPlane, FaFolderOpen } from "react-icons/fa";
+import { FaFolderOpen } from "react-icons/fa";
 import styles from "./CTASection.module.css";
 import { RiSendInsFill } from "react-icons/ri";
 

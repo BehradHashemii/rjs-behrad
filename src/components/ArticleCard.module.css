@@ -1,55 +1,48 @@
-/* کانتینر بیرونی برای جلوگیری از تخریب گرید یا فلکس والد */
+/* کانتینر اصلی کارت با پشتیبانی از Container Queries */
 .cardContainer {
+  container-type: inline-size;
   width: 100%;
-  display: block;
+  height: 100%;
+  display: flex;
 }
 
 .card {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
+  flex-direction: column;
   width: 100%;
-  margin: auto;
-  min-height: 150px;
+  height: 100%;
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg, 20px);
-  border: 1px solid var(--white-glass, rgba(255, 255, 255, 0.2));
-  background: linear-gradient(
-    135deg,
-    var(--white-glass-light, rgba(255, 255, 255, 0.08)),
-    rgba(255, 255, 255, 0.16)
-  );
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.1),
-    var(--shadow-lg, 0 10px 30px rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--liquid-glass-border, rgba(255, 255, 255, 0.9));
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  -webkit-backdrop-filter: var(--liquid-glass-blur);
+  box-shadow: var(--liquid-glass-shadow);
   text-decoration: none;
   direction: rtl;
   transition:
     transform var(--transition-normal, 0.3s ease),
-    box-shadow var(--transition-normal, 0.3s ease);
+    box-shadow var(--transition-normal, 0.3s ease),
+    border-color var(--transition-normal, 0.3s ease);
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.9),
-    0 16px 36px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: var(--liquid-glass-shadow-hover);
 }
 
-/* هاله‌های نوری پس‌زمینه */
+/* هاله‌های نوری تزیینی پس‌زمینه کارت */
 .card::before {
   content: "";
   position: absolute;
   top: -60px;
   left: -60px;
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  background: var(--white-glass-light, rgba(255, 255, 255, 0.2));
+  background: var(--white-glass-light, rgba(255, 255, 255, 0.4));
   filter: blur(35px);
   pointer-events: none;
 }
@@ -58,23 +51,23 @@
   content: "";
   position: absolute;
   right: -70px;
-  bottom: -80px;
-  width: 180px;
-  height: 180px;
+  bottom: -70px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  background: var(--primary-soft, rgba(59, 130, 246, 0.15));
-  filter: blur(45px);
+  background: var(--primary-soft, rgba(37, 99, 235, 0.12));
+  filter: blur(40px);
   pointer-events: none;
 }
 
 /* بخش تصویر */
 .imageWrapper {
   position: relative;
-  flex: 0 0 34%;
-  max-width: 34%;
-  padding: 12px;
-  box-sizing: border-box;
+  width: 100%;
+  height: 185px;
   overflow: hidden;
+  background: rgba(15, 23, 42, 0.05);
+  flex-shrink: 0;
 }
 
 .image {
@@ -82,152 +75,240 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: calc(var(--radius-lg, 20px) - 6px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  transition: transform var(--transition-normal, 0.3s ease);
+  transition: transform var(--transition-normal, 0.35s ease);
 }
 
 .card:hover .image {
-  transform: scale(1.04);
+  transform: scale(1.06);
+}
+
+/* دکمه لایک/پسندیدن شناور روی تصویر */
+.likeBtn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full, 9999px);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.likeBtn:hover {
+  transform: scale(1.1);
+  color: var(--danger-color, #ef4444);
+  background: #ffffff;
+}
+
+.likeBtn.liked {
+  color: var(--danger-color, #ef4444);
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
+}
+
+/* نشان دسته‌بندی روی تصویر */
+.categoryBadge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 2;
+  padding: 4px 10px;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  border-radius: var(--radius-xs, 6px);
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* بخش متن و محتوا */
 .content {
-  /* flex: 1; */
+  flex: 1;
   min-width: 0;
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
+  padding: 1.1rem 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* سطر بالای محتوا (تگ‌ها + زمان مطالعه) */
+.headerRow {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 1.5rem;
-  box-sizing: border-box;
+  gap: 8px;
+  margin-bottom: 0.6rem;
 }
 
-/* ردیف متادیتا (نویسنده و تاریخ) */
-.info {
+.technologies {
   display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  width: 100%;
-  margin-top: 0.6rem;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
-.info p {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0;
-  color: var(--text-muted, #71717a);
-  font-size: 0.78rem;
-}
-
-.info svg {
-  flex-shrink: 0;
+.tech {
+  display: inline-block;
+  padding: 2px 7px;
+  border: 1px solid var(--primary-border, rgba(37, 99, 235, 0.3));
+  border-radius: var(--radius-xs, 6px);
+  background: var(--primary-soft, rgba(37, 99, 235, 0.08));
   color: var(--primary-color, #2563eb);
-  font-size: 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
 }
 
-/* تیتر مقاله */
+.readingTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-right: auto;
+}
+
+.readingTime svg {
+  font-size: 0.85rem;
+  color: var(--primary-color, #2563eb);
+}
+
+/* عنوان مقاله */
 .title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  width: 100%;
   margin: 0 0 0.5rem;
-  color: var(--text-primary, #09090b);
-  font-weight: 700;
-  line-height: 1.6;
+  color: var(--text-primary, #0f172a);
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.55;
+  transition: color var(--transition-fast, 0.2s ease);
 }
 
-/* خلاصه توضیحات */
-.desc * {
-  display: unset;
-  all: unset;
+.card:hover .title {
+  color: var(--primary-color, #2563eb);
 }
+
+/* متن چکیده */
 .desc {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  margin: 0 0 0.75rem;
-  color: var(--text-secondary, #52525b);
+  margin: 0 0 0.85rem;
+  color: var(--text-secondary, #475569);
   font-size: 0.82rem;
   line-height: 1.7;
 }
 
-.desc p {
-  margin: 0;
-  display: inline;
-}
-
-/* برچسب‌ها (Tags) */
-.technologies {
+/* فوتر کارت */
+.footer {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--glass-border-subtle, rgba(226, 232, 240, 0.6));
+  gap: 8px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  width: 100%;
+  gap: 0.85rem;
 }
 
-.tech {
-  display: inline-block;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--primary-border, rgba(59, 130, 246, 0.2));
-  border-radius: 8px;
-  background: var(--primary-soft, rgba(59, 130, 246, 0.08));
+.info p {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.74rem;
+}
+
+.info svg {
+  flex-shrink: 0;
   color: var(--primary-color, #2563eb);
-  font-size: 0.72rem;
-  white-space: nowrap;
-  backdrop-filter: blur(8px);
-  transition: all var(--transition-fast, 0.2s ease);
+  font-size: 0.82rem;
 }
 
-.card:hover .tech {
-  background: var(--primary-soft, rgba(59, 130, 246, 0.15));
+.readMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--primary-color, #2563eb);
+  font-size: 0.82rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast, 0.2s ease);
 }
 
-/* ریسپانسیو - تبلت و موبایل */
-@media (max-width: 768px) {
-  .imageWrapper {
-    flex: 0 0 38%;
-    max-width: 38%;
-    padding: 10px;
+.readMore svg {
+  font-size: 1rem;
+  transition: transform var(--transition-fast, 0.2s ease);
+}
+
+.card:hover .readMore {
+  transform: translateX(-4px);
+}
+
+/* رفتار واکنش‌گرا بر اساس کانتینر (اگر کانتینر بزرگتر از ۵۴۰ پیکسل باشد، چینش افقی می‌شود) */
+@container (min-width: 540px) {
+  .card {
+    flex-direction: row;
+    align-items: stretch;
   }
 
-  .technologies {
-    margin-bottom: 12px;
+  .imageWrapper {
+    width: 38%;
+    height: auto;
+    min-height: 210px;
+    padding: 10px;
+    background: transparent;
+  }
+
+  .image {
+    border-radius: calc(var(--radius-lg, 20px) - 6px);
+  }
+
+  .categoryBadge {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .likeBtn {
+    top: 20px;
+    left: 20px;
   }
 
   .content {
-    padding: 1rem 1.2rem;
+    padding: 1.25rem 1.4rem;
   }
 
   .title {
-    font-size: 0.95rem;
-    margin: 0 0 0.5rem;
-  }
-}
-
-@media (max-width: 580px) {
-  .card {
-    flex-direction: column;
-    min-height: auto;
-  }
-
-  .imageWrapper {
-    flex: none;
-    max-width: 100%;
-    width: 100%;
-    height: 190px;
-    padding: 12px 12px 0 12px;
-  }
-
-  .content {
-    padding: 1rem 1.1rem 1.2rem;
+    font-size: 1.1rem;
   }
 
   .desc {
-    -webkit-line-clamp: 3;
+    font-size: 0.85rem;
   }
 }

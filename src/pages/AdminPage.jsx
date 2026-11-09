@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
@@ -11,90 +11,16 @@ import {
   getProfileAPI,
   getAllTickets,
   signupAPI,
-  updateProfileAPI,
   updateTicketStatus,
   addMessageToTicket,
 } from "../services/apiService";
 import styles from "./AdminPage.module.css";
 
-import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
-
-import {
-  FaUsers,
-  FaUserPlus,
-  FaUserEdit,
-  FaTrashAlt,
-  FaUserShield,
-  FaUserMinus,
-  FaTicketAlt,
-  FaFolderPlus,
-  FaShieldAlt,
-  FaPaperPlane,
-  FaExclamationTriangle,
-  FaSpinner,
-  FaTimes,
-  FaComments,
-  FaChartLine,
-  FaHeart,
-  FaBookmark,
-  FaEye,
-  FaSearch,
-  FaFilter,
-  FaHome,
-  FaThLarge,
-  FaNewspaper,
-  FaBars,
-  FaCheck,
-  FaPlus,
-  FaEdit,
-} from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
-import e2p from "../utils/persianNumber";
-import SEOConfig from "../components/SEOConfig";
-import { RiSendInsFill } from "react-icons/ri";
+import { toast } from "react-toastify";
 import Loading from "../components/Loading";
 import Overview from "../components/admin/Overview";
 import UsersTab from "../components/admin/UsersTab";
-
-function getNormalizedMessages(ticket, defaultUserName = "کاربر") {
-  if (!ticket) return [];
-  if (Array.isArray(ticket.messages) && ticket.messages.length > 0) {
-    return ticket.messages;
-  }
-  const list = [];
-  const mainText = ticket.message || ticket.description;
-  if (mainText) {
-    list.push({
-      sender: "user",
-      senderName: ticket.userName || ticket.userEmail || defaultUserName,
-      text: mainText,
-      time: ticket.date || "ثبت اولیه",
-    });
-  }
-  if (ticket.adminReply) {
-    list.push({
-      sender: "admin",
-      senderName: "پشتیبانی",
-      text: ticket.adminReply,
-      time: "پاسخ ادمین",
-    });
-  }
-  return list;
-}
+import ArticlesTab from "../components/admin/ArticlesTab";
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -110,7 +36,6 @@ function AdminPage() {
   const [portfolios, setPortfolios] = useState([]);
 
   const [dataLoading, setDataLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
@@ -167,8 +92,6 @@ function AdminPage() {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectNote, setProjectNote] = useState("");
-
-  const adminChatEndRef = useRef(null);
 
   // ۱. گارد امنیتی: هدایت غیرادمین‌ها به صفحه اصلی
   useEffect(() => {
@@ -409,10 +332,11 @@ function AdminPage() {
 
   const handleEditArticleSubmit = async (e) => {
     e.preventDefault();
-    if (!editingArticle?.id) return;
+    const articleId = editingArticle?.id || editingArticle?._id;
+    if (!articleId) return;
 
     try {
-      await updateArticle(editingarticle._id, {
+      await updateArticle(articleId, {
         title: editArticleForm.title.trim(),
         description: `<p>${editArticleForm.description.trim()}</p>`,
         image: editArticleForm.image.trim(),
@@ -460,14 +384,7 @@ function AdminPage() {
     if (!selectedTicket?.id || !ticketReply.trim()) return;
 
     try {
-      const newMsg = {
-        sender: "admin",
-        senderName: "پشتیبانی",
-        text: ticketReply.trim(),
-        time: `${new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })}`,
-      };
-
-      await addMessageToTicket(selectedTicket.id, adminReply, "admin");
+      await addMessageToTicket(selectedTicket.id, ticketReply.trim(), "admin");
 
       toast.success("پاسخ شما در چت تیکت ارسال شد.");
       setTicketReply("");
@@ -588,19 +505,233 @@ function AdminPage() {
       </aside>
       <main className={styles.main}>
         {activeTab === "overview" && (
-          <div>
-            <h2>نمای کلی</h2>
-            <Overview />
+          <div style={{ width: "100%" }}>
+            <h2>نمای کلی سیستم</h2>
+            <Overview
+              users={users}
+              tickets={tickets}
+              projects={projects}
+              articles={articles}
+              portfolios={portfolios}
+              totalViews={totalViews}
+              totalLikes={totalLikes}
+              totalSaves={totalSaves}
+              monthlyGrowthData={monthlyGrowthData}
+              articlesChartData={articlesChartData}
+              userRolePieData={userRolePieData}
+            />
           </div>
         )}
         {activeTab === "tickets" && (
-          <div>
-            <h2>پیام های پشتیبانی</h2>
+          <div style={{ width: "100%" }}>
+            <h2>پیام‌های پشتیبانی</h2>
+            {tickets.length === 0 ? (
+              <p style={{ marginTop: "12px", color: "var(--text-secondary)" }}>
+                هیچ تیکتی وجود ندارد.
+              </p>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                  marginTop: "16px",
+                  width: "100%",
+                }}
+              >
+                {tickets.map((t) => (
+                  <div
+                    key={t.id}
+                    style={{
+                      padding: "16px",
+                      borderRadius: "12px",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <strong>{t.title}</strong>
+                      <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>
+                        وضعیت: {t.status}
+                      </span>
+                    </div>
+                    <p style={{ marginTop: "8px", fontSize: "0.9rem" }}>
+                      {t.message || t.description}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "8px",
+                        marginTop: "12px",
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className={styles.btnRole}
+                        onClick={() =>
+                          handleUpdateTicketStatus(t.id, "پاسخ داده شده")
+                        }
+                      >
+                        تغییر به پاسخ داده شده
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.btnDelete}
+                        onClick={() => handleCloseTicket(t.id)}
+                      >
+                        بستن تیکت
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.btnEdit}
+                        onClick={() => setSelectedTicket(t)}
+                      >
+                        پاسخ
+                      </button>
+                    </div>
+                    {selectedTicket?.id === t.id && (
+                      <form
+                        onSubmit={handleSendTicketReply}
+                        style={{
+                          marginTop: "12px",
+                          display: "flex",
+                          gap: "8px",
+                        }}
+                      >
+                        <input
+                          type="text"
+                          placeholder="متن پاسخ شما..."
+                          value={ticketReply}
+                          onChange={(e) => setTicketReply(e.target.value)}
+                          style={{
+                            flex: 1,
+                            padding: "8px 12px",
+                            borderRadius: "8px",
+                            background: "rgba(255, 255, 255, 0.1)",
+                            border: "1px solid rgba(255, 255, 255, 0.2)",
+                            color: "#fff",
+                          }}
+                        />
+                        <button type="submit" className={styles.addUserBtn}>
+                          ارسال
+                        </button>
+                      </form>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
         {activeTab === "portfolio-request" && (
-          <div>
-            <h2>درخواست های پروژه</h2>
+          <div style={{ width: "100%" }}>
+            <h2>درخواست‌های پروژه</h2>
+            {projects.length === 0 ? (
+              <p style={{ marginTop: "12px", color: "var(--text-secondary)" }}>
+                هیچ درخواستی ثبت نشده است.
+              </p>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                  marginTop: "16px",
+                  width: "100%",
+                }}
+              >
+                {projects.map((p) => (
+                  <div
+                    key={p.id}
+                    style={{
+                      padding: "16px",
+                      borderRadius: "12px",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <strong>
+                        {p.title || p.serviceType || "درخواست پروژه"}
+                      </strong>
+                      <span>وضعیت: {p.status || "در حال بررسی"}</span>
+                    </div>
+                    <p style={{ marginTop: "8px", fontSize: "0.9rem" }}>
+                      {p.description}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "8px",
+                        marginTop: "12px",
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className={styles.btnRole}
+                        onClick={() =>
+                          handleUpdateProjectStatus(p.id, "در حال انجام")
+                        }
+                      >
+                        تغییر وضعیت به در حال انجام
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.btnEdit}
+                        onClick={() => {
+                          setSelectedProject(p);
+                          setProjectNote(p.adminNote || "");
+                        }}
+                      >
+                        یادداشت ادمین
+                      </button>
+                    </div>
+                    {selectedProject?.id === p.id && (
+                      <div
+                        style={{
+                          marginTop: "12px",
+                          display: "flex",
+                          gap: "8px",
+                        }}
+                      >
+                        <input
+                          type="text"
+                          placeholder="یادداشت برآورد یا وضعیت..."
+                          value={projectNote}
+                          onChange={(e) => setProjectNote(e.target.value)}
+                          style={{
+                            flex: 1,
+                            padding: "8px 12px",
+                            borderRadius: "8px",
+                            background: "rgba(255, 255, 255, 0.1)",
+                            border: "1px solid rgba(255, 255, 255, 0.2)",
+                            color: "#fff",
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleSaveProjectNote}
+                          className={styles.addUserBtn}
+                        >
+                          ذخیره یادداشت
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
         {activeTab === "users" && (
@@ -609,6 +740,7 @@ function AdminPage() {
             <UsersTab
               styles={styles}
               searchUser={searchUser}
+              setSearchUser={setSearchUser}
               roleFilter={roleFilter}
               setRoleFilter={setRoleFilter}
               users={users}
@@ -623,6 +755,13 @@ function AdminPage() {
               isDeletingUser={isDeletingUser}
               confirmDeleteUser={confirmDeleteUser}
               setNewUserForm={setNewUserForm}
+              editingUser={editingUser}
+              setEditingUser={setEditingUser}
+              editUserForm={editUserForm}
+              setEditUserForm={setEditUserForm}
+              isEditUserModalOpen={isEditUserModalOpen}
+              setIsEditUserModalOpen={setIsEditUserModalOpen}
+              handleEditUserSubmit={handleEditUserSubmit}
             />
           </div>
         )}
@@ -632,8 +771,31 @@ function AdminPage() {
           </div>
         )}
         {activeTab === "articles" && (
-          <div>
+          <div style={{ width: "100%" }}>
             <h2>مدیریت مقالات</h2>
+            <ArticlesTab
+              styles={styles}
+              articles={articles}
+              filteredArticles={filteredArticles}
+              searchArticle={searchArticle}
+              setSearchArticle={setSearchArticle}
+              isAddArticleModalOpen={isAddArticleModalOpen}
+              setIsAddArticleModalOpen={setIsAddArticleModalOpen}
+              newArticleForm={newArticleForm}
+              setNewArticleForm={setNewArticleForm}
+              handleAddArticleSubmit={handleAddArticleSubmit}
+              isEditArticleModalOpen={isEditArticleModalOpen}
+              setIsEditArticleModalOpen={setIsEditArticleModalOpen}
+              editArticleForm={editArticleForm}
+              setEditArticleForm={setEditArticleForm}
+              editingArticle={editingArticle}
+              setEditingArticle={setEditingArticle}
+              handleEditArticleSubmit={handleEditArticleSubmit}
+              articleToDelete={articleToDelete}
+              setArticleToDelete={setArticleToDelete}
+              isDeletingArticle={isDeletingArticle}
+              confirmDeleteArticle={confirmDeleteArticle}
+            />
           </div>
         )}
       </main>

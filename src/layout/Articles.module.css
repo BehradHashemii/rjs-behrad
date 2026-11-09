@@ -5,7 +5,9 @@
 }
 
 .swiperSlide {
-  padding: 2rem;
+  padding: 8px 4px 18px;
+  height: auto;
+  display: flex;
 }
 
 .card {

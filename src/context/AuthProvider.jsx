@@ -17,8 +17,13 @@ export function AuthProvider({ children }) {
       const storedUser = localStorage.getItem("user");
 
       if (token && storedUser) {
-        // اگر توکن و اطلاعات کاربر وجود داشت، کاربر لاگین است
-        setUser(JSON.parse(storedUser));
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          setUser(null);
+        }
       } else {
         setUser(null);
       }
@@ -40,6 +45,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem("user", JSON.stringify(userData));
 
     setUser(userData);
+    window.dispatchEvent(new CustomEvent("user-auth-change", { detail: userData }));
     return userData;
   }, []);
 
@@ -70,17 +76,18 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
+    window.dispatchEvent(new CustomEvent("user-auth-change", { detail: null }));
   }, []);
 
   // ۵. توابعی که هنوز در بک‌اند توسعه داده نشدند
-  const resetPassword = useCallback(async (email) => {
+  const resetPassword = useCallback(async () => {
     // این قابلیت رو تو فازهای بعدی بک‌اند میسازیم
     throw new Error(
       "قابلیت بازیابی رمز عبور هنوز در سرور راه‌اندازی نشده است.",
     );
   }, []);
 
-  const updateUserProfile = useCallback(async (updatedData) => {
+  const updateUserProfile = useCallback(async () => {
     console.warn("API آپدیت پروفایل هنوز در سرور ساخته نشده است.");
   }, []);
 

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import formatPersianDate from "../utils/formatPersianDate";
 
 function ArticleRelated({ styles, relatedArticles }) {
@@ -7,21 +8,25 @@ function ArticleRelated({ styles, relatedArticles }) {
       {relatedArticles.length > 0 ? (
         <div className={styles.relatedList}>
           {relatedArticles.map((rel) => (
-            <a
-              href={`/articles/${rel.slug}`}
+            <Link
+              to={`/articles/${rel.slug}`}
               key={rel.slug}
               className={`${styles.relatedCard} glassBG`}
             >
               <img
-                src={rel.image}
+                src={rel.image || "/banner.png"}
                 alt={rel.title}
                 className={styles.relatedImg}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/banner.png";
+                }}
               />
               <div className={styles.relatedInfo}>
                 <h4>{rel.title}</h4>
                 <span>{formatPersianDate(rel.createdAt)}</span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       ) : (

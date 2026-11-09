@@ -94,7 +94,10 @@ export default function SavedTab({
                       <button
                         type="button"
                         className={styles.removeSavedBtn}
-                        onClick={() => onRemovePortfolio(item.id)}
+                        onClick={() =>
+                          typeof onRemovePortfolio === "function" &&
+                          onRemovePortfolio(item._id ?? item.id)
+                        }
                         title="حذف از نشان‌شده‌ها"
                       >
                         <FaTrash />
@@ -125,7 +128,7 @@ export default function SavedTab({
           ) : (
             <div className={styles.savedGrid}>
               {likedArticleItems.map((article) => (
-                <div key={article._id} className={styles.savedCard}>
+                <div key={article._id ?? article.id} className={styles.savedCard}>
                   <img
                     src={article.image}
                     alt={article.title}
@@ -147,7 +150,10 @@ export default function SavedTab({
                       <button
                         type="button"
                         className={styles.removeSavedBtn}
-                        onClick={() => onRemoveArticle(article._id)}
+                        onClick={() =>
+                          typeof onRemoveArticle === "function" &&
+                          onRemoveArticle(article._id ?? article.id)
+                        }
                         title="حذف از پسندیده‌شده‌ها"
                       >
                         <FaTrash />

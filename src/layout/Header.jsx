@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 
 import styles from "./Header.module.css";
 import e2p from "../utils/persianNumber";
+import useAuth from "../hooks/useAuth";
 import {
   getSavedPortfolios,
   getLikedArticles,
@@ -19,6 +20,7 @@ import { FaTimes, FaRegBookmark } from "react-icons/fa";
 import { RiGeminiFill } from "react-icons/ri";
 
 function Header() {
+  const { user: authUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -27,13 +29,18 @@ function Header() {
     () => getSavedPortfolios().length,
   );
   const [likedCount, setLikedCount] = useState(() => getLikedArticles().length);
-  const [currentUser, setCurrentUser] = useState(() => getLoggedUser());
+  const [storageUser, setStorageUser] = useState(() => getLoggedUser());
+
+  const currentUser = authUser || storageUser;
+  const displayName = currentUser?.firstName
+    ? `${currentUser.firstName} ${currentUser.lastName || ""}`.trim()
+    : currentUser?.name || "حساب کاربری / ورود";
 
   useEffect(() => {
     const updateCounts = () => {
       setSavedCount(getSavedPortfolios().length);
       setLikedCount(getLikedArticles().length);
-      setCurrentUser(getLoggedUser());
+      setStorageUser(getLoggedUser());
     };
 
     updateCounts();
@@ -113,13 +120,19 @@ function Header() {
             type="button"
             className={styles.userTriggerBtn}
             onClick={() => setIsLoginModalOpen(true)}
-            title={currentUser ? currentUser.name : "حساب کاربری / ورود"}
+            title={displayName}
             aria-label="حساب کاربری"
           >
             {currentUser?.avatar ? (
               <img
                 src={currentUser.avatar}
-                alt={currentUser.name}
+                alt={displayName}
+                className={styles.userAvatarHeader}
+              />
+            ) : currentUser ? (
+              <img
+                src="/logo2.png"
+                alt={displayName}
                 className={styles.userAvatarHeader}
               />
             ) : (

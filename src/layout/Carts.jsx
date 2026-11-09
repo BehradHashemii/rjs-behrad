@@ -1,4 +1,3 @@
-import React from "react";
 import { ImBlog } from "react-icons/im";
 import { FaBriefcase, FaPhoneAlt } from "react-icons/fa";
 

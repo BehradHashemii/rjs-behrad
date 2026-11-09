@@ -1,5 +1,4 @@
-// getArticles().then(res => setArticles((res || [])));
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
@@ -18,13 +17,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 function Articles() {
-  const [articles, setArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setArticles(mockData.articles.slice(-5).reverse() || []);
-    setIsLoading(false);
-  }, []);
+  const [articles] = useState(() => (mockData.articles || []).slice(-5).reverse());
 
   return (
     <div className={styles.container}>

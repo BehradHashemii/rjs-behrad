@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import {
   FaPlus,
   FaArrowLeft,
-  FaPaperPlane,
   FaTicketAlt,
 } from "react-icons/fa";
 import styles from "../../pages/DashboardPage.module.css";
@@ -49,6 +48,10 @@ export default function TicketsTab({
   const chatEndRef = useRef(null);
 
   const messages = getNormalizedMessages(selectedTicket, userName);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {

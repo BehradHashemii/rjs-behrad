@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
 import {
   FaArrowLeft,
   FaArrowRight,
-  FaExternalLinkAlt,
-  FaGithub,
 } from "react-icons/fa";
 import { VscGithubProject } from "react-icons/vsc";
 import { FiArrowUpLeft } from "react-icons/fi";
@@ -20,13 +18,7 @@ import mockData from "../data/mockData.json";
 import PortfolioCard from "../components/PortfolioCard";
 
 function Portfolios() {
-  const [portfolios, setPortfolios] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setPortfolios(mockData.portfolios.slice(-5).reverse() || []);
-    setIsLoading(false);
-  }, []);
+  const [portfolios] = useState(() => (mockData.portfolios || []).slice(-5).reverse());
   return (
     <section className={styles.container}>
       <div className={styles.header}>

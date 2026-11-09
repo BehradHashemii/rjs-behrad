@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FaCheck,
   FaExclamationTriangle,
-  FaEye,
-  FaEyeSlash,
   FaFilter,
   FaSearch,
   FaSpinner,
@@ -19,21 +17,29 @@ import NewModal from "./users/NewModal";
 
 function UsersTab({
   styles,
-  searchUser,
-  roleFilter,
-  setRoleFilter,
-  users,
-  filteredUsers,
-  handleToggleRole,
-  setUserToDelete,
-  userToDelete,
-  setIsAddUserModalOpen,
-  isAddUserModalOpen,
-  setNewUserForm,
-  newUserForm,
-  handleAddUserSubmit,
-  isDeletingUser,
-  confirmDeleteUser
+  searchUser = "",
+  setSearchUser = () => {},
+  roleFilter = "all",
+  setRoleFilter = () => {},
+  users = [],
+  filteredUsers = [],
+  handleToggleRole = () => {},
+  setUserToDelete = () => {},
+  userToDelete = null,
+  setIsAddUserModalOpen = () => {},
+  isAddUserModalOpen = false,
+  setNewUserForm = () => {},
+  newUserForm = {},
+  handleAddUserSubmit = () => {},
+  isDeletingUser = false,
+  confirmDeleteUser = () => {},
+  editingUser = null,
+  setEditingUser = () => {},
+  editUserForm = {},
+  setEditUserForm = () => {},
+  isEditUserModalOpen = false,
+  setIsEditUserModalOpen = () => {},
+  handleEditUserSubmit = () => {},
 }) {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -262,6 +268,111 @@ function UsersTab({
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* مودال ویرایش کاربر */}
+      {isEditUserModalOpen && editingUser && (
+        <div
+          className={`glassBG ${styles.modalBackdrop}`}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsEditUserModalOpen(false);
+          }}
+        >
+          <div className={styles.modalWindow}>
+            <div className={styles.modalHeader}>
+              <h3>
+                <FaUserEdit /> ویرایش کاربر
+              </h3>
+              <button
+                className={styles.closeBtn}
+                onClick={() => setIsEditUserModalOpen(false)}
+              >
+                <FaTimes />
+              </button>
+            </div>
+            <form onSubmit={handleEditUserSubmit} className={styles.modalForm}>
+              <div className={styles.formGroup}>
+                <label>نام و نام خانوادگی:</label>
+                <input
+                  type="text"
+                  value={editUserForm.name || ""}
+                  onChange={(e) =>
+                    setEditUserForm({ ...editUserForm, name: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>آدرس ایمیل:</label>
+                <input
+                  type="email"
+                  value={editUserForm.email || ""}
+                  onChange={(e) =>
+                    setEditUserForm({ ...editUserForm, email: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label>نقش دسترسی:</label>
+                  <select
+                    value={editUserForm.role || "user"}
+                    onChange={(e) =>
+                      setEditUserForm({ ...editUserForm, role: e.target.value })
+                    }
+                  >
+                    <option value="user">کاربر عادی</option>
+                    <option value="admin">مدیر (Admin)</option>
+                  </select>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>وضعیت حساب:</label>
+                  <select
+                    value={editUserForm.status || "active"}
+                    onChange={(e) =>
+                      setEditUserForm({
+                        ...editUserForm,
+                        status: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="active">فعال</option>
+                    <option value="disabled">مسدود</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>شماره تماس:</label>
+                <input
+                  type="text"
+                  value={editUserForm.phone || ""}
+                  onChange={(e) =>
+                    setEditUserForm({ ...editUserForm, phone: e.target.value })
+                  }
+                  dir="ltr"
+                />
+              </div>
+
+              <div className={styles.modalFooter}>
+                <button type="submit" className={styles.saveBtn}>
+                  <FaCheck /> ذخیره تغییرات
+                </button>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setIsEditUserModalOpen(false)}
+                >
+                  انصراف
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

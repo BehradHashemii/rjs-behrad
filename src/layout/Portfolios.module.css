@@ -12,7 +12,9 @@
 }
 
 .swiperSlide {
-  padding: 2rem;
+  padding: 8px 4px 18px;
+  height: auto;
+  display: flex;
 }
 
 .card {
@@ -169,7 +171,7 @@
   }
 
   .swiperSlide {
-    padding: 2rem 1rem;
+    padding: 8px 4px 18px;
   }
 
   .header {

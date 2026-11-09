@@ -1,0 +1,170 @@
+.container {
+  position: relative;
+  width: 100%;
+  margin: 60px auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.header h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.header h2 svg {
+  color: var(--primary-color);
+  font-size: 26px;
+}
+
+.seeAll {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  transition: all var(--transition-fast);
+}
+
+.seeAll svg {
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+.seeAll:hover {
+  color: var(--primary-color);
+  background: var(--primary-soft);
+  border-color: var(--primary-color);
+}
+
+.swiper {
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+.swiperSlide {
+  padding: 8px 4px 18px;
+  height: auto;
+  display: flex;
+}
+
+.swiperButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin: 20px auto 0;
+}
+
+.swiperButtons .navigation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:global(.swiper-button-disabled) {
+  opacity: 0.25 !important;
+  pointer-events: none;
+}
+
+/* دکمه‌های کنترل اسلایدر پرامپت‌ها */
+:global(.scroll-prompt-button-prev),
+:global(.scroll-prompt-button-next) {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--liquid-glass-bg, rgba(255, 255, 255, 0.7));
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--liquid-glass-border, rgba(255, 255, 255, 0.4));
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+:global(.scroll-prompt-button-prev svg),
+:global(.scroll-prompt-button-next svg) {
+  color: var(--primary-color) !important;
+  transition: transform var(--transition-fast);
+}
+
+:global(.scroll-prompt-button-prev:hover),
+:global(.scroll-prompt-button-next:hover) {
+  background: var(--primary-soft);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 24px var(--primary-shadow);
+  transform: translateY(-2px);
+}
+
+:global(.scroll-prompt-button-disabled) {
+  opacity: 0.25 !important;
+  pointer-events: none;
+  transform: scale(0.9);
+}
+
+/* استایل نشانگرهای صفحه‌بندی اسلایدر */
+:global(#pagination-prompts .swiper-pagination-bullet) {
+  background: var(--text-muted);
+  opacity: 0.4;
+  width: 9px;
+  height: 9px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin: 0 4px;
+}
+
+:global(#pagination-prompts .swiper-pagination-bullet-active) {
+  background: var(--primary-color) !important;
+  width: 24px;
+  border-radius: var(--radius-full);
+  opacity: 1;
+  box-shadow: 0 0 10px var(--primary-shadow);
+}
+
+@media (max-width: 640px) {
+  .container {
+    margin: 45px auto;
+  }
+
+  .header {
+    gap: 14px;
+  }
+
+  .header h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 440px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

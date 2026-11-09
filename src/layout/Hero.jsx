@@ -64,7 +64,7 @@ function highlightSyntax(code, tab) {
 
   // الگوی ریجکس اصلاح‌شده با پرانتز capture () برای حفظ دست‌نخورده فاصله‌ها و تورفتگی‌ها
   const tokenRegex =
-    /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|<\/?[\w\.-]+|[{}();,:]|#[0-9a-fA-F]{3,6}|\b(?:import|from|export|default|function|return|const|let|var)\b|\b(?:className|min-height|display|align-items|justify-content|background|color|font-size|font-weight)\b|\.[a-zA-Z0-9_-]+)/g;
+    /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|<\/?[\w.-]+|[{}();,:]|#[0-9a-fA-F]{3,6}|\b(?:import|from|export|default|function|return|const|let|var)\b|\b(?:className|min-height|display|align-items|justify-content|background|color|font-size|font-weight)\b|\.[a-zA-Z0-9_-]+)/g;
 
   return code.split("\n").map((line, lineIdx) => {
     // split با ریجکس کپچرشده باعث می‌شود فاصله‌ها پاک نشوند
@@ -118,20 +118,22 @@ export default function HeroBanner() {
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
-    setDisplayedText("");
-    const fullText = FILE_CONTENTS[activeTab];
+    const fullText = FILE_CONTENTS[activeTab] || "";
     let currentIndex = 0;
 
     const interval = setInterval(() => {
-      if (currentIndex < fullText.length) {
-        setDisplayedText(fullText.slice(0, currentIndex + 1));
-        currentIndex++;
+      currentIndex++;
+      if (currentIndex <= fullText.length) {
+        setDisplayedText(fullText.slice(0, currentIndex));
       } else {
         clearInterval(interval);
       }
     }, 12);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      setDisplayedText("");
+    };
   }, [activeTab]);
 
   return (
